@@ -1,26 +1,29 @@
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useState } from 'react';
-import { useRouter } from 'next/router'
-import Link from 'next/Link'
-import Layout from '@/components/Layout'
-import { API_URL } from '@/config/index'
-import styles from '@/styles/Form.module.css'
+import { useRouter } from 'next/router';
+import Link from 'next/Link';
+import Layout from '@/components/Layout';
+import { API_URL } from '@/config/index';
+import styles from '@/styles/Form.module.css';
 import { stringify } from 'qs';
+import moment from 'moment';
 
 
-export default function AddEventPage() {
+export default function EditEventsPage({evt}) {
+    console.log("evt", evt);
 
     const [values, setValues] = useState({
-        name: '',
-        slug: '',
-        performers: '',
-        venue: '',
-        address: '',
-        date: '',
-        time: '',
-        description: '',
+        name: evt.attributes.name,
+        slug: evt.attributes.slug,
+        performers: evt.attributes.performers,
+        venue: evt.attributes.venue,
+        address: evt.attributes.address,
+        date: evt.attributes.date,
+        time: evt.attributes.time,
+        description: evt.attributes.description,
     });
+    const [imagePreview, setImagePreview] = useState(evt.image ? evt.image.formats.thumbnail.url : null)
     const handleSubmit = async (e) => {
         e.preventDefault();
         console.log("values", values);
@@ -32,8 +35,8 @@ export default function AddEventPage() {
         }
  
 
-        const res = await fetch(`${API_URL}/api/events`, {
-            method: 'POST',
+        const res = await fetch(`${API_URL}/api/events/${evt.id}`, {
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -44,7 +47,7 @@ export default function AddEventPage() {
             toast.error('Something went wrong')
         } else {
             const data = await res.json()
-            router.push(`/events/`)
+            router.push(`/events/${evt.attributes.slug}`)
         }
     }
 
@@ -57,7 +60,7 @@ export default function AddEventPage() {
             console.log(values);
         }
         else if (name === "name") {
-            setValues({ ...values, name: value, slug: value.replaceAll(" ", "-").toLowerCase() })
+            setValues({ ...values, name: value})
         }
         else {
             setValues({ ...values, [name]: value })
@@ -69,7 +72,7 @@ export default function AddEventPage() {
         <Layout title='Add New Event'>
             <Link href='/events'>Go Back</Link>
 
-            <h1>Add Event</h1>
+            <h1>Edit Event</h1>
             <ToastContainer />
             <form onSubmit={handleSubmit} className={styles.form}>
                 <div className={styles.grid}>
@@ -114,7 +117,7 @@ export default function AddEventPage() {
                             type='date'
                             name='date'
                             id='date'
-                            value={values.date}
+                            value={moment(values.date).format('yyyy-MM-DD')}
                             onChange={handleInputChange}
                         />
                     </div>
@@ -141,9 +144,23 @@ export default function AddEventPage() {
                         onChange={handleInputChange}
                     ></textarea>
                 </div>
-                <input type='submit' value='Add Event' className='btn' />
+                <input type='submit' value='Update Event' className='btn' />
             </form>
         </Layout>
     )
 
 }
+
+export async function getServerSideProps({params}) {
+    console.log("params", params);
+    const id = params.id;
+    const res = await fetch(`${API_URL}/api/events`)
+    const events = await res.json();
+    const event = events.data.find(e=>e.attributes.slug===id)
+    
+    return {
+      props: {
+        evt: event
+      }
+    }
+  }
