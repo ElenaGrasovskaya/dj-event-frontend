@@ -1,13 +1,13 @@
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import {FaUser} from 'react-icons/fa'
+import {FaUser} from 'react-icons/fa';
 import { useState, useEffect, useContext } from 'react';
 import Link from 'next/link';
-import Layout from '@/components/Layout'
-import styles from '@/styles/AuthForm.module.css'
+import Layout from '@/components/Layout';
+import styles from '@/styles/AuthForm.module.css';
 import AuthContext from '@/context/AuthContext';
 
-export default function registerPage() {
+export default function RegisterPage() {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -19,7 +19,8 @@ export default function registerPage() {
         error && toast.error(error);
     },[]);
 
-    const handleSubmit =(e) => {
+
+    const handleSubmit = () => {
         e.preventDefault();
         if(password !== passwordConfirm)
         {
@@ -27,7 +28,9 @@ export default function registerPage() {
             return
         }
         register({username, email, password});
+
     }
+
     return (
       <Layout title="User Registration">
           <div className={styles.auth}>
@@ -62,3 +65,5 @@ export default function registerPage() {
       </Layout>
     ) 
   }
+
+

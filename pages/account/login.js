@@ -13,7 +13,7 @@ export default function LoginPage() {
 
     const { login, error } = useContext(AuthContext)
 
-    useEffect(() => { error && toast.error(error); }, []);
+    useEffect(() => { error && toast.error(error); }, [error]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -39,7 +39,7 @@ export default function LoginPage() {
                     <input type="submit" value="Login" className='btn' />
                 </form>
                 <p>
-                    Don't have an account? <Link href='/account/register'>Register</Link>
+                    Dont have an account? <Link href='/account/register'>Register</Link>
                 </p>
             </div>
         </Layout>
