@@ -8,7 +8,7 @@ import EventItem from '@/components/EventItem'
 export default function EventsPage({events}) {
   return (
     <Layout>
-      <h1>Events</h1>
+      <h1>Заказы</h1>
 
       {events.length === 0 && <h3>No events to show</h3>}
       {events.data.map((evt) => (<EventItem key={evt.id} evt={evt.attributes}/>))}

@@ -16,8 +16,7 @@ function Layout({ title, keywords, description, children }) {
             </Head>
             <Header />
 
-            {router.pathname==='/'&& <Showcase />}
-
+           
             <div className={styles.container}>
                 {children}
             </div>
@@ -35,3 +34,5 @@ Layout.defaultProps = {
     description: 'Find the latest DJ and other musical events',
     keywords: 'music, dj'
 } 
+
+// {router.pathname==='/'&& <Showcase />}

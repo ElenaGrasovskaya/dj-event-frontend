@@ -4,29 +4,43 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Layout from '@/components/Layout';
+import Items from '@/components/Items';
 import { API_URL } from '@/config/index';
 import styles from '@/styles/Form.module.css';
 import { stringify } from 'qs';
+import { FaArrowLeft } from 'react-icons/fa'
 import moment from 'moment';
 
 
+
 export default function EditEventsPage({evt}) {
-    console.log("evt", evt);
+   
 
     const [values, setValues] = useState({
+        title: evt.attributes.title,
         name: evt.attributes.name,
         slug: evt.attributes.slug,
+        status: evt.attributes.status,
+        clientPrice: evt.attributes.clientPrice,
+        clientPrepay: evt.attributes.clientPrepay,
+        clientDept: evt.attributes.clientDept,
+        expenses: evt.attributes.items.items.reduce((acc, i)=>{return acc+Number(i.price)},0),
+        expensesPersonal: evt.attributes.expensesPersonal,
+        interest: evt.attributes.interest,
+        items: evt.attributes.items,
         performers: evt.attributes.performers,
         venue: evt.attributes.venue,
         address: evt.attributes.address,
         date: evt.attributes.date,
         time: evt.attributes.time,
         description: evt.attributes.description,
+        
     });
+
     const [imagePreview, setImagePreview] = useState(evt.image ? evt.image.formats.thumbnail.url : null)
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("values", values);
+        calculateExpense();
 
         //Validation 
         const hasEmptyFields = Object.values(values).some((element) => element === '')
@@ -53,36 +67,102 @@ export default function EditEventsPage({evt}) {
 
     const router = useRouter();
     const handleInputChange = (e) => {
+
         const { name, value } = e.target;
         if (name === "date") {
             alert(value);
             setValues({ ...values, [name]: new Date(value) })
-            console.log(values);
         }
+
+        if (name === "items")
+        {
+            console.log("newItems", value);
+            const newExpense = value.items.reduce((acc, i)=>{return acc+Number(i.price)},0)
+            setValues({ ...values, expenses: newExpense, interest: values.clientPrice-newExpense, items: value});
+        }
+
         else if (name === "name") {
             setValues({ ...values, name: value})
         }
+   
         else {
             setValues({ ...values, [name]: value })
 
         }
 
     }
-    return (
-        <Layout title='Add New Event'>
-            <Link href='/events'>Go Back</Link>
+    const calculateExpense = () => {
+       const newExpense = values.items.items.reduce((acc, i)=>{return acc+Number(i.price)},0)
 
-            <h1>Edit Event</h1>
+       setValues({ ...values, expenses: newExpense, clientDept: values.clientPrice-values.clientPrepay,
+         interest: values.clientPrice-newExpense });
+    }
+
+    return (
+        <Layout >
+            <Link href='/events'>Назад</Link>
+
+            <h1>Заказ {values.title}</h1>
             <ToastContainer />
             <form onSubmit={handleSubmit} className={styles.form}>
                 <div className={styles.grid}>
                     <div>
-                        <label htmlFor='name'>Event Name</label>
-                        <input type='text' id='name' name='name'
-                            value={values.name} onChange={handleInputChange} />
+                        <label htmlFor='title'>Заказ:</label>
+                        <input type='text' id='title' name='title'
+                            value={values.title} onChange={handleInputChange} />
+                        
+                    </div>
+                                                   
+                     <div className={styles.order_type}>
+
+                    <img src={values.image_url||'/images/sample/furniture.png'}/>
+                    <label htmlFor='status'><input type='checkbox' id='status' name='status'
+                            value={values.status} onChange={handleInputChange} />Закрыт
+                        </label>
+                          
+                         
+                                        
+                    </div>
+
+                    <div>
+                        <label htmlFor='clientPrice'>Цена для клиента:</label>
+                        <input type='number' id='clientPrice' name='clientPrice'
+                            value={values.clientPrice} onChange={handleInputChange} />
                     </div>
                     <div>
-                        <label htmlFor='performers'>Performers</label>
+                        <label htmlFor='clientPrepay'>Аванс:</label>
+                        <input type='number' id='clientPrepay' name='clientPrepay'
+                            value={values.clientPrepay} onChange={handleInputChange} />
+                    </div>
+                    <div>
+                        <label htmlFor='clientDept'>Клиент должен:</label>
+                        <input type='number' id='clientDept' name='clientDept'
+                            value={values.clientPrice-values.clientPrepay}/>
+                    </div>
+                    <div>
+                        <label htmlFor='expenses'>Сумма затрат:</label>
+                        <input type='number' id='expenses' name='expenses'
+                            value={values.items.items.reduce((acc, i)=>{return acc+Number(i.price)},0)} />
+                    </div>
+                    <div>
+                        <label htmlFor='expensesPersonal'>Из них личные:</label>
+                        <input type='number' id='expensesPersonal' name='expensesPersonal'
+                            value={values.expensesPersonal} onChange={handleInputChange} />
+                    </div>
+                    <div>
+                        <label htmlFor='interest'>Прибыль:</label>
+                        <input type='number' id='interest' name='interest'
+                            value={values.clientPrice-values.items.items.reduce((acc, i)=>{return acc+Number(i.price)},0)} />
+                    </div>
+                </div>
+                    <div>
+                        <label htmlFor='items'>Затраты:</label>
+                        <Items items = {values.items} callback={handleInputChange}/>
+                        </div>
+                      
+                <div className={styles.grid}>   
+                    <div>
+                        <label htmlFor='performers'>Сборщики</label>
                         <input
                             type='text'
                             name='performers'
@@ -92,7 +172,7 @@ export default function EditEventsPage({evt}) {
                         />
                     </div>
                     <div>
-                        <label htmlFor='venue'>Venue</label>
+                        <label htmlFor='venue'>Заказчик</label>
                         <input
                             type='text'
                             name='venue'
@@ -102,7 +182,7 @@ export default function EditEventsPage({evt}) {
                         />
                     </div>
                     <div>
-                        <label htmlFor='address'>Address</label>
+                        <label htmlFor='address'>Адрес</label>
                         <input
                             type='text'
                             name='address'
@@ -112,7 +192,7 @@ export default function EditEventsPage({evt}) {
                         />
                     </div>
                     <div>
-                        <label htmlFor='date'>Date</label>
+                        <label htmlFor='date'>Дата</label>
                         <input
                             type='date'
                             name='date'
@@ -121,21 +201,9 @@ export default function EditEventsPage({evt}) {
                             onChange={handleInputChange}
                         />
                     </div>
-                    <div>
-                        <label htmlFor='time'>Time</label>
-                        <input
-                            type='text'
-                            name='time'
-                            id='time'
-                            value={values.time}
-                            onChange={handleInputChange}
-                        />
-                    </div>
-
-
                 </div>
                 <div>
-                    <label htmlFor='description'>Event Description</label>
+                    <label htmlFor='description'>Описание</label>
                     <textarea
                         type='text'
                         name='description'
@@ -144,7 +212,7 @@ export default function EditEventsPage({evt}) {
                         onChange={handleInputChange}
                     ></textarea>
                 </div>
-                <input type='submit' value='Update Event' className='btn' />
+                <input type='submit' value='Сохранить' className='btn'/>
             </form>
         </Layout>
     )
@@ -156,7 +224,6 @@ export async function getServerSideProps({params, req}) {
     const res = await fetch(`${API_URL}/api/events`)
     const events = await res.json();
     const event = events.data.find(e=>e.attributes.slug===id)
-    console.log(req.headers.cookie);
     
     return {
       props: {

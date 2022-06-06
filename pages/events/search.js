@@ -12,10 +12,10 @@ export default function SearchPage({events}) {
     const router =useRouter()
   return (
     <Layout title='Search Results'>
-        <Link href='/events'>Go Back</Link>
-      <h1>Search Results For {router.query.term}</h1>
+        <Link href='/events'>Назад</Link>
+      <h1>Искали {router.query.term}</h1>
 
-      {events.length === 0 && <h3>No events to show</h3>}
+      {events.length === 0 && <h3>Не нашли</h3>}
       {events.data.map((evt) => (<EventItem key={evt.id} evt={evt.attributes}/>))}
       
     </Layout>

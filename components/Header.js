@@ -12,7 +12,7 @@ export default function Header() {
     <header className={styles.header}>
       <div className={styles.logo}>
         <Link href='/'>
-          <a>DJ Events</a>
+          <a>Libra Portal</a>
         </Link>
       </div>
 
@@ -22,7 +22,7 @@ export default function Header() {
         <ul>
           <li>
             <Link href='/events'>
-              <a>Events</a>
+              <a>Заказы</a>
             </Link>
           </li>
           {user ? (
@@ -30,12 +30,12 @@ export default function Header() {
             <>
               <li>
                 <Link href='/events/add'>
-                  <a>Add Event</a>
+                  <a>Новый Заказ</a>
                 </Link>
               </li>
               <li>
                 <Link href='/account/dashboard'>
-                  <a>Dashboard</a>
+                  <a>Рассчеты</a>
                 </Link>
               </li>
               <li>
@@ -43,7 +43,7 @@ export default function Header() {
                   onClick={() => logout()}
                   className='btn-secondary btn-icon'
                 >
-                  <FaSignOutAlt /> Logout
+                  <FaSignOutAlt /> Выйти
                 </button>
               </li>
             </>
@@ -53,7 +53,7 @@ export default function Header() {
               <li>
                 <Link href='/account/login'>
                   <a className='btn-secondary btn-icon'>
-                    <FaSignInAlt /> Login
+                    <FaSignInAlt /> Войти
                   </a>
                 </Link>
               </li>

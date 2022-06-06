@@ -11,13 +11,13 @@ export default function HomePage ({events}) {
 
   return (
     <Layout>
-      <h1>Upcoming Events</h1>
+      <h1>Заказы</h1>
 
-      {events.data.length === 0 && <h3>No events to show</h3>}
+      {events.data.length === 0 && <h3>Нет подходящих заказов</h3>}
       {events.data.map((evt) => (<EventItem key={evt.id} evt={evt.attributes}/>))}
       {events.data.length > 0 && (
         <Link href= '/events'>
-          <a className='btn-secondary'>View All Events</a>
+          <a className='btn-secondary'>Показать все</a>
         </Link>
       )}
       

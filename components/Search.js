@@ -14,7 +14,7 @@ export default function Search() {
     <div className={styles.search}>
         <form onSubmit={(e)=>handleSubmit(e)}>
             <input type="text" value={term}
-             onChange={(e)=>setTerm(e.target.value)} placeholder="Search Events"></input>
+             onChange={(e)=>setTerm(e.target.value)} placeholder="Попробуем поискать..."></input>
         </form>
     </div>
   )
