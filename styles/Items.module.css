@@ -10,7 +10,7 @@
     flex-direction: row;
     margin-bottom: 5px;
 
-    gap: 5px;
+    gap: 10px;
 }
 
 .buttonBlock {
@@ -24,4 +24,12 @@
     height: 20px !important;
 
 
+}
+
+.itemsBlock {
+   background-color: #CCC;
+   padding: 10px 10px 5px 10px;
+   border: 1px solid grey;
+   border-radius: 3px;
+   margin-bottom: 30px;
 }

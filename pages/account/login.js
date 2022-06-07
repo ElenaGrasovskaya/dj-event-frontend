@@ -20,26 +20,26 @@ export default function LoginPage() {
         login({ email, password })
     }
     return (
-        <Layout title="User Login">
+        <Layout title="Вход">
             <div className={styles.auth}>
                 <h1>
-                    <FaUser />Log In
+                    <FaUser />Войти
 
                 </h1>
                 <ToastContainer />
                 <form onSubmit={handleSubmit}>
                     <div>
-                        <label htmlFor="email">Email Address</label>
+                        <label htmlFor="email">Имейл</label>
                         <input type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)}></input>
                     </div>
                     <div>
-                        <label htmlFor="password">Password</label>
+                        <label htmlFor="password">Пароль</label>
                         <input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)}></input>
                     </div>
-                    <input type="submit" value="Login" className='btn' />
+                    <input type="submit" value="Войти" className='btn' />
                 </form>
                 <p>
-                    Dont have an account? <Link href='/account/register'>Register</Link>
+                    Нет аккаунта? <Link href='/account/register'>Зарегистрироваться</Link>
                 </p>
             </div>
         </Layout>

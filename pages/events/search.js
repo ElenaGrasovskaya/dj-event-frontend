@@ -26,10 +26,9 @@ export async function getServerSideProps ({query:term}) {
     const query = qs.stringify({
         _where: {
           _or: [
-            { name_contains: term },
-            { performers_contains: term },
+            { title_contains: term },
             { description_contains: term },
-            { venue_contains: term },
+            { address_contains: term },
           ],
         },
       })

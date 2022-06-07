@@ -6,11 +6,30 @@ import { BsXCircle } from "react-icons/bs";
 function Items({items, callback}) {
     console.log("items", items);
       
-    const [expense, setExpense] = useState({items: [...items.items, {name:"", price:0, description:"", status:""}]})
+    const [expense, setExpense] = useState({items: [...items.items, {name:"", price:0, description:"", status:false}]})
+
     const handleInputChange = (e, index) => {
-            const { name, value } = e.target;
+        console.log("e", e);
+            let { name, value, checked } = e.target;
+            console.log(name, value);
+            let newItems;
+            
+            if(name==="status")
+            {
+                newItems  = expense.items.map((item, i)=>{
+                    if (i===index)
+                    {
+                        return {...item, status:checked}
+                    }
+                    else return item;
+                })
+           
+          
+            }
+            else{
+              
                     
-            const newItems = expense.items.map((item, i)=>{
+                 newItems = expense.items.map((item, i)=>{
                 if (i===index)
                 {
                     return {...item, [name]:value}
@@ -18,9 +37,12 @@ function Items({items, callback}) {
                 else return item;
             })
 
+            }
+            
+
             if (index===newItems.length-1)
             {
-                newItems = [...newItems, {name:"", price:0, description:"", status:""}]
+                newItems = [...newItems, {name:"", price:0, description:"", status:false}]
 
            }  
            console.log("result", {items:newItems});  
@@ -32,10 +54,7 @@ function Items({items, callback}) {
                 value:{items:newItems},
             }});
             const newExpense = expense.items.reduce((acc, i)=>{return acc+Number(i.price)},0);
-              
-
-            
-     
+    
     }
 
     const handleDelete = (e, index) => {
@@ -52,13 +71,12 @@ function Items({items, callback}) {
 
     
     return (
-        <div >
-             {expense.items.map((item, index)=>( <div className={styles.itemBlock}>
+        <div className={styles.itemsBlock}>
+             {expense.items.map((item, index)=>( <div className={styles.itemBlock} key={index+100}>
             <input type='text' id={'item'+index} name='name' value={item.name} onChange={(e)=> handleInputChange(e, index)} />
             <input type='number' id={'item'+index} name='price' value={item.price} onChange={(e)=> handleInputChange(e, index)} />
-            <input type='text' id={'item'+index} name='description' value={item.description} onChange={(e)=> handleInputChange(e, index)} />
             <div className={styles.buttonBlock}><button className={styles.deleteButton} onClick={(e)=>handleDelete(e,index)}><BsXCircle/></button>
-            <input className={styles.statusCheck} type='checkbox' id={'item'+index} name='status' value={item.status} onChange={(e)=> handleInputChange(e, index)} /></div></div>))}
+            <input className={styles.statusCheck} type='checkbox' id={'item'+index} name='status' checked={item.status} onChange={(e)=> handleInputChange(e, index)} /></div></div>))}
             
         </div>
     )

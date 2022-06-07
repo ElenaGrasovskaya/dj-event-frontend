@@ -21,6 +21,7 @@ export default function EditEventsPage({evt}) {
         name: evt.attributes.name,
         slug: evt.attributes.slug,
         status: evt.attributes.status,
+        orderType: evt.attributes.orderType,
         clientPrice: evt.attributes.clientPrice,
         clientPrepay: evt.attributes.clientPrepay,
         clientDept: evt.attributes.clientDept,
@@ -43,10 +44,10 @@ export default function EditEventsPage({evt}) {
         calculateExpense();
 
         //Validation 
-        const hasEmptyFields = Object.values(values).some((element) => element === '')
+       /* const hasEmptyFields = Object.values(values).some((element) => element === '')
         if (hasEmptyFields) {
             toast.error('Please fill in all fields')
-        }
+        }*/
  
 
         const res = await fetch(`${API_URL}/api/events/${evt.id}`, {
@@ -61,20 +62,20 @@ export default function EditEventsPage({evt}) {
             toast.error('Something went wrong')
         } else {
             const data = await res.json()
-            router.push(`/events/${evt.attributes.slug}`)
+            router.push(`/events`)
         }
     }
 
     const router = useRouter();
     const handleInputChange = (e) => {
 
-        const { name, value } = e.target;
+        const { name, value, checked } = e.target;
         if (name === "date") {
             alert(value);
             setValues({ ...values, [name]: new Date(value) })
         }
 
-        if (name === "items")
+        else if (name === "items")
         {
             console.log("newItems", value);
             const newExpense = value.items.reduce((acc, i)=>{return acc+Number(i.price)},0)
@@ -84,6 +85,10 @@ export default function EditEventsPage({evt}) {
         else if (name === "name") {
             setValues({ ...values, name: value})
         }
+
+        else if (name === "status") {
+            setValues({ ...values, status: checked})
+        }
    
         else {
             setValues({ ...values, [name]: value })
@@ -92,11 +97,12 @@ export default function EditEventsPage({evt}) {
 
     }
     const calculateExpense = () => {
-       const newExpense = values.items.items.reduce((acc, i)=>{return acc+Number(i.price)},0)
-
-       setValues({ ...values, expenses: newExpense, clientDept: values.clientPrice-values.clientPrepay,
-         interest: values.clientPrice-newExpense });
-    }
+        const newExpense = values.items.items.reduce((acc, i)=>{return acc+Number(i.price)},0)
+        const personalExpense = values.items.items.reduce((acc, i)=>{return i.status?acc+Number(i.price):acc},0)
+ 
+        setValues({ ...values, expenses: newExpense, personalExpense:personalExpense, clientDept: values.clientPrice-values.clientPrepay,
+          interest: values.clientPrice-newExpense });
+     }
 
     return (
         <Layout >
@@ -114,10 +120,16 @@ export default function EditEventsPage({evt}) {
                     </div>
                                                    
                      <div className={styles.order_type}>
+                     <select onChange={handleInputChange} name = "orderType" value = {values.orderType}>
+                        <option value="kitchen">Кухня</option>
+                        <option value="wardrobe">Шкаф</option>
+                        <option value="bathroom">Ванная</option>
+                        <option value="other">Другое</option>
+                    </select>
 
                     <img src={values.image_url||'/images/sample/furniture.png'}/>
                     <label htmlFor='status'><input type='checkbox' id='status' name='status'
-                            value={values.status} onChange={handleInputChange} />Закрыт
+                            checked={values.status} onChange={handleInputChange} />Закрыт
                         </label>
                           
                          
@@ -141,17 +153,17 @@ export default function EditEventsPage({evt}) {
                     </div>
                     <div>
                         <label htmlFor='expenses'>Сумма затрат:</label>
-                        <input type='number' id='expenses' name='expenses'
+                        <input type='number' id='expenses' name='expenses' readOnly
                             value={values.items.items.reduce((acc, i)=>{return acc+Number(i.price)},0)} />
                     </div>
                     <div>
                         <label htmlFor='expensesPersonal'>Из них личные:</label>
                         <input type='number' id='expensesPersonal' name='expensesPersonal'
-                            value={values.expensesPersonal} onChange={handleInputChange} />
+                            value={values.items.items.reduce((acc, i)=>{return i.status?acc+Number(i.price):acc},0)} />
                     </div>
                     <div>
                         <label htmlFor='interest'>Прибыль:</label>
-                        <input type='number' id='interest' name='interest'
+                        <input type='number' id='interest' name='interest' readOnly
                             value={values.clientPrice-values.items.items.reduce((acc, i)=>{return acc+Number(i.price)},0)} />
                     </div>
                 </div>

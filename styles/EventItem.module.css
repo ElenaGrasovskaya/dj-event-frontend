@@ -1,11 +1,13 @@
 .event {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 3fr 2fr 0.5fr 0.5fr;
     justify-content: space-between;
     align-items: center;
     margin: 20px 0;
     padding: 13px;
     box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.1);
     background-color: #EEE;
+    gap: 10px;
   }
   
   .img {
@@ -15,11 +17,26 @@
   }
   
   .info {
-    flex: 2;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
   }
+  .edit {
+    width: 50px;
+    font-size: 30px;
+    color: lime;
+  }
+
+  .delete {
+    width: 50px;
+    font-size: 30px;
+    color: red;
+  }
+  
   
   @media (max-width: 600px) {
     .event {
+      display: flex;
       flex-direction: column;
       text-align: center;
     }

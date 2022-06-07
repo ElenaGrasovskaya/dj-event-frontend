@@ -114,3 +114,15 @@
     flex-direction: column;
   }
 }
+
+.btnadd {
+  display: block;
+  width: 100%;
+  background-color: #0070f3;
+  color: white;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 3px;
+  padding: 10px;
+  font-size: 20px;
+}

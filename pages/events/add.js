@@ -23,6 +23,7 @@ export default function AddEventPage() {
         title:'',
         slug: `kitchen${dateMs}`,
         status: false,
+        orderType: "kitchen",
         clientPrice: 0,
         clientPrepay: 0,
         clientDept: 0,
@@ -67,12 +68,12 @@ export default function AddEventPage() {
 
     const handleInputChange = (e) => {
 
-        const { name, value } = e.target;
+        const { name, value, checked } = e.target;
         if (name === "date") {
             setValues({ ...values, [name]: new Date(value) })
         }
 
-        if (name === "items")
+        else if (name === "items")
         {
             console.log("newItems", value);
             const newExpense = value.items.reduce((acc, i)=>{return acc+Number(i.price)},0)
@@ -81,6 +82,10 @@ export default function AddEventPage() {
 
         else if (name === "name") {
             setValues({ ...values, name: value})
+        }
+
+        else if (name=== "status") {
+            setValues({ ...values, status: checked })
         }
    
         else {
@@ -93,14 +98,15 @@ export default function AddEventPage() {
     const handleGenerateName= (e) => {
         const newDate = new Date();
         
-        setValues({ ...values, name: e.target.value + Date.parse(newDate), slug:e.target.value + Date.parse(newDate), image_url:`/images/sample/${e.target.value}.png`})
+        setValues({ ...values, name: e.target.value + Date.parse(newDate), orderType:e.target.value, slug:e.target.value + Date.parse(newDate), image_url:`/images/sample/${e.target.value}.png`})
     }
 
 
     const calculateExpense = () => {
        const newExpense = values.items.items.reduce((acc, i)=>{return acc+Number(i.price)},0)
+       const personalExpense = values.items.items.reduce((acc, i)=>{return i.status?acc+Number(i.price):acc},0)
 
-       setValues({ ...values, expenses: newExpense, clientDept: values.clientPrice-values.clientPrepay,
+       setValues({ ...values, expenses: newExpense, personalExpense:personalExpense, clientDept: values.clientPrice-values.clientPrepay,
          interest: values.clientPrice-newExpense });
     }
 
@@ -121,7 +127,7 @@ export default function AddEventPage() {
                                                    
                      <div className={styles.order_type}>
 
-                     <select onChange={handleGenerateName}>
+                     <select onChange={handleGenerateName} name = "orderType">
                         <option value="kitchen">Кухня</option>
                         <option value="wardrobe">Шкаф</option>
                         <option value="bathroom">Ванная</option>
@@ -129,7 +135,7 @@ export default function AddEventPage() {
                     </select>
                     <img src={values.image_url}/>
                     <label htmlFor='status'><input type='checkbox' id='status' name='status'
-                            value={values.status} onChange={handleInputChange} />Закрыт
+                            checked={values.status} onChange={handleInputChange} />Закрыт
                         </label>
                           
                          
@@ -153,13 +159,13 @@ export default function AddEventPage() {
                     </div>
                     <div>
                         <label htmlFor='expenses'>Сумма затрат:</label>
-                        <input type='number' id='expenses' name='expenses'
+                        <input type='number' id='expenses' name='expenses' readOnly
                             value={values.items.items.reduce((acc, i)=>{return acc+Number(i.price)},0)} />
                     </div>
                     <div>
                         <label htmlFor='expensesPersonal'>Из них личные:</label>
-                        <input type='number' id='expensesPersonal' name='expensesPersonal'
-                            value={values.expensesPersonal} onChange={handleInputChange} />
+                        <input type='number' id='expensesPersonal' name='expensesPersonal' readOnly
+                            value={values.items.items.reduce((acc, i)=>{return i.status?acc+Number(i.price):acc},0)} onChange={handleInputChange} />
                     </div>
                     <div>
                         <label htmlFor='interest'>Прибыль:</label>

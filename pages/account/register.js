@@ -35,31 +35,31 @@ export default function RegisterPage() {
       <Layout title="User Registration">
           <div className={styles.auth}>
               <h1>
-                <FaUser />Register
+                <FaUser />Зарегистрироваться
 
               </h1>
               <ToastContainer />
               <form onSubmit={handleSubmit}>
               <div>
-                      <label htmlFor="username">Username</label>
+                      <label htmlFor="username">Имя пользователя</label>
                       <input type="text" id="username" value={username} onChange={(e)=>setUsername(e.target.value)}></input>
                   </div>
                   <div>
-                      <label htmlFor="email">Email Address</label>
+                      <label htmlFor="email">Имейл</label>
                       <input type="email" id="email" value={email} onChange={(e)=>setEmail(e.target.value)}></input>
                   </div>
                   <div>
-                      <label htmlFor="password">Password</label>
+                      <label htmlFor="password">Пароль</label>
                       <input type="password" id="password" value={password} onChange={(e)=>setPassword(e.target.value)}></input>
                   </div>
                   <div>
-                      <label htmlFor="passwordConfirm">Confirm Password</label>
+                      <label htmlFor="passwordConfirm">Подтвердить пароль</label>
                       <input type="password" id="passwordConfirm" value={passwordConfirm} onChange={(e)=>setPasswordConfirm(e.target.value)}></input>
                   </div>
-                  <input type="submit" value="Register" className = 'btn'/>
+                  <input type="submit" value="Зарегистрироваться" className = 'btn'/>
               </form>
               <p>
-                  Already have an account? <Link href='/account/login'>Login</Link>
+                  Уже есть аккаунт? <Link href='/account/login'>Войти</Link>
               </p>
           </div>
       </Layout>
