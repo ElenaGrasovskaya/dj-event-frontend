@@ -10,6 +10,7 @@ import styles from '@/styles/Form.module.css';
 import { stringify } from 'qs';
 import { FaArrowLeft } from 'react-icons/fa'
 import moment from 'moment';
+import { BiLeftArrowAlt } from "react-icons/bi";
 
 
 
@@ -106,9 +107,10 @@ export default function EditEventsPage({evt}) {
 
     return (
         <Layout >
-            <Link href='/events'>Назад</Link>
+             <Link href='/events'><a className={styles.backBtn}><BiLeftArrowAlt/></a></Link>
 
-            <h1>Заказ {values.title}</h1>
+            
+            <div className={styles.headerContainer}><h1>{values.title}</h1><input type='submit' value='Сохранить' className='btn'/></div>
             <ToastContainer />
             <form onSubmit={handleSubmit} className={styles.form}>
                 <div className={styles.grid}>

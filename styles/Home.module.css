@@ -126,3 +126,16 @@
   padding: 10px;
   font-size: 20px;
 }
+
+.eventTitle
+
+  {
+    display: grid;
+    grid-template-columns: 0.5fr 3fr 1fr 1fr 1fr 1fr 0.5fr 0.5fr;
+    justify-content: space-between;
+    align-items: center;
+    height: 15px;
+    font-size: 12px;
+    color: grey;
+    gap: 10px;
+  }

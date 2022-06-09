@@ -13,6 +13,16 @@ export default function EventsPage({events}) {
       <h1>Заказы</h1>
 
       {events.length === 0 && <h3>No events to show</h3>}
+      <div className={styles.eventTitle}>
+    <div></div>
+    <div>Заказ</div>
+    <div>Цена</div>
+    <div>Остаток</div>
+    <div>Затраты</div>
+    <div>Личные</div>
+    <div>Закрыт</div>
+    <div></div>
+    </div>
       {events.data.map((evt) => (<EventItem key={evt.id} evt={{...evt.attributes, id:evt.id }}/>))}
       <Link href="/events/add"><div className={styles.btnadd}><FaRegPlusSquare/></div></Link>
       

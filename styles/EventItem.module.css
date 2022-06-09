@@ -1,14 +1,15 @@
 .event {
     display: grid;
-    grid-template-columns: 1fr 3fr 2fr 0.5fr 0.5fr;
-    justify-content: space-between;
+    grid-template-columns: 0.5fr 3fr 1fr 1fr 1fr 1fr 0.5fr 0.5fr;
+    justify-content: space-around;
     align-items: center;
-    margin: 20px 0;
-    padding: 13px;
-    box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.1);
+    margin: 10px 0;
+     box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.1);
     background-color: #EEE;
     gap: 10px;
   }
+
+  
   
   .img {
     flex: 1;
@@ -32,14 +33,32 @@
     font-size: 30px;
     color: red;
   }
+
+  .checkbox
+  {
+    height: 20px;
+    width: 20px;
+  }
   
   
   @media (max-width: 600px) {
-    .event {
-      display: flex;
-      flex-direction: column;
-      text-align: center;
+    .img {
+      display: none;
+  
     }
+
+    .event 
+    {
+      display: grid;
+      grid-template-columns: 0.5fr 3fr 1fr 1fr 1fr 1fr 0.5fr 0.5fr;
+      justify-content: space-around;
+      margin: 5px 0;
+      box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.1);
+      background-color: #EEE;
+      gap: 10px;
+      font-size: 12px;
+    }
+    
   
     .info {
       margin-bottom: 20px;

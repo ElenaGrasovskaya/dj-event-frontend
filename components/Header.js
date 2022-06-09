@@ -1,8 +1,8 @@
 import { FaSignInAlt, FaSignOutAlt } from 'react-icons/fa'
 import { useContext } from 'react'
+import AuthContext from '@/context/AuthContext'
 import Link from 'next/link'
 import Search from './Search'
-import AuthContext from '@/context/AuthContext'
 import styles from '@/styles/Header.module.css'
 
 export default function Header() {

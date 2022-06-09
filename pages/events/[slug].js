@@ -31,10 +31,10 @@ export default function EventPage({ evt }) {
     <Layout><div className={styles.event}>
       <div className={styles.controls}>
         <Link href={`/events/edit/${evt.attributes.slug}`}>
-          <a><FaPencilAlt />Edit Event</a>
+          <a><FaPencilAlt />Редактировать Заказ</a>
         </Link>
         <a href='#' className={styles.delete} onClick={deleteEvent}>
-          <FaTimes />Delete Event
+          <FaTimes />Удалить Заказ
         </a>
 
       </div>

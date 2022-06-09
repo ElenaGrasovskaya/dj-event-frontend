@@ -8,6 +8,7 @@ import Items from '@/components/Items'
 import { API_URL } from '@/config/index'
 import styles from '@/styles/Form.module.css'
 import moment from 'moment';
+import { BiLeftArrowAlt } from "react-icons/bi";
 
 import { stringify } from 'qs';
 
@@ -41,6 +42,7 @@ export default function AddEventPage() {
     });
     const handleSubmit = async (e) => {
         e.preventDefault();
+        console.log("button", e.nativeEvent.submitter.value)
         console.log("values", values);
 
         //Validation 
@@ -62,7 +64,8 @@ export default function AddEventPage() {
             toast.error('Something went wrong')
         } else {
             const data = await res.json()
-            router.push(`/events/`)
+            if (e.nativeEvent.submitter.value === "Сохранить и выйти")
+            router.push(`/events/`);
         }
     }
 
@@ -111,11 +114,13 @@ export default function AddEventPage() {
     }
 
     return (
-        <Layout title='Add New Event'>
-            <Link href='/events'>Назад</Link>
+        <Layout title='Добавить новый заказ'>
+            <Link href='/events'><a className={styles.backBtn}><BiLeftArrowAlt/></a></Link>
 
-            <h1>Новый заказ</h1>
+            <div className={styles.headerContainer}><h1>Новый заказ</h1><input type='submit' value='Сохранить' className='btn'/></div>
+           
             <ToastContainer />
+            
             <form onSubmit={handleSubmit} className={styles.form}>
                 <div className={styles.grid}>
                     <div>
@@ -124,7 +129,7 @@ export default function AddEventPage() {
                             value={values.title} onChange={handleInputChange} />
                         
                     </div>
-                                                   
+                                                                       
                      <div className={styles.order_type}>
 
                      <select onChange={handleGenerateName} name = "orderType">
@@ -230,7 +235,7 @@ export default function AddEventPage() {
                         onChange={handleInputChange}
                     ></textarea>
                 </div>
-                <input type='submit' value='Сохранить' className='btn'/>
+                <div className={styles.headerContainer}><input type='submit' value='Сохранить' className='btn'/><input type='submit' value='Сохранить и выйти' className='btn-secondary'/></div>
             </form>
         </Layout>
     )

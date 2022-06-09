@@ -8,7 +8,7 @@ export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null)
     const [error, setError] = useState(null)
 
-    useEffect(() => checkUserLoggedIn(), [])
+    useEffect(() => {checkUserLoggedIn()}, [])
 
     //Register
     const register = async (user) => {
