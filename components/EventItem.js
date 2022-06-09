@@ -5,6 +5,8 @@ import { API_URL } from "@/config/index";
 import { useRouter } from "next/router";
 import { FaPencilAlt, FaTimes } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
+import { BsFillQuestionSquareFill } from "react-icons/bs";
+import { BsFillCheckSquareFill } from "react-icons/bs";
 
 export default function EventItem({ evt }) {
   const router = useRouter();
@@ -56,9 +58,9 @@ export default function EventItem({ evt }) {
       <div>
         <h3>{evt.expensesPersonal}</h3>
       </div>
-      <div>
-        <input type="checkbox" checked={evt.status} readOnly className={styles.checkbox}/>
-      </div>
+
+       {evt.status?(<div className={styles.checkboxGreen}><BsFillCheckSquareFill/></div>):(<div className={styles.checkboxRed}><BsFillQuestionSquareFill/></div>)}
+
 
       <div className={styles.delete}>
         <Link href={`/events`}>
