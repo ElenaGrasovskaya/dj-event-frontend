@@ -9,11 +9,14 @@
     gap: 10px;
   }
 
-  
+  .title {
+    cursor: pointer;
+  }
   
   .img {
     flex: 1;
     margin: 10px;
+    cursor: pointer;
 
   }
   
