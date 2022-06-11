@@ -63,7 +63,8 @@ export default function EditEventsPage({evt}) {
             toast.error('Something went wrong')
         } else {
             const data = await res.json()
-            router.push(`/events`)
+            if (e.nativeEvent.submitter.value === "Сохранить и выйти")
+            router.push(`/events/`);
         }
     }
 
@@ -226,7 +227,8 @@ export default function EditEventsPage({evt}) {
                         onChange={handleInputChange}
                     ></textarea>
                 </div>
-                <input type='submit' value='Сохранить' className='btn'/>
+                <div className={styles.headerContainer}><input type='submit' value='Сохранить' className='btn'/>
+                <input type='submit' value='Сохранить и выйти' className='btn-secondary'/></div>
             </form>
         </Layout>
     )

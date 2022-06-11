@@ -42,9 +42,7 @@ export default function AddEventPage() {
     });
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("button", e.nativeEvent.submitter.value)
-        console.log("values", values);
-
+ 
         //Validation 
        /* const hasEmptyFields = Object.values(values).some((element) => element === '')
         if (hasEmptyFields) {
@@ -235,7 +233,8 @@ export default function AddEventPage() {
                         onChange={handleInputChange}
                     ></textarea>
                 </div>
-                <div className={styles.headerContainer}><input type='submit' value='Сохранить' className='btn'/><input type='submit' value='Сохранить и выйти' className='btn-secondary'/></div>
+                <div className={styles.headerContainer}><input type='submit' value='Сохранить' className='btn'/>
+                <input type='submit' value='Сохранить и выйти' className='btn-secondary'/></div>
             </form>
         </Layout>
     )
