@@ -1,6 +1,6 @@
 import { createContext, useState, useEffect } from "react";
 import { router, useRouter } from "next/router";
-import { NEXT_URL } from "../config";
+import { NEXT_URL } from "../config/index";
 
 const AuthContext = createContext()
 
@@ -22,6 +22,7 @@ export const AuthProvider = ({ children }) => {
         const data = await res.json()
         console.log(data)
         if (res.ok) {
+            console.log(data)
             setUser(data.user)
             router.push('/events')
         }

@@ -5,7 +5,7 @@ import Layout from '@/components/Layout'
 import {API_URL} from '@/config/index'
 import EventItem from '@/components/EventItem'
 import Link from 'next/link'
-import { FaRegPlusSquare } from "react-icons/fa"
+import { FaEllipsisH, FaRegPlusSquare } from "react-icons/fa"
 
 export default function EventsPage({events}) {
   return (
@@ -25,7 +25,7 @@ export default function EventsPage({events}) {
     </div>
       {events.data.map((evt) => (<EventItem key={evt.id} evt={{...evt.attributes, id:evt.id }}/>))}
       <Link href="/events/add"><div className={styles.btnadd}><FaRegPlusSquare/></div></Link>
-      
+    
     </Layout>
   )
 }
@@ -41,3 +41,15 @@ export async function getStaticProps () {
   }
 }
  
+/*
+
+ <div className={styles.results}>
+    <div></div>
+    <div></div>
+    <div>{events.data.reduce((el, acc)=>{acc=el.attributes.expenses+acc}, 0)}</div>
+    <div>Остаток</div>
+    <div>Затраты</div>
+    <div>Личные</div>
+    <div></div>
+    <div></div>
+    </div>  */
