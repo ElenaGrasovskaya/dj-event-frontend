@@ -240,6 +240,7 @@ export async function getServerSideProps({params, req}) {
     const res = await fetch(`${API_URL}/api/events`)
     const events = await res.json();
     const event = events.data.find(e=>e.attributes.slug===id)
+    console.log(req.headers.cookie)
     
     return {
       props: {

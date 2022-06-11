@@ -14,7 +14,7 @@ export default function HomePage ({events}) {
 
   return (
     <>
-      {user? (<Layout><h1>Заказы</h1>
+      {user&&events.data? (<Layout><h1>Заказы</h1>
 
 {events.data.length === 0 && <h3>Нет подходящих заказов</h3>}
 {events.data.map((evt) => (<EventItem key={evt.id} evt={{...evt.attributes, id:evt.id }}/>))}
