@@ -78,21 +78,33 @@ export default function AddEventPage() {
         {
             console.log("newItems", value);
             const newExpense = value.items.reduce((acc, i)=>{return acc+Number(i.price)},0)
-            setValues({ ...values, expenses: newExpense, interest: values.clientPrice-newExpense, items: value});
+            const newPersonalExpense = value.items.reduce((acc, i)=>{return i.status?acc+Number(i.price):acc},0)
+            setValues({ ...values, expenses: newExpense, interest: values.clientPrice-newExpense, expensesPersonal:newPersonalExpense, items: value});
         }
 
         else if (name === "name") {
             setValues({ ...values, name: value})
         }
 
-        else if (name=== "status") {
+        else if (name === "clientPrepay") {
+            setValues({ ...values, [name]: value, clientDept: values.clientPrice-value })
+        }
+
+        else if (name === "clientPrice") {
+            setValues({ ...values, [name]: value, clientDept: value-values.clientPrepay,
+                interest: value-values.expenses })
+        }
+
+        else if (name === "status") {
             setValues({ ...values, status: checked })
         }
-   
+
         else {
             setValues({ ...values, [name]: value })
 
         }
+
+
 
     }
 
@@ -157,7 +169,7 @@ export default function AddEventPage() {
                     </div>
                     <div>
                         <label htmlFor='clientDept'>Клиент должен:</label>
-                        <input type='number' id='clientDept' name='clientDept'
+                        <input type='number' id='clientDept' name='clientDept' readOnly
                             value={values.clientPrice-values.clientPrepay}/>
                     </div>
                     <div>
@@ -168,11 +180,11 @@ export default function AddEventPage() {
                     <div>
                         <label htmlFor='expensesPersonal'>Из них личные:</label>
                         <input type='number' id='expensesPersonal' name='expensesPersonal' readOnly
-                            value={values.items.items.reduce((acc, i)=>{return i.status?acc+Number(i.price):acc},0)} onChange={handleInputChange} />
+                            value={values.items.items.reduce((acc, i)=>{return i.status?acc+Number(i.price):acc},0)}  />
                     </div>
                     <div>
                         <label htmlFor='interest'>Прибыль:</label>
-                        <input type='number' id='interest' name='interest'
+                        <input type='number' id='interest' name='interest' readOnly
                             value={values.clientPrice-values.items.items.reduce((acc, i)=>{return acc+Number(i.price)},0)} />
                     </div>
                 </div>

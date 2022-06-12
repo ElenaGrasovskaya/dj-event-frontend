@@ -24,7 +24,7 @@ export default function RegisterPage() {
         e.preventDefault();
         if(password !== passwordConfirm)
         {
-            toast.error('Passwords do not m atch!')
+            toast.error('Passwords do not match!')
             return
         }
         register({username, email, password});

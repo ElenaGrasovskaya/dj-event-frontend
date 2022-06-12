@@ -11,26 +11,26 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {checkUserLoggedIn();}, [])
 
     //Register
+
     const register = async (user) => {
         const res = await fetch(`${NEXT_URL}/api/register`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(user),
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(user),
         })
+    
         const data = await res.json()
-        console.log(data)
+    
         if (res.ok) {
-            console.log(data)
-            setUser(data.user)
-            router.push('/events')
+          setUser(data.user)
+          router.push('/events')
+        } else {
+          setError(data.message)
+          setError(null)
         }
-        else {
-            setError(data.message);
-            setError(null);
-        }
-    }
+      }
     //Login  
 
     const login = async ({ email: identifier, password }) => {

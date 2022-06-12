@@ -1,55 +1,94 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '@/styles/Home.module.css'
-import Layout from '@/components/Layout'
-import {API_URL} from '@/config/index'
-import EventItem from '@/components/EventItem'
-import Link from 'next/link'
-import { FaEllipsisH, FaRegPlusSquare } from "react-icons/fa"
+import Head from "next/head";
+import Image from "next/image";
+import styles from "@/styles/Home.module.css";
+import Layout from "@/components/Layout";
+import { API_URL } from "@/config/index";
+import EventItem from "@/components/EventItem";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { FaEllipsisH, FaRegPlusSquare } from "react-icons/fa";
 
-export default function EventsPage({events}) {
+export default function EventsPage({ events }) {
+  const [summ, setSumm] = useState({
+    summClientPrice: 0,
+    summClientDept: 0,
+    summExpenses: 0,
+    summPersonalExpenses: 0,
+  });
+
+  console.log(events.data);
+
+  useEffect(() => {
+    setSumm({
+      summClientPrice: events.data.reduce(
+        (acc, el) => acc + el.attributes.clientPrice,
+        0
+      ),
+
+      summClientDept: events.data.reduce(
+        (acc, el) => acc + el.attributes.clientDept,
+        0
+      ),
+
+      summExpenses: events.data.reduce(
+        (acc, el) => acc + el.attributes.expenses,
+        0
+      ),
+
+      summPersonalExpenses: events.data.reduce(
+        (acc, el) => acc + el.attributes.expensesPersonal,
+        0
+      ),
+    });
+  }, [events]);
+
   return (
     <Layout>
       <h1>Заказы</h1>
 
       {events.length === 0 && <h3>No events to show</h3>}
       <div className={styles.eventTitle}>
-    <div></div>
-    <div>Заказ</div>
-    <div>Цена</div>
-    <div>Остаток</div>
-    <div>Затраты</div>
-    <div>Личные</div>
-    <div>Закрыт</div>
-    <div></div>
-    </div>
-      {events.data.map((evt) => (<EventItem key={evt.id} evt={{...evt.attributes, id:evt.id }}/>))}
-      <Link href="/events/add"><div className={styles.btnadd}><FaRegPlusSquare/></div></Link>
-    
+        <div></div>
+        <div>Заказ</div>
+        <div>Цена</div>
+        <div>Остаток</div>
+        <div>Затраты</div>
+        <div>Личные</div>
+        <div>Закрыт</div>
+        <div></div>
+      </div>
+      {events.data.map((evt) => (
+        <EventItem key={evt.id} evt={{ ...evt.attributes, id: evt.id }} />
+      ))}
+      <div className={styles.results}>
+        <div></div>
+        <div></div>
+        <div>{summ.summClientPrice}</div>
+        <div>{summ.summClientDept}</div>
+        <div>{summ.summExpenses}</div>
+        <div>{summ.summPersonalExpenses}</div>
+        <div></div>
+        <div></div>
+      </div>
+      <Link href="/events/add">
+        <div className={styles.btnadd}>
+          <FaRegPlusSquare />
+        </div>
+      </Link>
     </Layout>
-  )
+  );
 }
 
-
-export async function getStaticProps () {
-  const res = await fetch(`${API_URL}/api/events`)
-  const events = await res.json()
+export async function getStaticProps() {
+  const res = await fetch(`${API_URL}/api/events`);
+  const events = await res.json();
 
   return {
     props: { events },
-    revalidate: 1
-  }
+    revalidate: 1,
+  };
 }
- 
+
 /*
 
- <div className={styles.results}>
-    <div></div>
-    <div></div>
-    <div>{events.data.reduce((el, acc)=>{acc=el.attributes.expenses+acc}, 0)}</div>
-    <div>Остаток</div>
-    <div>Затраты</div>
-    <div>Личные</div>
-    <div></div>
-    <div></div>
-    </div>  */
+  */
