@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Layout from '@/components/Layout';
 import styles from '@/styles/AuthForm.module.css';
 import AuthContext from '@/context/AuthContext';
+import Button from 'react-bootstrap/Button';
 
 export default function RegisterPage() {
     const [username, setUsername] = useState('');

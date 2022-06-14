@@ -4,6 +4,8 @@ import AuthContext from "@/context/AuthContext";
 import Link from "next/link";
 import Search from "./Search";
 import styles from "@/styles/Header.module.css";
+import Button from 'react-bootstrap/Button';
+import { FaRegPlusSquare } from "react-icons/fa";
 
 export default function Header() {
   const { user, logout } = useContext(AuthContext);
@@ -26,32 +28,24 @@ export default function Header() {
 
       <nav>
         <ul>
-          <li>
-            <Link href="/events">
-              <a>Заказы</a>
-            </Link>
-          </li>
+          
           {user ? (
             // If logged in
             <>
 
               <li>
                 <Link href="/events/add">
-                  <a>Новый Заказ</a>
+                <Button variant="outline-primary">Новый заказ</Button>
                 </Link>
               </li>
+              
               <li>
-                <Link href="/account/dashboard">
-                  <a>Рассчеты</a>
-                </Link>
-              </li>
-              <li>
-                <button
+                <Button
                   onClick={() => logout()}
-                  className="btn-secondary btn-icon"
+                  variant="outline-secondary"
                 >
                   <FaSignOutAlt /> Выйти
-                </button>
+                </Button>
               </li>
             </>
           ) : (
@@ -59,9 +53,9 @@ export default function Header() {
             <>
               <li>
                 <Link href="/account/login">
-                  <a className="btn-secondary btn-icon">
+                  <Button variant="outline-secondary">
                     <FaSignInAlt /> Войти
-                  </a>
+                  </Button>
                 </Link>
               </li>
             </>

@@ -1,14 +1,28 @@
-import Head from "next/head";
-import Image from "next/image";
-import styles from "@/styles/Home.module.css";
-import Layout from "@/components/Layout";
-import { API_URL } from "@/config/index";
-import EventItem from "@/components/EventItem";
-import Link from "next/link";
-import { useEffect, useState } from "react";
-import { FaEllipsisH, FaRegPlusSquare } from "react-icons/fa";
 
-export default function EventsPage({ events }) {
+import { API_URL } from "@/config/index";
+import HomePage from "pages";
+
+
+export default function EventsPage({ events }) 
+{
+  return <HomePage events = {events}/>
+  
+
+}
+
+export async function getStaticProps() {
+  const res = await fetch(`${API_URL}/api/events`);
+  const events = await res.json();
+
+  return {
+    props: { events },
+    revalidate: 1,
+  };
+}
+
+/*
+
+{
   const [summ, setSumm] = useState({
     summClientPrice: 0,
     summClientDept: 0,
@@ -78,17 +92,5 @@ export default function EventsPage({ events }) {
     </Layout>
   );
 }
-
-export async function getStaticProps() {
-  const res = await fetch(`${API_URL}/api/events`);
-  const events = await res.json();
-
-  return {
-    props: { events },
-    revalidate: 1,
-  };
-}
-
-/*
 
   */

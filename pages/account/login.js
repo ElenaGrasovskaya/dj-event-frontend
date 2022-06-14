@@ -6,6 +6,8 @@ import Link from 'next/link';
 import Layout from '@/components/Layout'
 import styles from '@/styles/AuthForm.module.css'
 import AuthContext from '@/context/AuthContext';
+import { Button } from 'react-bootstrap';
+
 
 export default function LoginPage() {
     const [email, setEmail] = useState('');
@@ -37,12 +39,14 @@ export default function LoginPage() {
                         <label htmlFor="password">Пароль</label>
                         <input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)}></input>
                     </div>
-                    <input type="submit" value="Войти" className='btn' />
+                    <div className="d-grid gap-2"><Button type="submit" >Войти</Button></div>
                 </form>
-                <p>
-                    Нет аккаунта? <Link href='/account/register'>Зарегистрироваться</Link>
-                </p>
+
             </div>
         </Layout>
     )
 }
+
+/*                <p>
+                    Нет аккаунта? <Link href='/account/register'>Зарегистрироваться</Link>
+                </p> */

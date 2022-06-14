@@ -1,7 +1,8 @@
 .header {
     display: flex;
+
     justify-content: space-between;
-    align-items: center;
+    align-items: baseline;
     background: #fff;
     color: #333;
     height: 60px;
@@ -18,10 +19,17 @@
     color: #000;
   }
   .header ul {
+    padding-top: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
     list-style: none;
+    padding-left: 0px;
+    
+  }
+
+  .header li {
+    margin-left: 20px;
   }
   
   .logo {
@@ -38,12 +46,19 @@
     .header {
       flex-direction: column;
       height: auto;
+      align-items: center;
     }
   
     .header ul {
-      margin: 20px 0;
+
       flex-direction: column;
       text-align: center;
+      padding: 5px;
+      gap: 5px;
+    }
+
+    .header li {
+      margin-left: 0;
     }
   
     .header a {

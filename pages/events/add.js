@@ -61,9 +61,10 @@ export default function AddEventPage() {
         if (!res.ok) {
             toast.error('Something went wrong')
         } else {
-            const data = await res.json()
+            const data = await res.json();
+            toast.success("Saved");
             if (e.nativeEvent.submitter.value === "Сохранить и выйти")
-            router.push(`/events/`);
+            router.push(`/events`);
         }
     }
 
@@ -103,8 +104,6 @@ export default function AddEventPage() {
             setValues({ ...values, [name]: value })
 
         }
-
-
 
     }
 
