@@ -6,6 +6,7 @@ export default async (req, res) => {
     const { username, email, password } = req.body
 
     const strapiRes = await fetch(`${API_URL}/api/users`, {
+      credentials: 'include',
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

@@ -14,6 +14,7 @@ export const AuthProvider = ({ children }) => {
 
     const register = async (user) => {
         const res = await fetch(`${NEXT_URL}/api/register`, {
+          credentials: 'include',
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -35,6 +36,7 @@ export const AuthProvider = ({ children }) => {
 
     const login = async ({ email: identifier, password }) => {
         const res = await fetch(`${NEXT_URL}/api/login`, {
+            credentials: 'include',
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

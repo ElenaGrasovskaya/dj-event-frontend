@@ -136,10 +136,6 @@ export default function HomePage ({events}) {
 
       }
 
-
-
-      
-      
     </>
   )
 }
