@@ -41,7 +41,7 @@ export default function EditEventsPage({ evt }) {
     date: evt.attributes.date,
     time: evt.attributes.time,
     description: evt.attributes.description,
-    userName: user.username
+    userName: user?user.username:""
   });
 
   const [imagePreview, setImagePreview] = useState(

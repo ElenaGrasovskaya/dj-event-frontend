@@ -43,7 +43,7 @@ export default function AddEventPage() {
         time: '',
         description: '',
         image_url: '/images/sample/kitchen.png',
-        userName: user.username
+        userName: user?user.username:""
     });
     const handleSubmit = async (e) => {
         e.preventDefault();
