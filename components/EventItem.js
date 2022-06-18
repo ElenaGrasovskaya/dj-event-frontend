@@ -10,7 +10,7 @@ import { BsFillCheckSquareFill } from "react-icons/bs";
 
 export default function EventItem({ evt }) {
   const router = useRouter();
-  console.log("evt", evt);
+
 
   const deleteEvent = async (e) => {
     if (confirm("Are you sure?")) {

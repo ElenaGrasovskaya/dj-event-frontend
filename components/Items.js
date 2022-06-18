@@ -4,14 +4,14 @@ import {useState} from 'react';
 import { BsXCircle } from "react-icons/bs";
 
 function Items({items, callback}) {
-    console.log("items", items);
+
       
     const [expense, setExpense] = useState({items: [...items.items, {name:"", price:0, description:"", status:false}]})
 
     const handleInputChange = (e, index) => {
-        console.log("e", e);
+
             let { name, value, checked } = e.target;
-            console.log(name, value);
+
             let newItems;
             
             if(name==="status")
@@ -45,7 +45,7 @@ function Items({items, callback}) {
                 newItems = [...newItems, {name:"", price:0, description:"", status:false}]
 
            }  
-           console.log("result", {items:newItems});  
+    
 
 
             setExpense({items:newItems});

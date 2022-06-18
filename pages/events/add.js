@@ -9,13 +9,17 @@ import { API_URL } from '@/config/index'
 import styles from '@/styles/Form.module.css'
 import moment from 'moment';
 import { BiLeftArrowAlt } from "react-icons/bi";
-
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { stringify } from 'qs';
+import { Button } from 'react-bootstrap';
+import AuthContext from "@/context/AuthContext";
+import { useContext } from "react";
 
 
 export default function AddEventPage() {
     const date = new Date();
     const dateMs = Date.parse(date);
+    const { user, logout } = useContext(AuthContext);
 
     const router = useRouter();
 
@@ -38,7 +42,8 @@ export default function AddEventPage() {
         date: date,
         time: '',
         description: '',
-        image_url: '/images/sample/kitchen.png'
+        image_url: '/images/sample/kitchen.png',
+        userName: user.username
     });
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -77,7 +82,7 @@ export default function AddEventPage() {
 
         else if (name === "items")
         {
-            console.log("newItems", value);
+
             const newExpense = value.items.reduce((acc, i)=>{return acc+Number(i.price)},0)
             const newPersonalExpense = value.items.reduce((acc, i)=>{return i.status?acc+Number(i.price):acc},0)
             setValues({ ...values, expenses: newExpense, interest: values.clientPrice-newExpense, expensesPersonal:newPersonalExpense, items: value});
@@ -126,7 +131,8 @@ export default function AddEventPage() {
         <Layout title='Добавить новый заказ'>
             <Link href='/events'><a className={styles.backBtn}><BiLeftArrowAlt/></a></Link>
 
-            <div className={styles.headerContainer}><h1>Новый заказ</h1><input type='submit' value='Сохранить' className='btn'/></div>
+            <div className={styles.headerContainer}><h1>Новый заказ</h1>
+            <Button type='submit' value='Сохранить' variant='primary' onClick={(e)=>handleSubmit(e)}>Сохранить</Button></div>
            
             <ToastContainer />
             
@@ -244,8 +250,9 @@ export default function AddEventPage() {
                         onChange={handleInputChange}
                     ></textarea>
                 </div>
-                <div className={styles.headerContainer}><input type='submit' value='Сохранить' className='btn'/>
-                <input type='submit' value='Сохранить и выйти' className='btn-secondary'/></div>
+                <div className={styles.headerContainer}>
+                <Button type='submit' value='Сохранить' variant='primary' onClick={(e)=>handleSubmit(e)}>Сохранить</Button>
+                <Button type='submit' value='Сохранить и выйти' variant='dark' onClick={(e)=>handleSubmit(e)}>Сохранить и выйти</Button></div>
             </form>
         </Layout>
     )

@@ -12,8 +12,14 @@ import { FaArrowLeft } from "react-icons/fa";
 import moment from "moment";
 import { BiLeftArrowAlt } from "react-icons/bi";
 import Button from 'react-bootstrap/Button';
+import AuthContext from "@/context/AuthContext";
+import { useContext } from "react";
 
 export default function EditEventsPage({ evt }) {
+
+  const { user, logout } = useContext(AuthContext);
+  console.log("user", user);
+
   const [values, setValues] = useState({
     title: evt.attributes.title,
     name: evt.attributes.name,
@@ -35,6 +41,7 @@ export default function EditEventsPage({ evt }) {
     date: evt.attributes.date,
     time: evt.attributes.time,
     description: evt.attributes.description,
+    userName: user.username
   });
 
   const [imagePreview, setImagePreview] = useState(
@@ -43,6 +50,7 @@ export default function EditEventsPage({ evt }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     calculateExpense();
+    console.log("e", e);
 
     //Validation
     /* const hasEmptyFields = Object.values(values).some((element) => element === '')
@@ -62,9 +70,10 @@ export default function EditEventsPage({ evt }) {
       toast.error("Something went wrong");
     } else {
       const data = await res.json();
+      console.log("res", res);
       toast.success("Saved");
-      if (e.nativeEvent.submitter.value === "Сохранить и выйти")
-        router.push(`/events/`);
+      if (e.target.value === "Сохранить и выйти")
+        router.push(`/events`);
     }
   };
 
@@ -77,9 +86,7 @@ export default function EditEventsPage({ evt }) {
     }
 
     else if (name === "items")
-    {
-        console.log("newItems", value);
-        const newExpense = value.items.reduce((acc, i)=>{return acc+Number(i.price)},0)
+    {   const newExpense = value.items.reduce((acc, i)=>{return acc+Number(i.price)},0)
         const newPersonalExpense = value.items.reduce((acc, i)=>{return i.status?acc+Number(i.price):acc},0)
         setValues({ ...values, expenses: newExpense, interest: values.clientPrice-newExpense, expensesPersonal:newPersonalExpense, items: value});
     }
@@ -125,16 +132,11 @@ export default function EditEventsPage({ evt }) {
   };
 
   return (
-    <Layout>
-      <Link href="/events">
-        <a className={styles.backBtn}>
-          <BiLeftArrowAlt />
-        </a>
-      </Link>
-
+    <Layout title='Редактировать заказ'>
+    <Link href='/events'><a className={styles.backBtn}><BiLeftArrowAlt/></a></Link>
       <div className={styles.headerContainer}>
         <h1>{values.title}</h1>
-        <Button type="submit" value="Сохранить" className="btn">Сохранить</Button>
+        <Button type="submit" value="Сохранить" variant="primary" onClick={(e)=>handleSubmit(e)}>Сохранить</Button>
       </div>
       <ToastContainer />
       <form onSubmit={handleSubmit} className={styles.form}>
@@ -302,14 +304,9 @@ export default function EditEventsPage({ evt }) {
             onChange={handleInputChange}
           ></textarea>
         </div>
-        <div className="d-grid gap-2">
-          <Button type="submit" value="Сохранить" className=" btn btn-primary">Сохранить</Button>
-          <Button
-            type="submit"
-            value="Сохранить и выйти"
-            className="btn btn-secondary"
-          >Сохранить и выйти</Button>
-        </div>
+        <div className={styles.headerContainer}>
+                <Button type='submit' value='Сохранить' variant='primary' onClick={(e)=>handleSubmit(e)}>Сохранить</Button>
+                <Button type='submit' value='Сохранить и выйти' variant='dark' onClick={(e)=>handleSubmit(e)}>Сохранить и выйти</Button></div>
       </form>
     </Layout>
   );

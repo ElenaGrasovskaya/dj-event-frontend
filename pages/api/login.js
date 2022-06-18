@@ -5,7 +5,7 @@ export default async (req, res) => {
     if (req.method === 'POST') {
         
         const { identifier, password } = req.body;
-        console.log(req.body);
+
         const strapiRes = await fetch(`${API_URL}/api/auth/local`,
             {
                 credentials: 'include',
@@ -21,7 +21,7 @@ export default async (req, res) => {
 
             const data = await strapiRes.json()
 
-            console.log(data.jwt);
+
 
             if(strapiRes.ok){
                 // Set cookie

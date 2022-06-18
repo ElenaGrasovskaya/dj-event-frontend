@@ -6,7 +6,7 @@ export default function Footer() {
         <footer className={styles.footer}>
             <p>Copyright &copy; LibraPortal 2022</p>
             <p>
-                <Link href='/about'>Про нас</Link>
+                <Link href='/about'>О нас</Link>
             </p>
 
         </footer>
