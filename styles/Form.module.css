@@ -19,6 +19,11 @@
   margin: 20px 0 30px;
 }
 
+.form input[type="checkbox"] {
+  color: grey;
+  background-color: grey !important;
+}
+
 .form input[type="radio"] {
   display: block;
   width: 100%;

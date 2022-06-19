@@ -41,7 +41,8 @@ export default function EditEventsPage({ evt }) {
     date: evt.attributes.date,
     time: evt.attributes.time,
     description: evt.attributes.description,
-    userName: user?user.username:""
+    userName: user?user.username:"",
+    hidden: evt.attributes.hidden,
   });
 
   const [imagePreview, setImagePreview] = useState(
@@ -107,6 +108,10 @@ export default function EditEventsPage({ evt }) {
     else if (name === "status") {
         setValues({ ...values, status: checked })
     }
+
+    else if (name === "hidden") {
+      setValues({ ...values, hidden: checked })
+  }
 
     else {
         setValues({ ...values, [name]: value })
@@ -174,6 +179,17 @@ export default function EditEventsPage({ evt }) {
                 onChange={handleInputChange}
               />
               Закрыт
+            </label>
+            <label htmlFor="hidden">
+              <input
+                type="checkbox"
+                id="hidden"
+                name="hidden"
+                checked={values.hidden}
+                onChange={handleInputChange}
+
+              />
+              В&nbsp;архиве
             </label>
           </div>
 
