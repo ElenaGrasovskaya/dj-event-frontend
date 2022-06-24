@@ -67,7 +67,7 @@ export default function AddEventPage() {
     } else {
       const data = await res.json();
       toast.success("Saved");
-      if (e.nativeEvent.submitter.value === "Сохранить и выйти")
+      if (e.target.value === "Сохранить и выйти")
         router.push(`/events`);
     }
   };

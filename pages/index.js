@@ -5,7 +5,7 @@ import EventItem from "@/components/EventItem";
 import Link from "next/link";
 import Image from "next/image";
 import { FaRegPlusSquare } from "react-icons/fa";
-import { useContext, use } from "react";
+import { useContext } from "react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import AuthContext from "@/context/AuthContext";
@@ -69,7 +69,8 @@ export default function HomePage({ events }) {
           <h1>Заказы</h1>
 
           {events.data.length === 0 && <h3>Нет подходящих заказов</h3>}
-          <Button onClick={() => setShow(!show)}>Показать все</Button>
+          <Button onClick={() => setShow(!show)}>Показать все</Button>{' '}
+          <Button variant="info" onClick={() => router.push(`/flow`)}>Авансы</Button>
 
           <Table striped hover responsive="sm">
             <thead>
@@ -185,7 +186,7 @@ export default function HomePage({ events }) {
   );
 }
 
-export async function getStaticProps() {
+/*export async function getStaticProps() {
   const res = await fetch(`${API_URL}/api/events`);
   const events = await res.json();
 
@@ -193,4 +194,15 @@ export async function getStaticProps() {
     props: { events },
     revalidate: 1,
   };
+}
+*/
+
+export async function getServerSideProps() {
+  const res = await fetch(`${API_URL}/api/events`)
+  const events = await res.json()
+
+
+  return {
+    props: { events }
+  }
 }
