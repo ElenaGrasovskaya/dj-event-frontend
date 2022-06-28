@@ -2,3 +2,17 @@
     width: 100%;
     padding: 5px 11px;
 }
+
+.backBtn {
+    font-size: 30px;
+    height: 30px;
+  }
+
+  .modal {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+  }
+  .result {
+    border-top: 2px solid black;
+  }

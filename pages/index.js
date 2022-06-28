@@ -31,6 +31,7 @@ export default function HomePage({ events }) {
   });
 
   const [show, setShow] = useState(false);
+  
 
   const { user, logout } = useContext(AuthContext);
   const router = useRouter();
@@ -41,22 +42,22 @@ export default function HomePage({ events }) {
   useEffect(() => {
     setSumm({
       summClientPrice: events.data.reduce(
-        (acc, el) => acc + el.attributes.clientPrice,
+        (acc, el) => !el.attributes.hidden || show ?(acc + el.attributes.clientPrice):acc,
         0
       ),
 
       summClientDept: events.data.reduce(
-        (acc, el) => acc + el.attributes.clientDept,
+        (acc, el) => !el.attributes.hidden || show ?(acc + el.attributes.clientDept):acc,
         0
       ),
 
       summExpenses: events.data.reduce(
-        (acc, el) => acc + el.attributes.expenses,
+        (acc, el) => !el.attributes.hidden || show ?(acc + el.attributes.expenses):acc,
         0
       ),
 
       summPersonalExpenses: events.data.reduce(
-        (acc, el) => acc + el.attributes.expensesPersonal,
+        (acc, el) => !el.attributes.hidden || show ?(acc + el.attributes.expensesPersonal):acc,
         0
       ),
     });
@@ -90,9 +91,10 @@ export default function HomePage({ events }) {
               {events.data.map((evt, index) =>
                 !evt.attributes.hidden || show ? (
                   <tr key={100 + index}>
-                    <Link href={`/events/edit/${evt.attributes.slug}`}>
+                    <Link href={`/events/edit/${evt.attributes.slug}`} key={110 + index}>
                       <td>
                         <Image
+                          key={120 + index}
                           src={
                             evt.attributes.image_url ||
                             "/images/sample/furniture.png"
@@ -102,26 +104,26 @@ export default function HomePage({ events }) {
                         />
                       </td>
                     </Link>
-                    <Link href={`/events/edit/${evt.attributes.slug}`}>
+                    <Link href={`/events/edit/${evt.attributes.slug}`} key={130 + index}>
                       <td>
                         <strong className={styles.clickableLink}>
                           {evt.attributes.title}
                         </strong>
                       </td>
                     </Link>
-                    <Link href={`/events/edit/${evt.attributes.slug}`}>
+                    <Link href={`/events/edit/${evt.attributes.slug}`} key={140 + index}>
                       <td>{evt.attributes.clientPrice}</td>
                     </Link>
-                    <Link href={`/events/edit/${evt.attributes.slug}`}>
+                    <Link href={`/events/edit/${evt.attributes.slug}`} key={150 + index}>
                       <td>{evt.attributes.clientDept}</td>
                     </Link>
-                    <Link href={`/events/edit/${evt.attributes.slug}`}>
+                    <Link href={`/events/edit/${evt.attributes.slug}`} key={160 + index}>
                       <td>{evt.attributes.expenses}</td>
                     </Link>
-                    <Link href={`/events/edit/${evt.attributes.slug}`}>
+                    <Link href={`/events/edit/${evt.attributes.slug}`} key={170 + index}>
                       <td>{evt.attributes.expensesPersonal}</td>
                     </Link>
-                    <td>
+                    <td key={180 + index}>
                       {evt.attributes.status ? (
                         <div className={styles.checkboxGreen}>
                           <BsFillCheckSquareFill />
@@ -132,7 +134,7 @@ export default function HomePage({ events }) {
                         </div>
                       )}
                     </td>
-                    <td>
+                    <td key={190 + index}>
                       {evt.attributes.hidden ? (
                         <div className={styles.checkboxGreen}>
                           <BiArchiveIn />
