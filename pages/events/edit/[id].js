@@ -11,12 +11,11 @@ import { stringify } from "qs";
 import { FaArrowLeft } from "react-icons/fa";
 import moment from "moment";
 import { BiLeftArrowAlt } from "react-icons/bi";
-import Button from 'react-bootstrap/Button';
+import Button from "react-bootstrap/Button";
 import AuthContext from "@/context/AuthContext";
 import { useContext } from "react";
 
 export default function EditEventsPage({ evt }) {
-
   const { user, logout } = useContext(AuthContext);
   console.log("user", user);
 
@@ -41,13 +40,15 @@ export default function EditEventsPage({ evt }) {
     date: evt.attributes.date,
     time: evt.attributes.time,
     description: evt.attributes.description,
-    userName: user?user.username:"",
+    userName: user ? user.username : "",
     hidden: evt.attributes.hidden,
   });
 
   const [imagePreview, setImagePreview] = useState(
     evt.image ? evt.image.formats.thumbnail.url : null
   );
+  const [showButton, setShowButton] = useState(false);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     calculateExpense();
@@ -73,52 +74,53 @@ export default function EditEventsPage({ evt }) {
       const data = await res.json();
       console.log("res", res);
       toast.success("Saved");
-      if (e.target.value === "Сохранить и выйти")
-        router.push(`/events`);
+      if (e.target.value === "Сохранить и выйти") router.push(`/events`);
     }
   };
 
   const router = useRouter();
   const handleInputChange = (e) => {
-
     const { name, value, checked } = e.target;
     if (name === "date") {
-        setValues({ ...values, [name]: new Date(value) })
+      setValues({ ...values, [name]: new Date(value) });
+    } else if (name === "items") {
+      const newExpense = value.items.reduce((acc, i) => {
+        return acc + Number(i.price);
+      }, 0);
+      const newPersonalExpense = value.items.reduce((acc, i) => {
+        return i.status ? acc + Number(i.price) : acc;
+      }, 0);
+      setValues({
+        ...values,
+        expenses: newExpense,
+        interest: values.clientPrice - newExpense,
+        expensesPersonal: newPersonalExpense,
+        items: value,
+      });
+    } else if (name === "name") {
+      setValues({ ...values, name: value });
+    } else if (name === "clientPrepay") {
+      setValues({
+        ...values,
+        [name]: value,
+        clientDept: values.clientPrice - value,
+      });
+    } else if (name === "clientPrice") {
+      setValues({
+        ...values,
+        [name]: value,
+        clientDept: value - values.clientPrepay,
+        interest: value - values.expenses,
+      });
+    } else if (name === "status") {
+      setValues({ ...values, status: checked });
+    } else if (name === "hidden") {
+      setValues({ ...values, hidden: checked });
+    } else {
+      setValues({ ...values, [name]: value });
     }
-
-    else if (name === "items")
-    {   const newExpense = value.items.reduce((acc, i)=>{return acc+Number(i.price)},0)
-        const newPersonalExpense = value.items.reduce((acc, i)=>{return i.status?acc+Number(i.price):acc},0)
-        setValues({ ...values, expenses: newExpense, interest: values.clientPrice-newExpense, expensesPersonal:newPersonalExpense, items: value});
-    }
-
-    else if (name === "name") {
-        setValues({ ...values, name: value})
-    }
-
-    else if (name === "clientPrepay") {
-        setValues({ ...values, [name]: value, clientDept: values.clientPrice-value })
-    }
-
-    else if (name === "clientPrice") {
-        setValues({ ...values, [name]: value, clientDept: value-values.clientPrepay,
-            interest: value-values.expenses })
-    }
-
-    else if (name === "status") {
-        setValues({ ...values, status: checked })
-    }
-
-    else if (name === "hidden") {
-      setValues({ ...values, hidden: checked })
-  }
-
-    else {
-        setValues({ ...values, [name]: value })
-
-    }
-
-}
+    handleActiveButtonChange();
+  };
   const calculateExpense = () => {
     const newExpense = values.items.items.reduce((acc, i) => {
       return acc + Number(i.price);
@@ -136,12 +138,72 @@ export default function EditEventsPage({ evt }) {
     });
   };
 
+  const handleGoBack = () => {
+    const result = window.confirm("Выйти без сохранения?");
+    result ? router.push(`/events`) : null;
+  };
+
+  const handleActiveButtonChange = () => {
+    if (
+      values.title === evt.attributes.title &&
+      values.name === evt.attributes.name &&
+      values.slug === evt.attributes.slug &&
+      values.status === evt.attributes.status &&
+      values.orderType === evt.attributes.orderType &&
+      values.clientPrice === evt.attributes.clientPrice &&
+      values.clientPrepay === evt.attributes.clientPrepay &&
+      values.clientDept === evt.attributes.clientDept &&
+      values.expenses ===
+        evt.attributes.items.items.reduce((acc, i) => {
+          return acc + Number(i.price);
+        }, 0) &&
+      values.expensesPersonal === evt.attributes.expensesPersonal &&
+      values.interest === evt.attributes.interest &&
+      values.items === evt.attributes.items &&
+      values.performers === evt.attributes.performers &&
+      values.venue === evt.attributes.venue &&
+      values.address === evt.attributes.address &&
+      values.date === evt.attributes.date &&
+      values.time === evt.attributes.time &&
+      values.description === evt.attributes.description &&
+      values.hidden === evt.attributes.hidden
+    ) {
+      setShowButton(false);
+    } else {
+      setShowButton(true);
+    }
+  };
+
   return (
-    <Layout title='Редактировать заказ'>
-    <Link href='/events'><a className={styles.backBtn}><BiLeftArrowAlt/></a></Link>
+    <Layout title="Редактировать заказ">
+      <Button variant="link" onClick={handleGoBack}>
+        <a className={styles.backBtn}>
+          <BiLeftArrowAlt />
+        </a>
+      </Button>
       <div className={styles.headerContainer}>
         <h1>{values.title}</h1>
-        <Button type="submit" value="Сохранить" variant="primary" onClick={(e)=>handleSubmit(e)}>Сохранить</Button>
+        {showButton ? (
+          <Button
+            type="submit"
+            value="Сохранить"
+            variant="primary"
+            onClick={(e) => handleSubmit(e)}
+            active
+          >
+            Сохранить
+          </Button>
+        ) : (
+          <Button
+            type="submit"
+            value="Сохранить"
+            variant="primary"
+            onClick={(e) => handleSubmit(e)}
+            disabled
+          >
+            Сохранить
+          </Button>
+        )}
       </div>
       <ToastContainer />
       <form onSubmit={handleSubmit} className={styles.form}>
@@ -187,20 +249,31 @@ export default function EditEventsPage({ evt }) {
                 name="hidden"
                 checked={values.hidden}
                 onChange={handleInputChange}
-
               />
               В&nbsp;архиве
             </label>
           </div>
 
           <div>
-            <label htmlFor="clientPrice">Цена для клиента:</label>
+            <label htmlFor="clientPrice">Стоимость:</label>
             <input
               type="number"
               id="clientPrice"
               name="clientPrice"
               value={values.clientPrice}
               onChange={handleInputChange}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="clientDept">Остаток по заказу:</label>
+            <input
+              type="number"
+              id="clientDept"
+              name="clientDept"
+              readOnly
+              value={values.clientPrice - values.clientPrepay}
+              className={styles.inactive}
             />
           </div>
           <div>
@@ -214,16 +287,6 @@ export default function EditEventsPage({ evt }) {
             />
           </div>
           <div>
-            <label htmlFor="clientDept">Клиент должен:</label>
-            <input
-              type="number"
-              id="clientDept"
-              name="clientDept"
-              readOnly
-              value={values.clientPrice - values.clientPrepay}
-            />
-          </div>
-          <div>
             <label htmlFor="expenses">Сумма затрат:</label>
             <input
               type="number"
@@ -233,6 +296,7 @@ export default function EditEventsPage({ evt }) {
               value={values.items.items.reduce((acc, i) => {
                 return acc + Number(i.price);
               }, 0)}
+              className={styles.inactive}
             />
           </div>
           <div>
@@ -245,11 +309,13 @@ export default function EditEventsPage({ evt }) {
               value={values.items.items.reduce((acc, i) => {
                 return i.status ? acc + Number(i.price) : acc;
               }, 0)}
+              className={styles.inactive}
             />
           </div>
           <div>
-            <label htmlFor="interest">Прибыль:</label>
-            <input
+            
+            <div className={styles.interest}>
+            <label htmlFor="interest">Прибыль:<input
               type="number"
               id="interest"
               name="interest"
@@ -260,7 +326,35 @@ export default function EditEventsPage({ evt }) {
                   return acc + Number(i.price);
                 }, 0)
               }
-            />
+              className={styles.inactive}
+            /></label>
+            <label htmlFor="interest">Процент:<input
+              type="text"
+              id="interest"
+              name="interest"
+              readOnly
+              value={
+                `${(((values.clientPrice -
+                values.items.items.reduce((acc, i) => {
+                  return acc + Number(i.price);
+                }, 0))/values.clientPrice)*100).toFixed(1)}%`
+              }
+              className={styles.inactive}
+            /></label>
+            <label htmlFor="interest">ЗП:<input
+              type="text"
+              id="interest"
+              name="interest"
+              readOnly
+              value={
+                (values.clientPrice -
+                values.items.items.reduce((acc, i) => {
+                  return acc + Number(i.price);
+                }, 0))*0.4
+              }
+              className={styles.inactive}
+            /></label>
+            </div>
           </div>
         </div>
         <div>
@@ -320,9 +414,50 @@ export default function EditEventsPage({ evt }) {
             onChange={handleInputChange}
           ></textarea>
         </div>
-        <div className={styles.headerContainer}>
-                <Button type='submit' value='Сохранить' variant='primary' onClick={(e)=>handleSubmit(e)}>Сохранить</Button>
-                <Button type='submit' value='Сохранить и выйти' variant='dark' onClick={(e)=>handleSubmit(e)}>Сохранить и выйти</Button></div>
+
+        {showButton ? (
+          <div className={styles.headerContainer}>
+            <Button
+              type="submit"
+              value="Сохранить"
+              variant="primary"
+              onClick={(e) => handleSubmit(e)}
+              active
+            >
+              Сохранить
+            </Button>
+            <Button
+              type="submit"
+              value="Сохранить и выйти"
+              variant="dark"
+              onClick={(e) => handleSubmit(e)}
+              active
+            >
+              Сохранить и выйти
+            </Button>
+          </div>
+        ) : (
+          <div className={styles.headerContainer}>
+            <Button
+              type="submit"
+              value="Сохранить"
+              variant="primary"
+              onClick={(e) => handleSubmit(e)}
+              disabled
+            >
+              Сохранить
+            </Button>
+            <Button
+              type="submit"
+              value="Сохранить и выйти"
+              variant="dark"
+              onClick={(e) => handleSubmit(e)}
+              disabled
+            >
+              Сохранить и выйти
+            </Button>
+          </div>
+        )}
       </form>
     </Layout>
   );

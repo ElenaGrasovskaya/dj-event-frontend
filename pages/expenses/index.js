@@ -15,7 +15,7 @@ import { BiLeftArrowAlt } from "react-icons/bi";
 import Link from "next/link";
 import Modal from 'react-bootstrap/Modal';
 
-export default function Flows({ flows }) {
+export default function expenses({ expenses }) {
   const date = new Date();
   const dateMs = Date.parse(date);
   const { user } = useContext(AuthContext);
@@ -30,13 +30,13 @@ export default function Flows({ flows }) {
 
   useEffect(() => {
     setSumm(
-      flows.data.reduce(
+      expenses.data.reduce(
         (acc, el) => !el.attributes.hidden ?(acc + el.attributes.value):acc,
         0
       ),
 
     );
-  }, [flows]);
+  }, [expenses]);
 
   const handleClose = () => {
     setValues({
@@ -51,7 +51,7 @@ export default function Flows({ flows }) {
     setShow(false)};
   const handleShow = () => setShow(true);
 
-  console.log("flows", flows);
+  console.log("expenses", expenses);
   const [values, setValues] = useState({
     title: "",
     userName: user ? user.username : "",
@@ -63,7 +63,7 @@ export default function Flows({ flows }) {
   });
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const res = await fetch(`${API_URL}/api/flows`, {
+    const res = await fetch(`${API_URL}/api/expenses`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -108,7 +108,7 @@ export default function Flows({ flows }) {
   const handleHide = async (e, currentFlow) => {
     e.preventDefault();
     e.stopPropagation();
-    const res = await fetch(`${API_URL}/api/flows/${currentFlow.id}`, {
+    const res = await fetch(`${API_URL}/api/expenses/${currentFlow.id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -129,7 +129,7 @@ export default function Flows({ flows }) {
 
   const handleEditFlow = async (e) => {
     e.preventDefault();
-    const res = await fetch(`${API_URL}/api/flows/${values.id}`, {
+    const res = await fetch(`${API_URL}/api/expenses/${values.id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -156,7 +156,7 @@ export default function Flows({ flows }) {
 
   return (
     <Layout>
-        <h1>Авансы</h1>
+        <h1>Расходы</h1>
         <Link href='/events'><a className={styles.backBtn}><BiLeftArrowAlt/></a></Link>
       <Form>
         <Table striped hover responsive="sm">
@@ -170,7 +170,7 @@ export default function Flows({ flows }) {
           </thead>
 
           <tbody>
-            {flows.data.map((flow, index) => (!flow.attributes.hidden&&
+            {expenses.data.map((flow, index) => (!flow.attributes.hidden&&
               <tr key={200 + index} onClick={(e)=>{setValues({...flow.attributes, id:flow.id})
                 handleShow()}}>
                 <td>{flow.attributes.title}</td>
@@ -276,10 +276,10 @@ export default function Flows({ flows }) {
 }
 
 export async function getServerSideProps() {
-  const res = await fetch(`${API_URL}/api/flows`);
-  const flows = await res.json();
+  const res = await fetch(`${API_URL}/api/expenses`);
+  const expenses = await res.json();
 
   return {
-    props: { flows },
+    props: { expenses },
   };
 }

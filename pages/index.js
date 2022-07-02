@@ -1,7 +1,5 @@
 import Layout from "@/components/Layout";
-import { ToastContainer, toast } from "react-toastify";
 import { API_URL } from "@/config/index";
-import EventItem from "@/components/EventItem";
 import Link from "next/link";
 import Image from "next/image";
 import { FaRegPlusSquare } from "react-icons/fa";
@@ -15,83 +13,104 @@ import Button from "react-bootstrap/Button";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { BsFillQuestionSquareFill } from "react-icons/bs";
 import { BsFillCheckSquareFill } from "react-icons/bs";
-import {BiArchiveIn} from  "react-icons/bi";
+import { BiArchiveIn } from "react-icons/bi";
 import { FaTimes } from "react-icons/fa";
 import styles from "@/styles/Home.module.css";
 import { BiArchiveOut } from "react-icons/bi";
 
 export default function HomePage({ events }) {
-
-  
   const [summ, setSumm] = useState({
     summClientPrice: 0,
     summClientDept: 0,
+    summInterest: 0,
     summExpenses: 0,
     summPersonalExpenses: 0,
   });
 
   const [show, setShow] = useState(false);
-  
 
   const { user, logout } = useContext(AuthContext);
   const router = useRouter();
+  const refreshData = () => {
+    router.replace(router.asPath);
+  };
 
   console.log("events", events);
 
-
   useEffect(() => {
+    refreshData();
     setSumm({
       summClientPrice: events.data.reduce(
-        (acc, el) => !el.attributes.hidden || show ?(acc + el.attributes.clientPrice):acc,
+        (acc, el) =>
+          !el.attributes.hidden || show ? acc + el.attributes.clientPrice : acc,
         0
       ),
 
       summClientDept: events.data.reduce(
-        (acc, el) => !el.attributes.hidden || show ?(acc + el.attributes.clientDept):acc,
+        (acc, el) =>
+          !el.attributes.hidden || show ? acc + el.attributes.clientDept : acc,
+        0
+      ),
+      summInterest: events.data.reduce(
+        (acc, el) =>
+          !el.attributes.hidden && el.attributes.status
+            ? acc + el.attributes.interest
+            : acc,
         0
       ),
 
       summExpenses: events.data.reduce(
-        (acc, el) => !el.attributes.hidden || show ?(acc + el.attributes.expenses):acc,
+        (acc, el) =>
+          !el.attributes.hidden || show ? acc + el.attributes.expenses : acc,
         0
       ),
 
       summPersonalExpenses: events.data.reduce(
-        (acc, el) => !el.attributes.hidden || show ?(acc + el.attributes.expensesPersonal):acc,
+        (acc, el) =>
+          !el.attributes.hidden || show
+            ? acc + el.attributes.expensesPersonal
+            : acc,
         0
       ),
     });
-  }, [events]);
+  }, []);
 
   return (
     <>
       {user && events.data ? (
         <Layout>
           <h1>Заказы</h1>
-
           {events.data.length === 0 && <h3>Нет подходящих заказов</h3>}
-          <Button onClick={() => setShow(!show)}>Показать все</Button>{' '}
-          <Button variant="info" onClick={() => router.push(`/flow`)}>Авансы</Button>
-
-          <Table striped hover responsive="sm">
+          <Button onClick={() => setShow(!show)}>Показать все</Button>{" "}
+          <Button variant="info" onClick={() => router.push(`/flow`)}>
+            Авансы
+          </Button>{" "}
+          <Button variant="warning" onClick={() => router.push(`/expenses`)}>
+            Расходы
+          </Button>{" "}
+          <Table striped hover responsive="md">
             <thead>
               <tr>
                 <th></th>
                 <th>Заказ</th>
-                <th>Цена</th>
+                <th>Стоимость</th>
                 <th>Остаток</th>
+                <th>Прибыль</th>
+                <th>%</th>
                 <th>Затраты</th>
                 <th>Личные</th>
                 <th>Закрыт</th>
                 <th>В архиве</th>
-
               </tr>
             </thead>
             <tbody>
               {events.data.map((evt, index) =>
                 !evt.attributes.hidden || show ? (
                   <tr key={100 + index}>
-                    <Link href={`/events/edit/${evt.attributes.slug}`} key={110 + index}>
+                    <Link
+                      href={`/events/edit/${evt.attributes.slug}`}
+                      key={110 + index}
+                    >
                       <td>
                         <Image
                           key={120 + index}
@@ -104,25 +123,26 @@ export default function HomePage({ events }) {
                         />
                       </td>
                     </Link>
-                    <Link href={`/events/edit/${evt.attributes.slug}`} key={130 + index}>
-                      <td>
-                        <strong className={styles.clickableLink}>
-                          {evt.attributes.title}
-                        </strong>
-                      </td>
-                    </Link>
-                    <Link href={`/events/edit/${evt.attributes.slug}`} key={140 + index}>
-                      <td>{evt.attributes.clientPrice}</td>
-                    </Link>
-                    <Link href={`/events/edit/${evt.attributes.slug}`} key={150 + index}>
-                      <td>{evt.attributes.clientDept}</td>
-                    </Link>
-                    <Link href={`/events/edit/${evt.attributes.slug}`} key={160 + index}>
-                      <td>{evt.attributes.expenses}</td>
-                    </Link>
-                    <Link href={`/events/edit/${evt.attributes.slug}`} key={170 + index}>
-                      <td>{evt.attributes.expensesPersonal}</td>
-                    </Link>
+
+                    <td>
+                      <strong className={styles.clickableLink}>
+                        {evt.attributes.title}
+                      </strong>
+                    </td>
+
+                    <td>{evt.attributes.clientPrice}</td>
+
+                    <td>{evt.attributes.clientDept}</td>
+                    <td>{evt.attributes.interest}</td>
+                    <td>{`${(
+                      (evt.attributes.interest / evt.attributes.clientPrice) *
+                      100
+                    ).toFixed(1)}%`}</td>
+
+                    <td>{evt.attributes.expenses}</td>
+
+                    <td>{evt.attributes.expensesPersonal}</td>
+
                     <td key={180 + index}>
                       {evt.attributes.status ? (
                         <div className={styles.checkboxGreen}>
@@ -145,7 +165,6 @@ export default function HomePage({ events }) {
                         </div>
                       )}
                     </td>
-                    
                   </tr>
                 ) : (
                   <></>
@@ -163,23 +182,29 @@ export default function HomePage({ events }) {
                   <strong>{summ.summClientDept}</strong>
                 </td>
                 <td>
+                  <strong>{summ.summInterest}</strong>
+                </td>
+                <td></td>
+                <td>
                   <strong>{summ.summExpenses}</strong>
                 </td>
                 <td>
                   <strong>{summ.summPersonalExpenses}</strong>
                 </td>
-                <td></td>
-                <td></td>
+
+                <td colSpan={2}>
+                  {" "}
+                  <Link href="/events/add">
+                    <div className="d-grid gap-2">
+                      <Button variant="primary" size="md">
+                        <FaRegPlusSquare />
+                      </Button>
+                    </div>
+                  </Link>
+                </td>
               </tr>
             </thead>
           </Table>
-          <Link href="/events/add">
-            <div className="d-grid gap-2">
-              <Button variant="primary" size="lg">
-                <FaRegPlusSquare />
-              </Button>
-            </div>
-          </Link>
         </Layout>
       ) : (
         <LoginPage />
@@ -200,11 +225,10 @@ export default function HomePage({ events }) {
 */
 
 export async function getServerSideProps() {
-  const res = await fetch(`${API_URL}/api/events`)
-  const events = await res.json()
-
+  const res = await fetch(`${API_URL}/api/events`);
+  const events = await res.json();
 
   return {
-    props: { events }
-  }
+    props: { events },
+  };
 }

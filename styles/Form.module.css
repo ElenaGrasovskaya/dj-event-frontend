@@ -50,6 +50,11 @@
   width: 70%;
   height: 40px;
 }
+.form .inactive  {
+  background-color: lightgray;
+  border-radius: 3px;
+  border: none;
+}
 
 @media (max-width: 600px) {
   .grid {
@@ -72,6 +77,8 @@
 .backBtn {
   font-size: 30px;
   height: 30px;
+  width: 30px;
+
 }
 .headerContainer {
   display: flex;
@@ -80,4 +87,10 @@
   height: 40px;
   margin-bottom: 20px;
   gap: 10px;
+}
+
+.interest {
+  display: flex;
+  flex-direction: row;
+  gap:5px;
 }

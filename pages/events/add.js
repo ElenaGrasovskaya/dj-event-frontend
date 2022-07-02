@@ -142,14 +142,16 @@ export default function AddEventPage() {
       interest: values.clientPrice - newExpense,
     });
   };
+  const handleGoBack = () =>{
+    const result = window.confirm("Выйти без сохранения?");
+    result?router.push(`/events`):null;
+
+  }
 
   return (
     <Layout title="Добавить новый заказ">
-      <Link href="/events">
-        <a className={styles.backBtn}>
-          <BiLeftArrowAlt />
-        </a>
-      </Link>
+            <ToastContainer />
+            <Button variant="link"  onClick={handleGoBack}><a className={styles.backBtn}><BiLeftArrowAlt/></a></Button>
 
       <div className={styles.headerContainer}>
         <h1>Новый заказ</h1>
@@ -163,7 +165,7 @@ export default function AddEventPage() {
         </Button>
       </div>
 
-      <ToastContainer />
+
 
       <form onSubmit={handleSubmit} className={styles.form}>
         <div className={styles.grid}>
@@ -209,13 +211,25 @@ export default function AddEventPage() {
           </div>
 
           <div>
-            <label htmlFor="clientPrice">Цена для клиента:</label>
+            <label htmlFor="clientPrice">Стоимость:</label>
             <input
               type="number"
               id="clientPrice"
               name="clientPrice"
               value={values.clientPrice}
               onChange={handleInputChange}
+            />
+          </div>
+          
+          <div>
+            <label htmlFor="clientDept">Остаток по заказу:</label>
+            <input
+              type="number"
+              id="clientDept"
+              name="clientDept"
+              readOnly
+              value={values.clientPrice - values.clientPrepay}
+              className={styles.inactive}
             />
           </div>
           <div>
@@ -229,18 +243,9 @@ export default function AddEventPage() {
             />
           </div>
           <div>
-            <label htmlFor="clientDept">Клиент должен:</label>
-            <input
-              type="number"
-              id="clientDept"
-              name="clientDept"
-              readOnly
-              value={values.clientPrice - values.clientPrepay}
-            />
-          </div>
-          <div>
             <label htmlFor="expenses">Сумма затрат:</label>
             <input
+            
               type="number"
               id="expenses"
               name="expenses"
@@ -248,6 +253,7 @@ export default function AddEventPage() {
               value={values.items.items.reduce((acc, i) => {
                 return acc + Number(i.price);
               }, 0)}
+              className={styles.inactive}
             />
           </div>
           <div>
@@ -260,11 +266,12 @@ export default function AddEventPage() {
               value={values.items.items.reduce((acc, i) => {
                 return i.status ? acc + Number(i.price) : acc;
               }, 0)}
+              className={styles.inactive}
             />
           </div>
           <div>
             <label htmlFor="interest">Прибыль:</label>
-            <input
+            <div className={styles.interest}><input
               type="number"
               id="interest"
               name="interest"
@@ -275,7 +282,21 @@ export default function AddEventPage() {
                   return acc + Number(i.price);
                 }, 0)
               }
+              className={styles.inactive}
             />
+            <input
+              type="text"
+              id="interest"
+              name="interest"
+              readOnly
+              value={
+                `${((values.clientPrice -
+                values.items.items.reduce((acc, i) => {
+                  return acc + Number(i.price);
+                }, 0))/values.clientPrice)*100}%`
+              }
+              className={styles.inactive}
+            /></div>
           </div>
         </div>
         <div>
