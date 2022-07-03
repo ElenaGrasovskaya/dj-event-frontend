@@ -15,7 +15,7 @@ import { BiLeftArrowAlt } from "react-icons/bi";
 import Link from "next/link";
 import Modal from 'react-bootstrap/Modal';
 
-export default function expenses({ expenses }) {
+export default function Expenses({ expenses }) {
   const date = new Date();
   const dateMs = Date.parse(date);
   const { user } = useContext(AuthContext);
