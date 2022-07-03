@@ -3,22 +3,34 @@ import { API_URL } from "@/config/index";
 import HomePage from "pages";
 
 
-export default function EventsPage({ events }) 
+export default function EventsPage(props) 
 {
-  return <HomePage events = {events}/>
+
+  const { events, flow, expenses } = props;
+  return <HomePage events={events} flow ={flow} expenses={expenses}/>
   
 
 }
 
-export async function getStaticProps() {
-  const res = await fetch(`${API_URL}/api/events`);
-  const events = await res.json();
+export async function getServerSideProps() {
+
+
+  const [res, resFlow, resExpenses] = await Promise.all([
+    fetch(`${API_URL}/api/events`), 
+    fetch(`${API_URL}/api/flows`),
+    fetch(`${API_URL}/api/expenses`)
+  ]);
+  const [events, flow, expenses] = await Promise.all([
+    res.json(), 
+    resFlow.json(),
+    resExpenses.json()
+  ]);
 
   return {
-    props: { events },
-    revalidate: 1,
+    props: { events, flow, expenses },
   };
 }
+
 
 /*
 

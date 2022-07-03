@@ -44,6 +44,8 @@ export default function AddEventPage() {
     image_url: "/images/sample/kitchen.png",
     userName: user ? user.username : "",
     hidden: false,
+    salary: 0,
+    percent: 40,
   });
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -83,12 +85,17 @@ export default function AddEventPage() {
       const newPersonalExpense = value.items.reduce((acc, i) => {
         return i.status ? acc + Number(i.price) : acc;
       }, 0);
+      const newSalary =(values.clientPrice -
+        values.items.items.reduce((acc, i) => {
+          return acc + Number(i.price);
+        }, 0))*(values.percent/100);
       setValues({
         ...values,
         expenses: newExpense,
         interest: values.clientPrice - newExpense,
         expensesPersonal: newPersonalExpense,
         items: value,
+        salary: newSalary,
       });
     } else if (name === "name") {
       setValues({ ...values, name: value });
@@ -97,13 +104,20 @@ export default function AddEventPage() {
         ...values,
         [name]: value,
         clientDept: values.clientPrice - value,
+        
       });
     } else if (name === "clientPrice") {
+      const newSalary =(value -
+        values.items.items.reduce((acc, i) => {
+          return acc + Number(i.price);
+        }, 0))*(values.percent/100);
       setValues({
         ...values,
         [name]: value,
         clientDept: value - values.clientPrepay,
         interest: value - values.expenses,
+        salary: newSalary,
+        
       });
     } else if (name === "status") {
       setValues({ ...values, status: checked });
@@ -270,8 +284,9 @@ export default function AddEventPage() {
             />
           </div>
           <div>
-            <label htmlFor="interest">Прибыль:</label>
-            <div className={styles.interest}><input
+            
+            <div className={styles.interest}>
+            <label htmlFor="interest">Прибыль:<input
               type="number"
               id="interest"
               name="interest"
@@ -283,20 +298,34 @@ export default function AddEventPage() {
                 }, 0)
               }
               className={styles.inactive}
-            />
-            <input
+            /></label>
+            <label htmlFor="interestPercent">Процент:<input
               type="text"
-              id="interest"
-              name="interest"
+              id="interestPercent"
+              name="interestPercent"
               readOnly
               value={
-                `${((values.clientPrice -
+                `${(((values.clientPrice -
                 values.items.items.reduce((acc, i) => {
                   return acc + Number(i.price);
-                }, 0))/values.clientPrice)*100}%`
+                }, 0))/values.clientPrice)*100).toFixed(1)}%`
               }
               className={styles.inactive}
-            /></div>
+            /></label>
+            <label htmlFor="salary">ЗП:<input
+              type="number"
+              id="salary"
+              name="salary"
+              readOnly
+              value={
+                (values.clientPrice -
+                values.items.items.reduce((acc, i) => {
+                  return acc + Number(i.price);
+                }, 0))*(values.percent/100)
+              }
+              className={styles.inactive}
+            /></label>
+            </div>
           </div>
         </div>
         <div>

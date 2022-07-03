@@ -42,6 +42,8 @@ export default function EditEventsPage({ evt }) {
     description: evt.attributes.description,
     userName: user ? user.username : "",
     hidden: evt.attributes.hidden,
+    salary: evt.attributes.salary,
+    percent: 40,
   });
 
   const [imagePreview, setImagePreview] = useState(
@@ -90,12 +92,18 @@ export default function EditEventsPage({ evt }) {
       const newPersonalExpense = value.items.reduce((acc, i) => {
         return i.status ? acc + Number(i.price) : acc;
       }, 0);
+
+      const newSalary = (values.clientPrice -
+        values.items.items.reduce((acc, i) => {
+          return acc + Number(i.price);
+        }, 0))*(values.percent/100);
       setValues({
         ...values,
         expenses: newExpense,
         interest: values.clientPrice - newExpense,
         expensesPersonal: newPersonalExpense,
         items: value,
+        salary: newSalary,
       });
     } else if (name === "name") {
       setValues({ ...values, name: value });
@@ -106,11 +114,18 @@ export default function EditEventsPage({ evt }) {
         clientDept: values.clientPrice - value,
       });
     } else if (name === "clientPrice") {
+      const newSalary =(value-
+        values.items.items.reduce((acc, i) => {
+          return acc + Number(i.price);
+        }, 0))*(values.percent/100);
+        console.log("newSalary", newSalary)
       setValues({
         ...values,
         [name]: value,
         clientDept: value - values.clientPrepay,
         interest: value - values.expenses,
+        salary: newSalary,
+        
       });
     } else if (name === "status") {
       setValues({ ...values, status: checked });
@@ -166,7 +181,8 @@ export default function EditEventsPage({ evt }) {
       values.date === evt.attributes.date &&
       values.time === evt.attributes.time &&
       values.description === evt.attributes.description &&
-      values.hidden === evt.attributes.hidden
+      values.hidden === evt.attributes.hidden &&
+      values.status === evt.attributes.status
     ) {
       setShowButton(false);
     } else {
@@ -328,10 +344,10 @@ export default function EditEventsPage({ evt }) {
               }
               className={styles.inactive}
             /></label>
-            <label htmlFor="interest">Процент:<input
+            <label htmlFor="interestPercent">Процент:<input
               type="text"
-              id="interest"
-              name="interest"
+              id="interestPercent"
+              name="interestPercent"
               readOnly
               value={
                 `${(((values.clientPrice -
@@ -341,16 +357,16 @@ export default function EditEventsPage({ evt }) {
               }
               className={styles.inactive}
             /></label>
-            <label htmlFor="interest">ЗП:<input
-              type="text"
-              id="interest"
-              name="interest"
+            <label htmlFor="salary">ЗП:<input
+              type="number"
+              id="salary"
+              name="salary"
               readOnly
               value={
                 (values.clientPrice -
                 values.items.items.reduce((acc, i) => {
                   return acc + Number(i.price);
-                }, 0))*0.4
+                }, 0))*(values.percent/100)
               }
               className={styles.inactive}
             /></label>

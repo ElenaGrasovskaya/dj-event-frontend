@@ -17,14 +17,20 @@ import { BiArchiveIn } from "react-icons/bi";
 import { FaTimes } from "react-icons/fa";
 import styles from "@/styles/Home.module.css";
 import { BiArchiveOut } from "react-icons/bi";
+import Alert from 'react-bootstrap/Alert';
 
-export default function HomePage({ events }) {
+export default function HomePage(props) {
+  const {events, flow, expenses} = props;
+
+  console.log("props", props);
   const [summ, setSumm] = useState({
     summClientPrice: 0,
     summClientDept: 0,
     summInterest: 0,
-    summExpenses: 0,
+    summSalary: 0,
     summPersonalExpenses: 0,
+    summFlow: 0,
+    summExpenses: 0,
   });
 
   const [show, setShow] = useState(false);
@@ -38,7 +44,7 @@ export default function HomePage({ events }) {
   console.log("events", events);
 
   useEffect(() => {
-    refreshData();
+    
     setSumm({
       summClientPrice: events.data.reduce(
         (acc, el) =>
@@ -59,9 +65,9 @@ export default function HomePage({ events }) {
         0
       ),
 
-      summExpenses: events.data.reduce(
+      summSalary: events.data.reduce(
         (acc, el) =>
-          !el.attributes.hidden || show ? acc + el.attributes.expenses : acc,
+        !el.attributes.hidden && el.attributes.status ? acc + el.attributes.salary : acc,
         0
       ),
 
@@ -69,6 +75,22 @@ export default function HomePage({ events }) {
         (acc, el) =>
           !el.attributes.hidden || show
             ? acc + el.attributes.expensesPersonal
+            : acc,
+        0
+      ),
+
+      summFlow: flow.data.reduce(
+        (acc, el) =>
+          !el.attributes.hidden
+            ? acc + el.attributes.value
+            : acc,
+        0
+      ),
+
+      summExpenses: expenses.data.reduce(
+        (acc, el) =>
+          !el.attributes.hidden
+            ? acc + el.attributes.value
             : acc,
         0
       ),
@@ -97,7 +119,7 @@ export default function HomePage({ events }) {
                 <th>Остаток</th>
                 <th>Прибыль</th>
                 <th>%</th>
-                <th>Затраты</th>
+                <th>Зарплата</th>
                 <th>Личные</th>
                 <th>Закрыт</th>
                 <th>В архиве</th>
@@ -125,9 +147,14 @@ export default function HomePage({ events }) {
                     </Link>
 
                     <td>
-                      <strong className={styles.clickableLink}>
-                        {evt.attributes.title}
-                      </strong>
+                      <Link
+                        href={`/events/edit/${evt.attributes.slug}`}
+                        key={120 + index}
+                      >
+                        <strong className={styles.clickableLink}>
+                          {evt.attributes.title}
+                        </strong>
+                      </Link>
                     </td>
 
                     <td>{evt.attributes.clientPrice}</td>
@@ -139,7 +166,7 @@ export default function HomePage({ events }) {
                       100
                     ).toFixed(1)}%`}</td>
 
-                    <td>{evt.attributes.expenses}</td>
+                    <td>{evt.attributes.salary}</td>
 
                     <td>{evt.attributes.expensesPersonal}</td>
 
@@ -176,17 +203,17 @@ export default function HomePage({ events }) {
                 <td></td>
                 <td></td>
                 <td>
-                  <strong>{summ.summClientPrice}</strong>
+                
                 </td>
                 <td>
-                  <strong>{summ.summClientDept}</strong>
+                  
                 </td>
                 <td>
                   <strong>{summ.summInterest}</strong>
                 </td>
                 <td></td>
                 <td>
-                  <strong>{summ.summExpenses}</strong>
+                  <strong>{summ.summSalary}</strong>
                 </td>
                 <td>
                   <strong>{summ.summPersonalExpenses}</strong>
@@ -197,13 +224,42 @@ export default function HomePage({ events }) {
                   <Link href="/events/add">
                     <div className="d-grid gap-2">
                       <Button variant="primary" size="md">
-                        <FaRegPlusSquare />
+                        Новый заказ
                       </Button>
                     </div>
                   </Link>
                 </td>
               </tr>
             </thead>
+          </Table>
+
+          <Table borderless>
+            <tbody>
+              <tr>
+              <td><Alert variant="primary">Зарплата:</Alert></td>
+              <td><Alert variant="primary">{summ.summSalary}</Alert></td>
+            </tr>
+            <tr>
+              <td><Alert variant="danger">Личные:</Alert></td>
+              <td><Alert variant="danger">{summ.summPersonalExpenses}</Alert></td>
+            </tr>
+            <tr>
+              <td><Alert variant="info">Авансы:</Alert></td>
+              <td><Alert variant="info">{summ.summFlow}</Alert></td>
+            </tr>
+            <tr>
+              <td><Alert variant="warning">Расходы:</Alert></td>
+              <td><Alert variant="warning">{summ.summExpenses}</Alert></td>
+            </tr>
+
+            <tr>
+              <th><Alert variant="dark">Баланс:</Alert></th>
+              <th><Alert variant="dark">{summ.summSalary+ summ.summPersonalExpenses-summ.summFlow+summ.summExpenses}</Alert></th>
+            </tr>
+
+            
+            </tbody>
+
           </Table>
         </Layout>
       ) : (
@@ -225,10 +281,20 @@ export default function HomePage({ events }) {
 */
 
 export async function getServerSideProps() {
-  const res = await fetch(`${API_URL}/api/events`);
-  const events = await res.json();
+
+
+  const [res, resFlow, resExpenses] = await Promise.all([
+    fetch(`${API_URL}/api/events`), 
+    fetch(`${API_URL}/api/flows`),
+    fetch(`${API_URL}/api/expenses`)
+  ]);
+  const [events, flow, expenses] = await Promise.all([
+    res.json(), 
+    resFlow.json(),
+    resExpenses.json()
+  ]);
 
   return {
-    props: { events },
+    props: { events, flow, expenses },
   };
 }
