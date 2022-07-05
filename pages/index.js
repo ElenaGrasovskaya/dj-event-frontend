@@ -239,24 +239,24 @@ export default function HomePage(props) {
             <tbody>
               <tr>
               <td><Alert className={"mb-0 p-0"} variant="primary"><h4 className={"mb-0"}>Зарплата:</h4></Alert></td>
-              <td><Alert className={"mb-0 p-0"} variant="primary"><h4 className={"mb-0"}>{summ.summSalary}</h4></Alert></td>
+              <td><Alert className={"mb-0 p-0"} variant="primary"><h4 className={"mb-0"}>{summ.summSalary.toFixed(1)}</h4></Alert></td>
             </tr>
             <tr>
               <td><Alert className={"mb-0 p-0"} variant="danger"><h4 className={"mb-0"}>Личные:</h4></Alert></td>
-              <td><Alert className={"mb-0 p-0"} variant="danger"><h4 className={"mb-0"}>{summ.summPersonalExpenses}</h4></Alert></td>
+              <td><Alert className={"mb-0 p-0"} variant="danger"><h4 className={"mb-0"}>{summ.summPersonalExpenses.toFixed(1)}</h4></Alert></td>
             </tr>
             <tr>
               <td><Alert className={"mb-0 p-0"} variant="info"><h4 className={"mb-0"}>Авансы:</h4></Alert></td>
-              <td><Alert className={"mb-0 p-0"} variant="info"><h4 className={"mb-0"}>{summ.summFlow}</h4></Alert></td>
+              <td><Alert className={"mb-0 p-0"} variant="info"><h4 className={"mb-0"}>{summ.summFlow.toFixed(1)}</h4></Alert></td>
             </tr>
             <tr>
               <td><Alert className={"mb-0 p-0"} variant="warning"><h4 className={"mb-0"}>Расходы:</h4></Alert></td>
-              <td><Alert className={"mb-0 p-0"} variant="warning"><h4 className={"mb-0"}>{summ.summExpenses}</h4></Alert></td>
+              <td><Alert className={"mb-0 p-0"} variant="warning"><h4 className={"mb-0"}>{summ.summExpenses.toFixed(1)}</h4></Alert></td>
             </tr>
 
             <tr>
               <th><Alert className={"mb-0 p-0 lg"} variant="dark"><h4 className={"mb-0"}>Баланс:</h4></Alert></th>
-              <th><Alert className={"mb-0 p-0 lg"} variant="dark"><h4 className={"mb-0"}>{summ.summSalary+ summ.summPersonalExpenses-summ.summFlow+summ.summExpenses}</h4></Alert></th>
+              <th><Alert className={"mb-0 p-0 lg"} variant="dark"><h4 className={"mb-0"}>{(summ.summSalary+ summ.summPersonalExpenses-summ.summFlow+summ.summExpenses).toFixed(1)}</h4></Alert></th>
             </tr>
 
             
