@@ -14,6 +14,8 @@ import { useRouter } from "next/router";
 import { BiLeftArrowAlt } from "react-icons/bi";
 import Link from "next/link";
 import Modal from 'react-bootstrap/Modal';
+import { BiArchiveIn } from "react-icons/bi";
+import { BiArchiveOut } from "react-icons/bi";
 
 export default function Expenses({ expenses }) {
   const date = new Date();
@@ -107,15 +109,15 @@ export default function Expenses({ expenses }) {
     }
   };
 
-  const handleHide = async (e, currentFlow) => {
+  const handleHide = async (e, currentExpense) => {
     e.preventDefault();
     e.stopPropagation();
-    const res = await fetch(`${API_URL}/api/expenses/${currentFlow.id}`, {
+    const res = await fetch(`${API_URL}/api/expenses/${currentExpense.id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ data: {...currentFlow.attributes, hidden: true} }),
+      body: JSON.stringify({ data: {...currentExpense.attributes, hidden: !currentExpense.attributes.hidden} }),
     });
 
     if (!res.ok) {
@@ -181,13 +183,21 @@ export default function Expenses({ expenses }) {
                 <td>
                   <Moment format="DD.MM.YYYY hh:mm">{expense.attributes.date}</Moment>
                 </td>
-                <td><CloseButton aria-label="Hide" onClick={(e)=>handleHide(e, expense)} /></td>
+                <td>{expense.attributes.hidden ? (
+                        <div className={styles.checkboxGreen} onClick={(e)=>handleHide(e, expense)}>
+                          <BiArchiveIn />
+                        </div>
+                      ) : (
+                        <div className={styles.checkboxRed} onClick={(e)=>handleHide(e, expense)}>
+                          <BiArchiveOut />
+                        </div>
+                      )}</td>
               </tr>
             ))}
 
             <tr className={styles.result}>
               <th width="50%"></th>
-              <th width="25%">{summ}</th>
+              <th width="25%">{summ.toFixed(1)}</th>
               <th width="25%"></th>
               <th></th>
             </tr>

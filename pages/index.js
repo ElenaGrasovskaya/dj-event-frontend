@@ -13,9 +13,11 @@ import Button from "react-bootstrap/Button";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { BsFillQuestionSquareFill } from "react-icons/bs";
 import { BsFillCheckSquareFill } from "react-icons/bs";
-import { BiArchiveIn } from "react-icons/bi";
-import { FaTimes } from "react-icons/fa";
+
+import { FaArrowDown } from "react-icons/fa";
+import { FaArrowUp } from "react-icons/fa";
 import styles from "@/styles/Home.module.css";
+import { BiArchiveIn } from "react-icons/bi";
 import { BiArchiveOut } from "react-icons/bi";
 import Alert from 'react-bootstrap/Alert';
 
@@ -209,14 +211,14 @@ export default function HomePage(props) {
                   
                 </td>
                 <td>
-                  <strong>{summ.summInterest}</strong>
+                  <strong>{summ.summInterest.toFixed(1)}</strong>
                 </td>
                 <td></td>
                 <td>
-                  <strong>{summ.summSalary}</strong>
+                  <strong>{summ.summSalary.toFixed(1)}</strong>
                 </td>
                 <td>
-                  <strong>{summ.summPersonalExpenses}</strong>
+                  <strong>{summ.summPersonalExpenses.toFixed(1)}</strong>
                 </td>
 
                 <td colSpan={2}>
@@ -236,25 +238,25 @@ export default function HomePage(props) {
           <Table borderless>
             <tbody>
               <tr>
-              <td><Alert className={"mb-0"} variant="primary">Зарплата:</Alert></td>
-              <td><Alert className={"mb-0"} variant="primary">{summ.summSalary}</Alert></td>
+              <td><Alert className={"mb-0 p-0"} variant="primary"><h4 className={"mb-0"}>Зарплата:</h4></Alert></td>
+              <td><Alert className={"mb-0 p-0"} variant="primary"><h4 className={"mb-0"}>{summ.summSalary}</h4></Alert></td>
             </tr>
             <tr>
-              <td><Alert className={"mb-0"} variant="danger">Личные:</Alert></td>
-              <td><Alert className={"mb-0"} variant="danger">{summ.summPersonalExpenses}</Alert></td>
+              <td><Alert className={"mb-0 p-0"} variant="danger"><h4 className={"mb-0"}>Личные:</h4></Alert></td>
+              <td><Alert className={"mb-0 p-0"} variant="danger"><h4 className={"mb-0"}>{summ.summPersonalExpenses}</h4></Alert></td>
             </tr>
             <tr>
-              <td><Alert className={"mb-0"} variant="info">Авансы:</Alert></td>
-              <td><Alert className={"mb-0"} variant="info">{summ.summFlow}</Alert></td>
+              <td><Alert className={"mb-0 p-0"} variant="info"><h4 className={"mb-0"}>Авансы:</h4></Alert></td>
+              <td><Alert className={"mb-0 p-0"} variant="info"><h4 className={"mb-0"}>{summ.summFlow}</h4></Alert></td>
             </tr>
             <tr>
-              <td><Alert className={"mb-0"} variant="warning">Расходы:</Alert></td>
-              <td><Alert className={"mb-0"} variant="warning">{summ.summExpenses}</Alert></td>
+              <td><Alert className={"mb-0 p-0"} variant="warning"><h4 className={"mb-0"}>Расходы:</h4></Alert></td>
+              <td><Alert className={"mb-0 p-0"} variant="warning"><h4 className={"mb-0"}>{summ.summExpenses}</h4></Alert></td>
             </tr>
 
             <tr>
-              <th><Alert className={"mb-0"} variant="dark">Баланс:</Alert></th>
-              <th><Alert className={"mb-0"} variant="dark">{summ.summSalary+ summ.summPersonalExpenses-summ.summFlow+summ.summExpenses}</Alert></th>
+              <th><Alert className={"mb-0 p-0 lg"} variant="dark"><h4 className={"mb-0"}>Баланс:</h4></Alert></th>
+              <th><Alert className={"mb-0 p-0 lg"} variant="dark"><h4 className={"mb-0"}>{summ.summSalary+ summ.summPersonalExpenses-summ.summFlow+summ.summExpenses}</h4></Alert></th>
             </tr>
 
             

@@ -180,6 +180,10 @@
     margin-bottom: 0 !important;
   }
 
+  .container h4 {
+    margin-bottom: 0;
+  }
+
   @media (max-width: 600px) {
     .eventTitle
     {

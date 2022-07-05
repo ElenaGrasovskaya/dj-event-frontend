@@ -16,3 +16,16 @@
   .result {
     border-top: 2px solid black;
   }
+
+  .checkboxGreen
+  {
+    font-size: 20px;
+  
+    color: lime;
+  }
+  .checkboxRed
+  {
+    font-size: 20px;
+  
+    color: red;
+  }

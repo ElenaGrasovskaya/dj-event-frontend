@@ -15,6 +15,9 @@ import { BiLeftArrowAlt } from "react-icons/bi";
 import Link from "next/link";
 import Modal from 'react-bootstrap/Modal';
 
+import { BiArchiveIn } from "react-icons/bi";
+import { BiArchiveOut } from "react-icons/bi";
+
 export default function Flows({ flows }) {
   const date = new Date();
   const dateMs = Date.parse(date);
@@ -114,7 +117,7 @@ export default function Flows({ flows }) {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ data: {...currentFlow.attributes, hidden: true} }),
+      body: JSON.stringify({ data: {...currentFlow.attributes, hidden: !currentFlow.attributes.hidden} }),
     });
 
     if (!res.ok) {
@@ -180,13 +183,21 @@ export default function Flows({ flows }) {
                 <td>
                   <Moment format="DD.MM.YYYY hh:mm">{flow.attributes.date}</Moment>
                 </td>
-                <td><CloseButton aria-label="Hide" onClick={(e)=>handleHide(e, flow)} /></td>
+                <td>{flow.attributes.hidden ? (
+                        <div className={styles.checkboxGreen} onClick={(e)=>handleHide(e, flow)}>
+                          <BiArchiveIn />
+                        </div>
+                      ) : (
+                        <div className={styles.checkboxRed} onClick={(e)=>handleHide(e, flow)}>
+                          <BiArchiveOut />
+                        </div>
+                      )}</td>
               </tr>
             ))}
 
             <tr className={styles.result}>
               <th width="50%"></th>
-              <th width="25%">{summ}</th>
+              <th width="25%">{summ.toFixed(1)}</th>
               <th width="25%"></th>
               <th></th>
             </tr>
