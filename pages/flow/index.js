@@ -27,6 +27,7 @@ export default function Flows({ flows }) {
 
   const [summ, setSumm] = useState(0);
   const [show, setShow] = useState(false);
+  const [showAll, setShowAll] = useState(false);
 
   useEffect(() => {
     setSumm(
@@ -157,7 +158,8 @@ export default function Flows({ flows }) {
   return (
     <Layout>
         <h1>Авансы</h1>
-        <Link href='/events'><a className={styles.backBtn}><BiLeftArrowAlt/></a></Link>
+        <Link href='/events'><a className={styles.backBtn}><BiLeftArrowAlt/></a></Link>{"   "}
+         <Button onClick={(e) => {setShowAll(!showAll)}}>Показать все</Button>{" "}
       <Form>
         <Table striped hover responsive="sm">
           <thead>
@@ -170,7 +172,7 @@ export default function Flows({ flows }) {
           </thead>
 
           <tbody>
-            {flows.data.map((flow, index) => (!flow.attributes.hidden&&
+            {flows.data.map((flow, index) => ((!flow.attributes.hidden||showAll)&&
               <tr key={200 + index} onClick={(e)=>{setValues({...flow.attributes, id:flow.id})
                 handleShow()}}>
                 <td>{flow.attributes.title}</td>

@@ -236,25 +236,25 @@ export default function HomePage(props) {
           <Table borderless>
             <tbody>
               <tr>
-              <td><Alert variant="primary">Зарплата:</Alert></td>
-              <td><Alert variant="primary">{summ.summSalary}</Alert></td>
+              <td><Alert className={"mb-0"} variant="primary">Зарплата:</Alert></td>
+              <td><Alert className={"mb-0"} variant="primary">{summ.summSalary}</Alert></td>
             </tr>
             <tr>
-              <td><Alert variant="danger">Личные:</Alert></td>
-              <td><Alert variant="danger">{summ.summPersonalExpenses}</Alert></td>
+              <td><Alert className={"mb-0"} variant="danger">Личные:</Alert></td>
+              <td><Alert className={"mb-0"} variant="danger">{summ.summPersonalExpenses}</Alert></td>
             </tr>
             <tr>
-              <td><Alert variant="info">Авансы:</Alert></td>
-              <td><Alert variant="info">{summ.summFlow}</Alert></td>
+              <td><Alert className={"mb-0"} variant="info">Авансы:</Alert></td>
+              <td><Alert className={"mb-0"} variant="info">{summ.summFlow}</Alert></td>
             </tr>
             <tr>
-              <td><Alert variant="warning">Расходы:</Alert></td>
-              <td><Alert variant="warning">{summ.summExpenses}</Alert></td>
+              <td><Alert className={"mb-0"} variant="warning">Расходы:</Alert></td>
+              <td><Alert className={"mb-0"} variant="warning">{summ.summExpenses}</Alert></td>
             </tr>
 
             <tr>
-              <th><Alert variant="dark">Баланс:</Alert></th>
-              <th><Alert variant="dark">{summ.summSalary+ summ.summPersonalExpenses-summ.summFlow+summ.summExpenses}</Alert></th>
+              <th><Alert className={"mb-0"} variant="dark">Баланс:</Alert></th>
+              <th><Alert className={"mb-0"} variant="dark">{summ.summSalary+ summ.summPersonalExpenses-summ.summFlow+summ.summExpenses}</Alert></th>
             </tr>
 
             

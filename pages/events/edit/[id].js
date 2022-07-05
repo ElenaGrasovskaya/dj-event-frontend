@@ -44,6 +44,7 @@ export default function EditEventsPage({ evt }) {
     hidden: evt.attributes.hidden,
     salary: evt.attributes.salary,
     percent: 40,
+    image_url: evt.attributes.image_url,
   });
 
   const [imagePreview, setImagePreview] = useState(
@@ -134,7 +135,7 @@ export default function EditEventsPage({ evt }) {
     } else {
       setValues({ ...values, [name]: value });
     }
-    handleActiveButtonChange();
+    handleActiveButtonChange(checked);
   };
   const calculateExpense = () => {
     const newExpense = values.items.items.reduce((acc, i) => {
@@ -158,7 +159,7 @@ export default function EditEventsPage({ evt }) {
     result ? router.push(`/events`) : null;
   };
 
-  const handleActiveButtonChange = () => {
+  const handleActiveButtonChange = (checked) => {
     if (
       values.title === evt.attributes.title &&
       values.name === evt.attributes.name &&
@@ -181,8 +182,8 @@ export default function EditEventsPage({ evt }) {
       values.date === evt.attributes.date &&
       values.time === evt.attributes.time &&
       values.description === evt.attributes.description &&
-      values.hidden === evt.attributes.hidden &&
-      values.status === evt.attributes.status
+      checked === evt.attributes.hidden &&
+      checked === evt.attributes.status
     ) {
       setShowButton(false);
     } else {

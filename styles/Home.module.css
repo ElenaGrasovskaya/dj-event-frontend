@@ -176,6 +176,10 @@
     gap: 10px;
   }
 
+  .alert {
+    margin-bottom: 0 !important;
+  }
+
   @media (max-width: 600px) {
     .eventTitle
     {

@@ -27,6 +27,8 @@ export default function Expenses({ expenses }) {
 
   const [summ, setSumm] = useState(0);
   const [show, setShow] = useState(false);
+  const [showAll, setShowAll] = useState(false);
+  
 
   useEffect(() => {
     setSumm(
@@ -157,7 +159,8 @@ export default function Expenses({ expenses }) {
   return (
     <Layout>
         <h1>Расходы</h1>
-        <Link href='/events'><a className={styles.backBtn}><BiLeftArrowAlt/></a></Link>
+        <Link href='/events'><a className={styles.backBtn}><BiLeftArrowAlt/></a></Link> {"   "}
+         <Button onClick={() => setShowAll(!showAll)}>Показать все</Button>{" "}
       <Form>
         <Table striped hover responsive="sm">
           <thead>
@@ -170,15 +173,15 @@ export default function Expenses({ expenses }) {
           </thead>
 
           <tbody>
-            {expenses.data.map((flow, index) => (!flow.attributes.hidden&&
-              <tr key={200 + index} onClick={(e)=>{setValues({...flow.attributes, id:flow.id})
+            {expenses.data.map((expense, index) => ((!expense.attributes.hidden || showAll)&&
+              <tr key={200 + index} onClick={(e)=>{setValues({...expense.attributes, id:expense.id})
                 handleShow()}}>
-                <td>{flow.attributes.title}</td>
-                <td>{flow.attributes.value}</td>
+                <td>{expense.attributes.title}</td>
+                <td>{expense.attributes.value}</td>
                 <td>
-                  <Moment format="DD.MM.YYYY hh:mm">{flow.attributes.date}</Moment>
+                  <Moment format="DD.MM.YYYY hh:mm">{expense.attributes.date}</Moment>
                 </td>
-                <td><CloseButton aria-label="Hide" onClick={(e)=>handleHide(e, flow)} /></td>
+                <td><CloseButton aria-label="Hide" onClick={(e)=>handleHide(e, expense)} /></td>
               </tr>
             ))}
 
