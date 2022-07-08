@@ -32,7 +32,7 @@ export default function LoginPage() {
                 <ToastContainer />
                 <form onSubmit={handleSubmit}>
                     <div>
-                        <label htmlFor="email">Имейл</label>
+                        <label htmlFor="email">Логин</label>
                         <input type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)}></input>
                     </div>
                     <div>

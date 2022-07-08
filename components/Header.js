@@ -15,15 +15,18 @@ export default function Header() {
     <header className={styles.header}>
       <div className={styles.logo}>
         <Link href="/">
-          <a>Libra Portal</a>
+          <><img height="50px" src="/images/sample/logo_transparent.png"></img>{" "}
+          <a className={styles.logo}>Libra Portal</a>{" "}
+          {user?(<span className={styles.userName}>
+
+        {user.username}
+
+      </span>
+):(<span></span>)}
+          </>
         </Link>
       </div>
-      {user?(<div>
-        <h2>
-        {user.username}
-        </h2>
-      </div>
-):(<div></div>)}
+      
       <Search />
 
       <nav>

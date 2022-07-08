@@ -184,6 +184,17 @@
     margin-bottom: 0;
   }
 
+  .tableCenter th {
+    text-align: center;
+    vertical-align: center;
+  }
+
+  .tableCenter td {
+    text-align: center;
+    vertical-align: center;
+  }
+
+
   @media (max-width: 600px) {
     .eventTitle
     {

@@ -33,14 +33,20 @@
   }
   
   .logo {
-    color: red;
+    color: #ABC038;
     font-size: 20px;
     text-transform: uppercase;
   }
   
   .logo a {
-    color: red;
+    color: #ABC038;
   }
+  .userName {
+    font-size: large;
+    font-weight: bold;
+    color: #000;
+  }
+
   
   @media (max-width: 768px) {
     .header {

@@ -1,6 +1,7 @@
 import { ToastContainer, toast } from "react-toastify";
+import "bootstrap/dist/css/bootstrap.min.css";
 import "react-toastify/dist/ReactToastify.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import Layout from "@/components/Layout";
@@ -76,8 +77,33 @@ export default function EditEventsPage({ evt }) {
     } else {
       const data = await res.json();
       console.log("res", res);
+      handleActiveButtonChange();
       toast.success("Saved");
       if (e.target.value === "Сохранить и выйти") router.push(`/events`);
+    }
+  };
+
+
+  const handleDelete = async (e) => {
+    e.preventDefault();
+    
+    console.log("e", e);
+
+    const res = await fetch(`${API_URL}/api/events/${evt.id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      
+    });
+
+    if (!res.ok) {
+      toast.error("Something went wrong");
+    } else {
+      const data = await res.json();
+      console.log("res", res);
+      toast.success("Удалено");
+      router.push(`/events`);
     }
   };
 
@@ -94,17 +120,19 @@ export default function EditEventsPage({ evt }) {
         return i.status ? acc + Number(i.price) : acc;
       }, 0);
 
-      const newSalary = (values.clientPrice -
-        values.items.items.reduce((acc, i) => {
-          return acc + Number(i.price);
-        }, 0))*(values.percent/100);
+      const newSalary =
+        (values.clientPrice -
+          values.items.items.reduce((acc, i) => {
+            return acc + Number(i.price);
+          }, 0)) *
+        (values.percent / 100);
       setValues({
         ...values,
         expenses: newExpense,
         interest: values.clientPrice - newExpense,
         expensesPersonal: newPersonalExpense,
         items: value,
-        salary: newSalary,
+        salary: newSalary.toFixed(1),
       });
     } else if (name === "name") {
       setValues({ ...values, name: value });
@@ -115,18 +143,19 @@ export default function EditEventsPage({ evt }) {
         clientDept: values.clientPrice - value,
       });
     } else if (name === "clientPrice") {
-      const newSalary =(value-
-        values.items.items.reduce((acc, i) => {
-          return acc + Number(i.price);
-        }, 0))*(values.percent/100);
-        console.log("newSalary", newSalary)
+      const newSalary =
+        (value -
+          values.items.items.reduce((acc, i) => {
+            return acc + Number(i.price);
+          }, 0)) *
+        (values.percent / 100);
+      console.log("newSalary", newSalary);
       setValues({
         ...values,
         [name]: value,
         clientDept: value - values.clientPrepay,
         interest: value - values.expenses,
         salary: newSalary,
-        
       });
     } else if (name === "status") {
       setValues({ ...values, status: checked });
@@ -135,7 +164,6 @@ export default function EditEventsPage({ evt }) {
     } else {
       setValues({ ...values, [name]: value });
     }
-    handleActiveButtonChange(checked);
   };
   const calculateExpense = () => {
     const newExpense = values.items.items.reduce((acc, i) => {
@@ -155,11 +183,17 @@ export default function EditEventsPage({ evt }) {
   };
 
   const handleGoBack = () => {
-    const result = window.confirm("Выйти без сохранения?");
-    result ? router.push(`/events`) : null;
+    showButton
+      ? window.confirm("Выйти без сохранения?")
+        ? router.push(`/events`)
+        : null
+      : router.push(`/events`);
   };
 
-  const handleActiveButtonChange = (checked) => {
+  const handleActiveButtonChange = () => {
+    console.log("values", values);
+    console.log("evt.attributes", evt.attributes);
+
     if (
       values.title === evt.attributes.title &&
       values.name === evt.attributes.name &&
@@ -182,14 +216,18 @@ export default function EditEventsPage({ evt }) {
       values.date === evt.attributes.date &&
       values.time === evt.attributes.time &&
       values.description === evt.attributes.description &&
-      checked === evt.attributes.hidden &&
-      checked === evt.attributes.status
+      values.hidden === evt.attributes.hidden &&
+      values.status === evt.attributes.status
     ) {
       setShowButton(false);
     } else {
       setShowButton(true);
     }
   };
+
+  useEffect(() => {
+    handleActiveButtonChange();
+  }, [values]);
 
   return (
     <Layout title="Редактировать заказ">
@@ -255,7 +293,10 @@ export default function EditEventsPage({ evt }) {
                 id="status"
                 name="status"
                 checked={values.status}
-                onChange={handleInputChange}
+                onChange={(e) => {
+                  console.log("e", e);
+                  handleInputChange(e);
+                }}
               />
               Закрыт
             </label>
@@ -330,47 +371,58 @@ export default function EditEventsPage({ evt }) {
             />
           </div>
           <div>
-            
             <div className={styles.interest}>
-            <label htmlFor="interest">Прибыль:<input
-              type="number"
-              id="interest"
-              name="interest"
-              readOnly
-              value={
-                values.clientPrice -
-                values.items.items.reduce((acc, i) => {
-                  return acc + Number(i.price);
-                }, 0)
-              }
-              className={styles.inactive}
-            /></label>
-            <label htmlFor="interestPercent">Процент:<input
-              type="text"
-              id="interestPercent"
-              name="interestPercent"
-              readOnly
-              value={
-                `${(((values.clientPrice -
-                values.items.items.reduce((acc, i) => {
-                  return acc + Number(i.price);
-                }, 0))/values.clientPrice)*100).toFixed(1)}%`
-              }
-              className={styles.inactive}
-            /></label>
-            <label htmlFor="salary">ЗП:<input
-              type="number"
-              id="salary"
-              name="salary"
-              readOnly
-              value={
-                (values.clientPrice -
-                values.items.items.reduce((acc, i) => {
-                  return acc + Number(i.price);
-                }, 0))*(values.percent/100)
-              }
-              className={styles.inactive}
-            /></label>
+              <label htmlFor="interest">
+                Прибыль:
+                <input
+                  type="number"
+                  id="interest"
+                  name="interest"
+                  readOnly
+                  value={
+                    values.clientPrice -
+                    values.items.items.reduce((acc, i) => {
+                      return acc + Number(i.price);
+                    }, 0)
+                  }
+                  className={styles.inactive}
+                />
+              </label>
+              <label htmlFor="interestPercent">
+                Процент:
+                <input
+                  type="text"
+                  id="interestPercent"
+                  name="interestPercent"
+                  readOnly
+                  value={`${(
+                    ((values.clientPrice -
+                      values.items.items.reduce((acc, i) => {
+                        return acc + Number(i.price);
+                      }, 0)) /
+                      values.clientPrice) *
+                    100
+                  ).toFixed(1)}%`}
+                  className={styles.inactive}
+                />
+              </label>
+              <label htmlFor="salary">
+                ЗП:
+                <input
+                  type="number"
+                  id="salary"
+                  name="salary"
+                  readOnly
+                  value={
+                    (values.clientPrice -
+                      values.items.items.reduce((acc, i) => {
+                        return acc + Number(i.price);
+                      }, 0)) *
+                    (values.percent / 100)
+                  }
+                  className={styles.inactive}
+                />
+              </label>
             </div>
           </div>
         </div>
@@ -475,6 +527,11 @@ export default function EditEventsPage({ evt }) {
             </Button>
           </div>
         )}
+
+        <div className="d-grid gap-2">
+        <Button variant="danger" onClick={handleDelete}>Удалить заказ</Button>
+          
+        </div>
       </form>
     </Layout>
   );

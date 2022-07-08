@@ -2,7 +2,6 @@ import Layout from "@/components/Layout";
 import { API_URL } from "@/config/index";
 import Link from "next/link";
 import Image from "next/image";
-import { FaRegPlusSquare } from "react-icons/fa";
 import { useContext } from "react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -13,12 +12,11 @@ import Button from "react-bootstrap/Button";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { BsFillQuestionSquareFill } from "react-icons/bs";
 import { BsFillCheckSquareFill } from "react-icons/bs";
-
-import { FaArrowDown } from "react-icons/fa";
-import { FaArrowUp } from "react-icons/fa";
 import styles from "@/styles/Home.module.css";
 import { BiArchiveIn } from "react-icons/bi";
 import { BiArchiveOut } from "react-icons/bi";
+import { FaWrench } from "react-icons/fa";
+
 import Alert from 'react-bootstrap/Alert';
 
 export default function HomePage(props) {
@@ -112,7 +110,7 @@ export default function HomePage(props) {
           <Button variant="warning" onClick={() => router.push(`/expenses`)}>
             Расходы
           </Button>{" "}
-          <Table striped hover responsive="md">
+          <Table striped hover responsive="md" className={styles.tableCenter}>
             <thead>
               <tr>
                 <th></th>
@@ -179,7 +177,7 @@ export default function HomePage(props) {
                         </div>
                       ) : (
                         <div className={styles.checkboxRed}>
-                          <BsFillQuestionSquareFill />
+                          <FaWrench/>
                         </div>
                       )}
                     </td>
@@ -246,14 +244,13 @@ export default function HomePage(props) {
               <td><Alert className={"mb-0 p-0"} variant="danger"><h4 className={"mb-0"}>{summ.summPersonalExpenses.toFixed(1)}</h4></Alert></td>
             </tr>
             <tr>
-              <td><Alert className={"mb-0 p-0"} variant="info"><h4 className={"mb-0"}>Авансы:</h4></Alert></td>
-              <td><Alert className={"mb-0 p-0"} variant="info"><h4 className={"mb-0"}>{summ.summFlow.toFixed(1)}</h4></Alert></td>
-            </tr>
-            <tr>
               <td><Alert className={"mb-0 p-0"} variant="warning"><h4 className={"mb-0"}>Расходы:</h4></Alert></td>
               <td><Alert className={"mb-0 p-0"} variant="warning"><h4 className={"mb-0"}>{summ.summExpenses.toFixed(1)}</h4></Alert></td>
             </tr>
-
+            <tr>
+              <td><Alert className={"mb-0 p-0"} variant="info"><h4 className={"mb-0"}>Авансы:</h4></Alert></td>
+              <td><Alert className={"mb-0 p-0"} variant="info"><h4 className={"mb-0"}>{`-${summ.summFlow.toFixed(1)}`}</h4></Alert></td>
+            </tr>
             <tr>
               <th><Alert className={"mb-0 p-0 lg"} variant="dark"><h4 className={"mb-0"}>Баланс:</h4></Alert></th>
               <th><Alert className={"mb-0 p-0 lg"} variant="dark"><h4 className={"mb-0"}>{(summ.summSalary+ summ.summPersonalExpenses-summ.summFlow+summ.summExpenses).toFixed(1)}</h4></Alert></th>
