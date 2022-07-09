@@ -5,7 +5,7 @@
     align-items: baseline;
     background: #fff;
     color: #333;
-    height: 60px;
+   
     padding: 0 30px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   }
@@ -48,7 +48,7 @@
   }
 
   
-  @media (max-width: 768px) {
+  @media (max-width: 840px) {
     .header {
       flex-direction: column;
       height: auto;

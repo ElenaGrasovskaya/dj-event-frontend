@@ -56,7 +56,6 @@ export default function EditEventsPage({ evt }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     calculateExpense();
-    console.log("e", e);
 
     //Validation
     /* const hasEmptyFields = Object.values(values).some((element) => element === '')
@@ -76,9 +75,7 @@ export default function EditEventsPage({ evt }) {
       toast.error("Something went wrong");
     } else {
       const data = await res.json();
-      console.log("res", res);
       handleActiveButtonChange();
-      toast.success("Saved");
       if (e.target.value === "Сохранить и выйти") router.push(`/events`);
     }
   };
@@ -529,7 +526,7 @@ export default function EditEventsPage({ evt }) {
         )}
 
         <div className="d-grid gap-2">
-        <Button variant="danger" onClick={handleDelete}>Удалить заказ</Button>
+        <Button variant="danger" onClick={(e)=>{confirm("Точно удалить?")?handleDelete(e):null}}>Удалить заказ</Button>
           
         </div>
       </form>

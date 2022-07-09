@@ -69,9 +69,11 @@ export default function AddEventPage() {
       toast.error("Something went wrong");
     } else {
       const data = await res.json();
-      toast.success("Saved");
       if (e.target.value === "Сохранить и выйти")
         router.push(`/events`);
+      else {
+        router.push(`/events/edit/${values.slug}`);
+      }
     }
   };
 

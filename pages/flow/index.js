@@ -18,7 +18,10 @@ import Modal from 'react-bootstrap/Modal';
 import { BiArchiveIn } from "react-icons/bi";
 import { BiArchiveOut } from "react-icons/bi";
 
-export default function Flows({ flows }) {
+export default function Flows({ rawFlows }) {
+  const sorted = rawFlows.data.sort((a, b)=>{const dateA = new Date(a.attributes.date), dateB = new Date(b.attributes.date)
+    return dateA - dateB});
+  const flows = {data:[...sorted]};
   const date = new Date();
   const dateMs = Date.parse(date);
   const { user } = useContext(AuthContext);
@@ -290,9 +293,9 @@ export default function Flows({ flows }) {
 
 export async function getServerSideProps() {
   const res = await fetch(`${API_URL}/api/flows`);
-  const flows = await res.json();
+  const rawFlows = await res.json();
 
   return {
-    props: { flows },
+    props: { rawFlows },
   };
 }

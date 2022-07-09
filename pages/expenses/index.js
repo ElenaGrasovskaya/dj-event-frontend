@@ -17,7 +17,13 @@ import Modal from 'react-bootstrap/Modal';
 import { BiArchiveIn } from "react-icons/bi";
 import { BiArchiveOut } from "react-icons/bi";
 
-export default function Expenses({ expenses }) {
+export default function Expenses({ rawExpenses }) {
+  
+  
+ const sorted = rawExpenses.data.sort((a, b)=>{const dateA = new Date(a.attributes.date), dateB = new Date(b.attributes.date)
+    return dateA - dateB});
+
+  const expenses = {data:[...sorted]};
   const date = new Date();
   const dateMs = Date.parse(date);
   const { user } = useContext(AuthContext);
@@ -290,9 +296,10 @@ export default function Expenses({ expenses }) {
 
 export async function getServerSideProps() {
   const res = await fetch(`${API_URL}/api/expenses`);
-  const expenses = await res.json();
+  const rawExpenses = await res.json();
+
 
   return {
-    props: { expenses },
+    props: { rawExpenses },
   };
 }
