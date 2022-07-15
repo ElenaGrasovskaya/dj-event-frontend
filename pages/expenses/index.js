@@ -61,7 +61,7 @@ export default function Expenses({ rawExpenses }) {
     setShow(false)};
   const handleShow = () => setShow(true);
 
-  console.log("expenses", expenses);
+
   const [values, setValues] = useState({
     title: "",
     userName: user ? user.username : "",
@@ -127,12 +127,35 @@ export default function Expenses({ rawExpenses }) {
     });
 
     if (!res.ok) {
-      toast.error("Something went wrong");
+      toast.error("Что-то пошло не так");
     } else {
       refreshData();
       const data = await res.json();
-      console.log("res", res);
-      toast.success("Deleted");
+
+      toast.success("В архиве");
+      
+    }
+  };
+
+
+  const handleDelete = async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const res = await fetch(`${API_URL}/api/expenses/${values.id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      
+    });
+
+    if (!res.ok) {
+      toast.error("Что-то пошло не так");
+    } else {
+      refreshData();
+      const data = await res.json();
+
+      toast.success("Удалено");
       
     }
   };
@@ -158,7 +181,7 @@ export default function Expenses({ rawExpenses }) {
     } else {
       refreshData();
       const data = await res.json();
-      console.log("res", res);
+
       toast.success("Deleted");
       
     }
@@ -283,6 +306,10 @@ export default function Expenses({ rawExpenses }) {
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             Закрыть
+          </Button>
+          <Button variant="danger" type="button" onClick={(e)=>{handleDelete(e);
+            handleClose();}}>
+            Удалить
           </Button>
           <Button variant="primary" type="submit" onClick={(e)=>{handleEditFlow(e);
             handleClose();}}>

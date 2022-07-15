@@ -18,7 +18,7 @@ import { useContext } from "react";
 
 export default function EditEventsPage({ evt }) {
   const { user, logout } = useContext(AuthContext);
-  console.log("user", user);
+
 
   const [values, setValues] = useState({
     title: evt.attributes.title,
@@ -84,7 +84,7 @@ export default function EditEventsPage({ evt }) {
   const handleDelete = async (e) => {
     e.preventDefault();
     
-    console.log("e", e);
+
 
     const res = await fetch(`${API_URL}/api/events/${evt.id}`, {
       method: "DELETE",
@@ -98,7 +98,6 @@ export default function EditEventsPage({ evt }) {
       toast.error("Something went wrong");
     } else {
       const data = await res.json();
-      console.log("res", res);
       toast.success("Удалено");
       router.push(`/events`);
     }
@@ -146,7 +145,7 @@ export default function EditEventsPage({ evt }) {
             return acc + Number(i.price);
           }, 0)) *
         (values.percent / 100);
-      console.log("newSalary", newSalary);
+
       setValues({
         ...values,
         [name]: value,
@@ -188,8 +187,7 @@ export default function EditEventsPage({ evt }) {
   };
 
   const handleActiveButtonChange = () => {
-    console.log("values", values);
-    console.log("evt.attributes", evt.attributes);
+
 
     if (
       values.title === evt.attributes.title &&
@@ -291,7 +289,7 @@ export default function EditEventsPage({ evt }) {
                 name="status"
                 checked={values.status}
                 onChange={(e) => {
-                  console.log("e", e);
+
                   handleInputChange(e);
                 }}
               />
@@ -539,7 +537,7 @@ export async function getServerSideProps({ params, req }) {
   const res = await fetch(`${API_URL}/api/events`);
   const events = await res.json();
   const event = events.data.find((e) => e.attributes.slug === id);
-  console.log(req.headers.cookie);
+
 
   return {
     props: {

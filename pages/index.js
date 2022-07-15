@@ -22,7 +22,7 @@ import Alert from 'react-bootstrap/Alert';
 export default function HomePage(props) {
   const {events, flow, expenses} = props;
 
-  console.log("props", props);
+
   const [summ, setSumm] = useState({
     summClientPrice: 0,
     summClientDept: 0,
@@ -41,7 +41,7 @@ export default function HomePage(props) {
     router.replace(router.asPath);
   };
 
-  console.log("events", events);
+
 
   useEffect(() => {
     

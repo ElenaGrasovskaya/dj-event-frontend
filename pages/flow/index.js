@@ -58,7 +58,7 @@ export default function Flows({ rawFlows }) {
     setShow(false)};
   const handleShow = () => setShow(true);
 
-  console.log("flows", flows);
+
   const [values, setValues] = useState({
     title: "",
     userName: user ? user.username : "",
@@ -124,12 +124,34 @@ export default function Flows({ rawFlows }) {
     });
 
     if (!res.ok) {
-      toast.error("Something went wrong");
+      toast.error("Что-то пошло не так");
     } else {
       refreshData();
       const data = await res.json();
-      console.log("res", res);
+
       toast.success("Deleted");
+      
+    }
+  };
+
+  const handleDelete = async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const res = await fetch(`${API_URL}/api/flows/${values.id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      
+    });
+
+    if (!res.ok) {
+      toast.error("Что-то пошло не так");
+    } else {
+      refreshData();
+      const data = await res.json();
+
+      toast.success("Удалено");
       
     }
   };
@@ -151,12 +173,12 @@ export default function Flows({ rawFlows }) {
     });
 
     if (!res.ok) {
-      toast.error("Something went wrong");
+      toast.error("Что-то пошло не так");
     } else {
       refreshData();
       const data = await res.json();
-      console.log("res", res);
-      toast.success("Deleted");
+
+      toast.success("Сохранено");
       
     }
   };
@@ -172,7 +194,6 @@ export default function Flows({ rawFlows }) {
             <tr>
               <th width="50%">Наименование</th>
               <th width="25%">Сумма</th>
-              <th width="25%">Дата</th>
               <th></th>
             </tr>
           </thead>
@@ -280,6 +301,10 @@ export default function Flows({ rawFlows }) {
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             Закрыть
+          </Button>
+          <Button variant="danger" type="button" onClick={(e)=>{handleDelete(e);
+            handleClose();}}>
+            Удалить
           </Button>
           <Button variant="primary" type="submit" onClick={(e)=>{handleEditFlow(e);
             handleClose();}}>

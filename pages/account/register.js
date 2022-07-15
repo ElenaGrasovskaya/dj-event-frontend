@@ -16,7 +16,7 @@ export default function RegisterPage() {
 
     const {register, error} = useContext(AuthContext);
     useEffect(() => {
-        console.log(error);
+
         error && toast.error(error);
     },[]);
 
