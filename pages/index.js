@@ -116,6 +116,7 @@ export default function HomePage(props) {
                 <th></th>
                 <th>Заказ</th>
                 <th>Стоимость</th>
+                <th>Авансы</th>
                 <th>Остаток</th>
                 <th>Прибыль</th>
                 <th>%</th>
@@ -146,27 +147,28 @@ export default function HomePage(props) {
                       </td>
                     </Link>
 
-                    <td>
+                    <td className={styles.kitchenName}>
                       <Link
                         href={`/events/edit/${evt.attributes.slug}`}
                         key={120 + index}
                       >
-                        <strong className={styles.clickableLink}>
+                        <strong className={styles.clickableLink} >
                           {evt.attributes.title}
                         </strong>
                       </Link>
                     </td>
 
                     <td>{evt.attributes.clientPrice}</td>
+                    <td>{evt.attributes.clientPrepay}</td>
 
                     <td>{evt.attributes.clientDept}</td>
-                    <td>{evt.attributes.interest}</td>
-                    <td>{`${(
+                    <td>{evt.attributes.status?evt.attributes.interest:""}</td>
+                    <td>{evt.attributes.status?(evt.attributes.clientPrice?(`${(
                       (evt.attributes.interest / evt.attributes.clientPrice) *
                       100
-                    ).toFixed(1)}%`}</td>
+                    ).toFixed(1)}%`):0):""}</td>
 
-                    <td>{evt.attributes.salary}</td>
+                    <td>{evt.attributes.status?evt.attributes.salary:""}</td>
 
                     <td>{evt.attributes.expensesPersonal}</td>
 

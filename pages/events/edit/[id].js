@@ -18,6 +18,11 @@ import { useContext } from "react";
 
 export default function EditEventsPage({ evt }) {
   const { user, logout } = useContext(AuthContext);
+  const router = useRouter();
+  const refreshData = () => {
+
+    router.replace(router.asPath);
+  };
 
 
   const [values, setValues] = useState({
@@ -75,7 +80,9 @@ export default function EditEventsPage({ evt }) {
       toast.error("Something went wrong");
     } else {
       const data = await res.json();
-      handleActiveButtonChange();
+      refreshData();
+      setShowButton(false);
+      
       if (e.target.value === "Сохранить и выйти") router.push(`/events`);
     }
   };
@@ -103,7 +110,6 @@ export default function EditEventsPage({ evt }) {
     }
   };
 
-  const router = useRouter();
   const handleInputChange = (e) => {
     const { name, value, checked } = e.target;
     if (name === "date") {
