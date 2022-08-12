@@ -1,5 +1,5 @@
 import styles from "@/styles/Items.module.css";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 import { BsXCircle } from "react-icons/bs";
 
@@ -49,13 +49,16 @@ function Items({ items, callback }) {
     }, 0);
   };
   const handleKeyPress = (e, index) => {
-    if( e.key === "Enter")
-    {
-        e.preventDefault();
-        handleInputChange(e, index);
+    if (e.key === "Enter") {
+      e.preventDefault();
+      handleInputChange(e, index);
+      if (e.target.id === "item_name" + index) {
+        document.getElementById(`item_value${index}`).focus();
+      } else {
+        document.getElementById(`item_name${index + 1}`).focus();
+      }
     }
-
-  }
+  };
   const handleDelete = (e, index) => {
     e.preventDefault();
     const newItems = expense.items.filter((el, i) => i !== index);
@@ -75,18 +78,18 @@ function Items({ items, callback }) {
         <div className={styles.itemBlock} key={index + 100}>
           <input
             type="text"
-            id={"item" + index}
+            id={"item_name" + index}
             name="name"
             value={item.name}
-            onKeyPress={(e)=>handleKeyPress(e, index)}
+            onKeyPress={(e) => handleKeyPress(e, index)}
             onChange={(e) => handleInputChange(e, index)}
           />
           <input
             type="number"
-            id={"item" + index}
+            id={"item_value" + index}
             name="price"
             value={item.price}
-            onKeyPress={(e)=>handleKeyPress(e, index)}
+            onKeyPress={(e) => handleKeyPress(e, index)}
             onChange={(e) => handleInputChange(e, index)}
           />
           <div className={styles.buttonBlock}>
