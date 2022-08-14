@@ -226,6 +226,12 @@ export default function EditEventsPage({ evt }) {
     }
   };
 
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+    }
+  }
+
   useEffect(() => {
     handleActiveButtonChange();
   }, [values]);
@@ -272,6 +278,7 @@ export default function EditEventsPage({ evt }) {
               name="title"
               value={values.title}
               onChange={handleInputChange}
+              onKeyPress={handleKeyPress}
             />
           </div>
 
@@ -294,6 +301,7 @@ export default function EditEventsPage({ evt }) {
                 id="status"
                 name="status"
                 checked={values.status}
+                onKeyPress={handleKeyPress}
                 onChange={(e) => {
 
                   handleInputChange(e);
@@ -307,6 +315,7 @@ export default function EditEventsPage({ evt }) {
                 id="hidden"
                 name="hidden"
                 checked={values.hidden}
+                onKeyPress={handleKeyPress}
                 onChange={handleInputChange}
               />
               В&nbsp;архиве
@@ -320,6 +329,7 @@ export default function EditEventsPage({ evt }) {
               id="clientPrice"
               name="clientPrice"
               value={values.clientPrice}
+              onKeyPress={handleKeyPress}
               onChange={handleInputChange}
             />
           </div>
@@ -342,6 +352,7 @@ export default function EditEventsPage({ evt }) {
               id="clientPrepay"
               name="clientPrepay"
               value={values.clientPrepay}
+              onKeyPress={handleKeyPress}
               onChange={handleInputChange}
             />
           </div>
@@ -440,6 +451,7 @@ export default function EditEventsPage({ evt }) {
               name="performers"
               id="performers"
               value={values.performers}
+              onKeyPress={handleKeyPress}
               onChange={handleInputChange}
             />
           </div>
@@ -450,6 +462,7 @@ export default function EditEventsPage({ evt }) {
               name="venue"
               id="venue"
               value={values.venue}
+              onKeyPress={handleKeyPress}
               onChange={handleInputChange}
             />
           </div>
@@ -460,6 +473,7 @@ export default function EditEventsPage({ evt }) {
               name="address"
               id="address"
               value={values.address}
+              onKeyPress={handleKeyPress}
               onChange={handleInputChange}
             />
           </div>
@@ -470,6 +484,7 @@ export default function EditEventsPage({ evt }) {
               name="date"
               id="date"
               value={moment(values.date).format("yyyy-MM-DD")}
+              onKeyPress={handleKeyPress}
               onChange={handleInputChange}
             />
           </div>
@@ -481,6 +496,7 @@ export default function EditEventsPage({ evt }) {
             name="description"
             id="description"
             value={values.description}
+            onKeyPress={handleKeyPress}
             onChange={handleInputChange}
           ></textarea>
         </div>
@@ -491,6 +507,7 @@ export default function EditEventsPage({ evt }) {
               type="submit"
               value="Сохранить"
               variant="primary"
+              onKeyPress={handleKeyPress}
               onClick={(e) => handleSubmit(e)}
               active
             >

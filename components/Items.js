@@ -49,6 +49,7 @@ function Items({ items, callback }) {
     }, 0);
   };
   const handleKeyPress = (e, index) => {
+    
     if (e.key === "Enter") {
       e.preventDefault();
       handleInputChange(e, index);

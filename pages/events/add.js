@@ -164,6 +164,11 @@ export default function AddEventPage() {
     result?router.push(`/events`):null;
 
   }
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+    }
+  }
 
   return (
     <Layout title="Добавить новый заказ">
@@ -193,6 +198,7 @@ export default function AddEventPage() {
               id="title"
               name="title"
               value={values.title}
+              onKeyPress={handleKeyPress}
               onChange={handleInputChange}
             />
           </div>
@@ -211,6 +217,7 @@ export default function AddEventPage() {
                 id="status"
                 name="status"
                 checked={values.status}
+                onKeyPress={handleKeyPress}
                 onChange={handleInputChange}
               />
               Закрыт
@@ -221,6 +228,7 @@ export default function AddEventPage() {
                 id="hidden"
                 name="hidden"
                 checked={values.hidden}
+                onKeyPress={handleKeyPress}
                 onChange={handleInputChange}
               />
              В&nbsp;архиве
@@ -234,6 +242,7 @@ export default function AddEventPage() {
               id="clientPrice"
               name="clientPrice"
               value={values.clientPrice}
+              onKeyPress={handleKeyPress}
               onChange={handleInputChange}
             />
           </div>
@@ -256,6 +265,7 @@ export default function AddEventPage() {
               id="clientPrepay"
               name="clientPrepay"
               value={values.clientPrepay}
+              onKeyPress={handleKeyPress}
               onChange={handleInputChange}
             />
           </div>
@@ -344,6 +354,7 @@ export default function AddEventPage() {
               name="performers"
               id="performers"
               value={values.performers}
+              onKeyPress={handleKeyPress}
               onChange={handleInputChange}
             />
           </div>
@@ -354,6 +365,7 @@ export default function AddEventPage() {
               name="venue"
               id="venue"
               value={values.venue}
+              onKeyPress={handleKeyPress}
               onChange={handleInputChange}
             />
           </div>
@@ -364,6 +376,7 @@ export default function AddEventPage() {
               name="address"
               id="address"
               value={values.address}
+              onKeyPress={handleKeyPress}
               onChange={handleInputChange}
             />
           </div>
@@ -374,6 +387,7 @@ export default function AddEventPage() {
               name="date"
               id="date"
               value={moment(values.date).format("yyyy-MM-DD")}
+              onKeyPress={handleKeyPress}
               onChange={handleInputChange}
             />
           </div>
@@ -385,6 +399,7 @@ export default function AddEventPage() {
             name="description"
             id="description"
             value={values.description}
+            onKeyPress={handleKeyPress}
             onChange={handleInputChange}
           ></textarea>
         </div>
