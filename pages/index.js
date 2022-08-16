@@ -28,6 +28,7 @@ export default function HomePage(props) {
     summClientDept: 0,
     summInterest: 0,
     summSalary: 0,
+    summSalaryMax: 0,
     summPersonalExpenses: 0,
     summFlow: 0,
     summExpenses: 0,
@@ -68,6 +69,11 @@ export default function HomePage(props) {
       summSalary: events.data.reduce(
         (acc, el) =>
         !el.attributes.hidden && el.attributes.status ? acc + el.attributes.salary : acc,
+        0
+      ),
+      summSalaryMax: events.data.reduce(
+        (acc, el) =>
+        !el.attributes.hidden && el.attributes.status ? acc + el.attributes.salaryMax : acc,
         0
       ),
 
@@ -119,8 +125,8 @@ export default function HomePage(props) {
                 <th>Авансы</th>
                 <th>Остаток</th>
                 <th>Прибыль</th>
-                <th>%</th>
-                <th>Зарплата</th>
+                <th>M-60%</th>
+                <th>C-40%</th>
                 <th>Личные</th>
                 <th>Закрыт</th>
                 <th>В архиве</th>
@@ -163,10 +169,7 @@ export default function HomePage(props) {
 
                     <td>{evt.attributes.clientDept}</td>
                     <td>{evt.attributes.status?evt.attributes.interest:""}</td>
-                    <td>{evt.attributes.status?(evt.attributes.clientPrice?(`${(
-                      (evt.attributes.interest / evt.attributes.clientPrice) *
-                      100
-                    ).toFixed(1)}%`):0):""}</td>
+                    <td>{evt.attributes.status?evt.attributes.salaryMax:""}</td>
 
                     <td>{evt.attributes.status?evt.attributes.salary:""}</td>
 
@@ -214,7 +217,9 @@ export default function HomePage(props) {
                   <strong>{summ.summInterest.toFixed(1)}</strong>
                 </td>
                 <td></td>
-                <td></td>
+                <td>
+                <strong>{summ.summSalaryMax.toFixed(1)}</strong>
+                </td>
                 <td>
                   <strong>{summ.summSalary.toFixed(1)}</strong>
                 </td>
@@ -238,8 +243,12 @@ export default function HomePage(props) {
 
           <Table borderless>
             <tbody>
+            <tr>
+              <td><Alert className={"mb-0 p-0"} variant="success"><h4 className={"mb-0"}>Макс 60%:</h4></Alert></td>
+              <td><Alert className={"mb-0 p-0"} variant="success"><h4 className={"mb-0"}>{summ.summSalaryMax.toFixed(1)}</h4></Alert></td>
+            </tr>
               <tr>
-              <td><Alert className={"mb-0 p-0"} variant="primary"><h4 className={"mb-0"}>Зарплата:</h4></Alert></td>
+              <td><Alert className={"mb-0 p-0"} variant="primary"><h4 className={"mb-0"}>Cергей 40%:</h4></Alert></td>
               <td><Alert className={"mb-0 p-0"} variant="primary"><h4 className={"mb-0"}>{summ.summSalary.toFixed(1)}</h4></Alert></td>
             </tr>
             <tr>
@@ -300,3 +309,9 @@ export async function getServerSideProps() {
     props: { events, flow, expenses },
   };
 }
+
+
+/*{evt.attributes.status?(evt.attributes.clientPrice?(`${(
+                      (evt.attributes.interest / evt.attributes.clientPrice) *
+                      100
+                    ).toFixed(1)}%`):0):""} */

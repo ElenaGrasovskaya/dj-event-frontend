@@ -50,6 +50,8 @@ export default function EditEventsPage({ evt }) {
     hidden: evt.attributes.hidden,
     salary: evt.attributes.salary,
     percent: 40,
+    salaryMax: evt.attributes.salary,
+    percentMax: 60,
     image_url: evt.attributes.image_url,
   });
 
@@ -128,6 +130,13 @@ export default function EditEventsPage({ evt }) {
             return acc + Number(i.price);
           }, 0)) *
         (values.percent / 100);
+
+        const newSalaryMax =
+        (values.clientPrice -
+          values.items.items.reduce((acc, i) => {
+            return acc + Number(i.price);
+          }, 0)) *
+        (values.percentMax / 100);
       setValues({
         ...values,
         expenses: newExpense,
@@ -135,6 +144,7 @@ export default function EditEventsPage({ evt }) {
         expensesPersonal: newPersonalExpense,
         items: value,
         salary: newSalary.toFixed(1),
+        salaryMax: newSalaryMax.toFixed(1),
       });
     } else if (name === "name") {
       setValues({ ...values, name: value });
@@ -152,12 +162,20 @@ export default function EditEventsPage({ evt }) {
           }, 0)) *
         (values.percent / 100);
 
+        const newSalaryMax =
+        (value -
+          values.items.items.reduce((acc, i) => {
+            return acc + Number(i.price);
+          }, 0)) *
+        (values.percentMax / 100);
+
       setValues({
         ...values,
         [name]: value,
         clientDept: value - values.clientPrepay,
         interest: value - values.expenses,
         salary: newSalary,
+        salaryMax: newSalaryMax,
       });
     } else if (name === "status") {
       setValues({ ...values, status: checked });
@@ -418,8 +436,25 @@ export default function EditEventsPage({ evt }) {
                   className={styles.inactive}
                 />
               </label>
+              <label htmlFor="salaryMax">
+              M-60%:
+                <input
+                  type="number"
+                  id="salaryMax"
+                  name="salaryMax"
+                  readOnly
+                  value={
+                    (values.clientPrice -
+                      values.items.items.reduce((acc, i) => {
+                        return acc + Number(i.price);
+                      }, 0)) *
+                    (values.percentMax / 100)
+                  }
+                  className={styles.inactive}
+                />
+              </label>
               <label htmlFor="salary">
-                ЗП:
+              C-40%:
                 <input
                   type="number"
                   id="salary"

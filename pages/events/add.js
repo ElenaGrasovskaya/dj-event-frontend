@@ -47,6 +47,8 @@ export default function AddEventPage() {
     hidden: false,
     salary: 0,
     percent: 40,
+    salaryMax: 0,
+    percentMax: 60,
   });
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -69,8 +71,7 @@ export default function AddEventPage() {
       toast.error("Something went wrong");
     } else {
       const data = await res.json();
-      if (e.target.value === "Сохранить и выйти")
-        router.push(`/events`);
+      if (e.target.value === "Сохранить и выйти") router.push(`/events`);
       else {
         router.push(`/events/edit/${values.slug}`);
       }
@@ -88,10 +89,18 @@ export default function AddEventPage() {
       const newPersonalExpense = value.items.reduce((acc, i) => {
         return i.status ? acc + Number(i.price) : acc;
       }, 0);
-      const newSalary =(values.clientPrice -
-        values.items.items.reduce((acc, i) => {
-          return acc + Number(i.price);
-        }, 0))*(values.percent/100);
+      const newSalary =
+        (values.clientPrice -
+          values.items.items.reduce((acc, i) => {
+            return acc + Number(i.price);
+          }, 0)) *
+        (values.percent / 100);
+        const newSalaryMax =
+        (values.clientPrice -
+          values.items.items.reduce((acc, i) => {
+            return acc + Number(i.price);
+          }, 0)) *
+        (values.percentMax / 100);
       setValues({
         ...values,
         expenses: newExpense,
@@ -99,6 +108,7 @@ export default function AddEventPage() {
         expensesPersonal: newPersonalExpense,
         items: value,
         salary: newSalary,
+        salaryMax: newSalaryMax,
       });
     } else if (name === "name") {
       setValues({ ...values, name: value });
@@ -107,25 +117,32 @@ export default function AddEventPage() {
         ...values,
         [name]: value,
         clientDept: values.clientPrice - value,
-        
       });
     } else if (name === "clientPrice") {
-      const newSalary =(value -
-        values.items.items.reduce((acc, i) => {
-          return acc + Number(i.price);
-        }, 0))*(values.percent/100);
+      const newSalary =
+        (value -
+          values.items.items.reduce((acc, i) => {
+            return acc + Number(i.price);
+          }, 0)) *
+        (values.percent / 100);
+        const newSalaryMax =
+        (value -
+          values.items.items.reduce((acc, i) => {
+            return acc + Number(i.price);
+          }, 0)) *
+        (values.percentMax / 100);
       setValues({
         ...values,
         [name]: value,
         clientDept: value - values.clientPrepay,
         interest: value - values.expenses,
         salary: newSalary,
-        
+        salaryMax: newSalaryMax,
       });
     } else if (name === "status") {
       setValues({ ...values, status: checked });
     } else if (name === "hidden") {
-        setValues({ ...values, hidden: checked });
+      setValues({ ...values, hidden: checked });
     } else {
       setValues({ ...values, [name]: value });
     }
@@ -159,21 +176,24 @@ export default function AddEventPage() {
       interest: values.clientPrice - newExpense,
     });
   };
-  const handleGoBack = () =>{
+  const handleGoBack = () => {
     const result = window.confirm("Выйти без сохранения?");
-    result?router.push(`/events`):null;
-
-  }
+    result ? router.push(`/events`) : null;
+  };
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
     }
-  }
+  };
 
   return (
     <Layout title="Добавить новый заказ">
-            <ToastContainer />
-            <Button variant="link"  onClick={handleGoBack}><a className={styles.backBtn}><BiLeftArrowAlt/></a></Button>
+      <ToastContainer />
+      <Button variant="link" onClick={handleGoBack}>
+        <a className={styles.backBtn}>
+          <BiLeftArrowAlt />
+        </a>
+      </Button>
 
       <div className={styles.headerContainer}>
         <h1>Новый заказ</h1>
@@ -186,8 +206,6 @@ export default function AddEventPage() {
           Сохранить
         </Button>
       </div>
-
-
 
       <form onSubmit={handleSubmit} className={styles.form}>
         <div className={styles.grid}>
@@ -231,7 +249,7 @@ export default function AddEventPage() {
                 onKeyPress={handleKeyPress}
                 onChange={handleInputChange}
               />
-             В&nbsp;архиве
+              В&nbsp;архиве
             </label>
           </div>
 
@@ -246,7 +264,7 @@ export default function AddEventPage() {
               onChange={handleInputChange}
             />
           </div>
-          
+
           <div>
             <label htmlFor="clientDept">Остаток по заказу:</label>
             <input
@@ -272,7 +290,6 @@ export default function AddEventPage() {
           <div>
             <label htmlFor="expenses">Сумма затрат:</label>
             <input
-            
               type="number"
               id="expenses"
               name="expenses"
@@ -297,47 +314,76 @@ export default function AddEventPage() {
             />
           </div>
           <div>
-            
             <div className={styles.interest}>
-            <label htmlFor="interest">Прибыль:<input
-              type="number"
-              id="interest"
-              name="interest"
-              readOnly
-              value={
-                values.clientPrice -
-                values.items.items.reduce((acc, i) => {
-                  return acc + Number(i.price);
-                }, 0)
-              }
-              className={styles.inactive}
-            /></label>
-            <label htmlFor="interestPercent">Процент:<input
-              type="text"
-              id="interestPercent"
-              name="interestPercent"
-              readOnly
-              value={
-                `${(((values.clientPrice -
-                values.items.items.reduce((acc, i) => {
-                  return acc + Number(i.price);
-                }, 0))/values.clientPrice)*100).toFixed(1)}%`
-              }
-              className={styles.inactive}
-            /></label>
-            <label htmlFor="salary">ЗП:<input
-              type="number"
-              id="salary"
-              name="salary"
-              readOnly
-              value={
-                (values.clientPrice -
-                values.items.items.reduce((acc, i) => {
-                  return acc + Number(i.price);
-                }, 0))*(values.percent/100)
-              }
-              className={styles.inactive}
-            /></label>
+              <label htmlFor="interest">
+                Прибыль:
+                <input
+                  type="number"
+                  id="interest"
+                  name="interest"
+                  readOnly
+                  value={
+                    values.clientPrice -
+                    values.items.items.reduce((acc, i) => {
+                      return acc + Number(i.price);
+                    }, 0)
+                  }
+                  className={styles.inactive}
+                />
+              </label>
+              <label htmlFor="interestPercent">
+                Процент:
+                <input
+                  type="text"
+                  id="interestPercent"
+                  name="interestPercent"
+                  readOnly
+                  value={`${(
+                    ((values.clientPrice -
+                      values.items.items.reduce((acc, i) => {
+                        return acc + Number(i.price);
+                      }, 0)) /
+                      values.clientPrice) *
+                    100
+                  ).toFixed(1)}%`}
+                  className={styles.inactive}
+                />
+              </label>
+
+              <label htmlFor="salaryMax">
+                M-60%:
+                <input
+                  type="number"
+                  id="salaryMax"
+                  name="salaryMax"
+                  readOnly
+                  value={
+                    (values.clientPrice -
+                      values.items.items.reduce((acc, i) => {
+                        return acc + Number(i.price);
+                      }, 0)) *
+                    (values.percentMax / 100)
+                  }
+                  className={styles.inactive}
+                />
+              </label>
+              <label htmlFor="salary">
+                C-40%:
+                <input
+                  type="number"
+                  id="salary"
+                  name="salary"
+                  readOnly
+                  value={
+                    (values.clientPrice -
+                      values.items.items.reduce((acc, i) => {
+                        return acc + Number(i.price);
+                      }, 0)) *
+                    (values.percent / 100)
+                  }
+                  className={styles.inactive}
+                />
+              </label>
             </div>
           </div>
         </div>
