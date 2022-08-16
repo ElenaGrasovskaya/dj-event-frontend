@@ -214,6 +214,7 @@ export default function HomePage(props) {
                   <strong>{summ.summInterest.toFixed(1)}</strong>
                 </td>
                 <td></td>
+                <td></td>
                 <td>
                   <strong>{summ.summSalary.toFixed(1)}</strong>
                 </td>
