@@ -80,6 +80,18 @@ export default function AddEventPage() {
 
   const handleInputChange = (e) => {
     const { name, value, checked } = e.target;
+    const newSalary =
+      (values.clientPrice -
+        values.items.items.reduce((acc, i) => {
+          return acc + Number(i.price);
+        }, 0)) *
+      (values.percent / 100);
+    const newSalaryMax =
+      (values.clientPrice -
+        values.items.items.reduce((acc, i) => {
+          return acc + Number(i.price);
+        }, 0)) *
+      (values.percentMax / 100);
     if (name === "date") {
       setValues({ ...values, [name]: new Date(value) });
     } else if (name === "items") {
@@ -89,18 +101,7 @@ export default function AddEventPage() {
       const newPersonalExpense = value.items.reduce((acc, i) => {
         return i.status ? acc + Number(i.price) : acc;
       }, 0);
-      const newSalary =
-        (values.clientPrice -
-          values.items.items.reduce((acc, i) => {
-            return acc + Number(i.price);
-          }, 0)) *
-        (values.percent / 100);
-        const newSalaryMax =
-        (values.clientPrice -
-          values.items.items.reduce((acc, i) => {
-            return acc + Number(i.price);
-          }, 0)) *
-        (values.percentMax / 100);
+
       setValues({
         ...values,
         expenses: newExpense,
@@ -119,18 +120,6 @@ export default function AddEventPage() {
         clientDept: values.clientPrice - value,
       });
     } else if (name === "clientPrice") {
-      const newSalary =
-        (value -
-          values.items.items.reduce((acc, i) => {
-            return acc + Number(i.price);
-          }, 0)) *
-        (values.percent / 100);
-        const newSalaryMax =
-        (value -
-          values.items.items.reduce((acc, i) => {
-            return acc + Number(i.price);
-          }, 0)) *
-        (values.percentMax / 100);
       setValues({
         ...values,
         [name]: value,
@@ -140,11 +129,26 @@ export default function AddEventPage() {
         salaryMax: newSalaryMax,
       });
     } else if (name === "status") {
-      setValues({ ...values, status: checked });
+      setValues({
+        ...values,
+        salary: newSalary,
+        salaryMax: newSalaryMax,
+        status: checked,
+      });
     } else if (name === "hidden") {
-      setValues({ ...values, hidden: checked });
+      setValues({
+        ...values,
+        salary: newSalary,
+        salaryMax: newSalaryMax,
+        hidden: checked,
+      });
     } else {
-      setValues({ ...values, [name]: value });
+      setValues({
+        ...values,
+        salary: newSalary,
+        salaryMax: newSalaryMax,
+        [name]: value,
+      });
     }
   };
 

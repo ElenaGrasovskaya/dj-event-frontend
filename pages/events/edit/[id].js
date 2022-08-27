@@ -20,10 +20,8 @@ export default function EditEventsPage({ evt }) {
   const { user, logout } = useContext(AuthContext);
   const router = useRouter();
   const refreshData = () => {
-
     router.replace(router.asPath);
   };
-
 
   const [values, setValues] = useState({
     title: evt.attributes.title,
@@ -84,23 +82,19 @@ export default function EditEventsPage({ evt }) {
       const data = await res.json();
       refreshData();
       setShowButton(false);
-      
+
       if (e.target.value === "Сохранить и выйти") router.push(`/events`);
     }
   };
 
-
   const handleDelete = async (e) => {
     e.preventDefault();
-    
-
 
     const res = await fetch(`${API_URL}/api/events/${evt.id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
       },
-      
     });
 
     if (!res.ok) {
@@ -114,6 +108,20 @@ export default function EditEventsPage({ evt }) {
 
   const handleInputChange = (e) => {
     const { name, value, checked } = e.target;
+
+    const newSalary =
+      (values.clientPrice -
+        values.items.items.reduce((acc, i) => {
+          return acc + Number(i.price);
+        }, 0)) *
+      (values.percent / 100);
+
+    const newSalaryMax =
+      (values.clientPrice -
+        values.items.items.reduce((acc, i) => {
+          return acc + Number(i.price);
+        }, 0)) *
+      (values.percentMax / 100);
     if (name === "date") {
       setValues({ ...values, [name]: new Date(value) });
     } else if (name === "items") {
@@ -124,19 +132,6 @@ export default function EditEventsPage({ evt }) {
         return i.status ? acc + Number(i.price) : acc;
       }, 0);
 
-      const newSalary =
-        (values.clientPrice -
-          values.items.items.reduce((acc, i) => {
-            return acc + Number(i.price);
-          }, 0)) *
-        (values.percent / 100);
-
-        const newSalaryMax =
-        (values.clientPrice -
-          values.items.items.reduce((acc, i) => {
-            return acc + Number(i.price);
-          }, 0)) *
-        (values.percentMax / 100);
       setValues({
         ...values,
         expenses: newExpense,
@@ -155,20 +150,6 @@ export default function EditEventsPage({ evt }) {
         clientDept: values.clientPrice - value,
       });
     } else if (name === "clientPrice") {
-      const newSalary =
-        (value -
-          values.items.items.reduce((acc, i) => {
-            return acc + Number(i.price);
-          }, 0)) *
-        (values.percent / 100);
-
-        const newSalaryMax =
-        (value -
-          values.items.items.reduce((acc, i) => {
-            return acc + Number(i.price);
-          }, 0)) *
-        (values.percentMax / 100);
-
       setValues({
         ...values,
         [name]: value,
@@ -178,11 +159,14 @@ export default function EditEventsPage({ evt }) {
         salaryMax: newSalaryMax,
       });
     } else if (name === "status") {
-      setValues({ ...values, status: checked });
+      setValues({ ...values, salary: newSalary,
+        salaryMax: newSalaryMax, status: checked });
     } else if (name === "hidden") {
-      setValues({ ...values, hidden: checked });
+      setValues({ ...values, salary: newSalary,
+        salaryMax: newSalaryMax, hidden: checked });
     } else {
-      setValues({ ...values, [name]: value });
+      setValues({ ...values, salary: newSalary,
+        salaryMax: newSalaryMax, [name]: value });
     }
   };
   const calculateExpense = () => {
@@ -211,8 +195,6 @@ export default function EditEventsPage({ evt }) {
   };
 
   const handleActiveButtonChange = () => {
-
-
     if (
       values.title === evt.attributes.title &&
       values.name === evt.attributes.name &&
@@ -248,7 +230,7 @@ export default function EditEventsPage({ evt }) {
     if (e.key === "Enter") {
       e.preventDefault();
     }
-  }
+  };
 
   useEffect(() => {
     handleActiveButtonChange();
@@ -321,7 +303,6 @@ export default function EditEventsPage({ evt }) {
                 checked={values.status}
                 onKeyPress={handleKeyPress}
                 onChange={(e) => {
-
                   handleInputChange(e);
                 }}
               />
@@ -437,7 +418,7 @@ export default function EditEventsPage({ evt }) {
                 />
               </label>
               <label htmlFor="salaryMax">
-              M-60%:
+                M-60%:
                 <input
                   type="number"
                   id="salaryMax"
@@ -454,7 +435,7 @@ export default function EditEventsPage({ evt }) {
                 />
               </label>
               <label htmlFor="salary">
-              C-40%:
+                C-40%:
                 <input
                   type="number"
                   id="salary"
@@ -582,8 +563,14 @@ export default function EditEventsPage({ evt }) {
         )}
 
         <div className="d-grid gap-2">
-        <Button variant="danger" onClick={(e)=>{confirm("Точно удалить?")?handleDelete(e):null}}>Удалить заказ</Button>
-          
+          <Button
+            variant="danger"
+            onClick={(e) => {
+              confirm("Точно удалить?") ? handleDelete(e) : null;
+            }}
+          >
+            Удалить заказ
+          </Button>
         </div>
       </form>
     </Layout>
@@ -595,7 +582,6 @@ export async function getServerSideProps({ params, req }) {
   const res = await fetch(`${API_URL}/api/events`);
   const events = await res.json();
   const event = events.data.find((e) => e.attributes.slug === id);
-
 
   return {
     props: {
