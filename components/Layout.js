@@ -5,7 +5,7 @@ import Footer from './Footer';
 import Showcase from './Showcase';
 import styles from '@/styles/Layout.module.css';
 
-function Layout({ title, keywords, description, children }) {
+function Layout({ title, keywords, description, children, backup }) {
     const  router = useRouter();
     return (
         <div>
@@ -14,7 +14,7 @@ function Layout({ title, keywords, description, children }) {
                 <meta name='description' content={description} />
                 <meta name='keyword' content={keywords} />
             </Head>
-            <Header />
+            <Header backup = {backup} />
 
            
             <div className={styles.container}>

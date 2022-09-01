@@ -5,9 +5,11 @@ import Link from "next/link";
 import Search from "./Search";
 import styles from "@/styles/Header.module.css";
 import Button from 'react-bootstrap/Button';
-import { FaRegPlusSquare } from "react-icons/fa";
+import Backup from "./Backup";
+import Image from "next/image"
 
-export default function Header() {
+
+export default function Header( backup ) {
   const { user, logout } = useContext(AuthContext);
 
 
@@ -15,11 +17,12 @@ export default function Header() {
     <header className={styles.header}>
       <div className={styles.logo}>
         <Link href="/">
-          <><img height="50px" src="/images/sample/logo_transparent.png"></img>{" "}
+          <><Image height="50px" width="50px" src="/images/sample/logo_transparent.png"></Image>{" "}
           <a className={styles.logo}>Libra Portal</a>{" "}
           {user?(<span className={styles.userName}>
 
         {user.username}
+       
 
       </span>
 ):(<span></span>)}
@@ -35,6 +38,9 @@ export default function Header() {
           {user ? (
             // If logged in
             <>
+            <li>
+            <Backup data = {backup} />
+            </li>
 
               <li>
                 <Link href="/events/add">

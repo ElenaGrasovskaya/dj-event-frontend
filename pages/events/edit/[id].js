@@ -512,7 +512,7 @@ export default function EditEventsPage({ evt }) {
             name="description"
             id="description"
             value={values.description}
-            onKeyPress={handleKeyPress}
+
             onChange={handleInputChange}
           ></textarea>
         </div>

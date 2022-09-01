@@ -20,7 +20,8 @@ import { FaWrench } from "react-icons/fa";
 import Alert from 'react-bootstrap/Alert';
 
 export default function HomePage(props) {
-  const {events, flow, expenses} = props;
+
+  const {events, flow, expenses, backups} = props;
 
 
   const [summ, setSumm] = useState({
@@ -106,7 +107,7 @@ export default function HomePage(props) {
   return (
     <>
       {user && events.data ? (
-        <Layout>
+        <Layout backup={events.data}>
           <h1>Заказы</h1>
           {events.data.length === 0 && <h3>Нет подходящих заказов</h3>}
           <Button onClick={() => setShow(!show)}>Показать все</Button>{" "}
@@ -294,19 +295,21 @@ export default function HomePage(props) {
 export async function getServerSideProps() {
 
 
-  const [res, resFlow, resExpenses] = await Promise.all([
+  const [res, resFlow, resExpenses, resBackups] = await Promise.all([
     fetch(`${API_URL}/api/events`), 
     fetch(`${API_URL}/api/flows`),
-    fetch(`${API_URL}/api/expenses`)
+    fetch(`${API_URL}/api/expenses`),
+    fetch(`${API_URL}/api/backups`)
   ]);
-  const [events, flow, expenses] = await Promise.all([
+  const [events, flow, expenses, backups] = await Promise.all([
     res.json(), 
     resFlow.json(),
-    resExpenses.json()
+    resExpenses.json(),
+    resBackups.json()
   ]);
 
   return {
-    props: { events, flow, expenses },
+    props: { events, flow, expenses, backups},
   };
 }
 
