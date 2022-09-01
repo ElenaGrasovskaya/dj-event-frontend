@@ -32,15 +32,15 @@ export default function BackupsPage(props) {
         <Table striped hover responsive="md" className={styles.tableCenter}>
           <tbody>
             {backups.data.map((element, index) => (
-              <tr>
-                <td>{index + 1}</td>
-                <td>
+              <tr key ={index +160}>
+                <td key ={index +170}>{index + 1}</td>
+                <td key ={index +180}>
                  
                     <Link
                       href={`/backups/view/${element.attributes.slug}`}
                       key={index + 150}
                     >
-                      <strong className={styles.clickableLink}>
+                      <strong key ={index +190} className={styles.clickableLink}>
                         {element.attributes.date}
                       </strong>
                     </Link>
@@ -48,7 +48,7 @@ export default function BackupsPage(props) {
                 </td>
 
                 <td>
-                  <Button variant="danger">Delete</Button>
+                  <Button variant="danger" key ={index +200}>Delete</Button>
                 </td>
               </tr>
             ))}
