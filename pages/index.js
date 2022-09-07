@@ -215,7 +215,7 @@ export default function HomePage(props) {
                   
                 </td>
                 <td>
-                  <strong>{summ.summInterest.toFixed(1)}</strong>
+                  
                 </td>
                 <td></td>
                 <td>
@@ -317,4 +317,7 @@ export async function getServerSideProps() {
 /*{evt.attributes.status?(evt.attributes.clientPrice?(`${(
                       (evt.attributes.interest / evt.attributes.clientPrice) *
                       100
-                    ).toFixed(1)}%`):0):""} */
+                    ).toFixed(1)}%`):0):""}
+                    
+                    <strong>{summ.summInterest.toFixed(1)}</strong>
+                    */
