@@ -36,6 +36,11 @@
     color: #ABC038;
     font-size: 20px;
     text-transform: uppercase;
+    
+  }
+
+  .logoImage {
+    top: 1rem;
   }
   
   .logo a {

@@ -16,9 +16,8 @@ export default function Header( backup ) {
   return (
     <header className={styles.header}>
       <div className={styles.logo}>
-        <Link href="/">
-          <><Image height="50px" width="50px" src="/images/sample/logo_transparent.png"></Image>{" "}
-          <a className={styles.logo}>Libra Portal</a>{" "}
+        <a href="/events/"><Image className={styles.logoImage} height="30px" width="30px" src="/images/sample/logo_transparent.png"></Image></a><a className={styles.logo} href="/events/" >Libra Portal</a>{" "}
+        
           {user?(<span className={styles.userName}>
 
         {user.username}
@@ -26,8 +25,7 @@ export default function Header( backup ) {
 
       </span>
 ):(<span></span>)}
-          </>
-        </Link>
+
       </div>
       
       <Search />

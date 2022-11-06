@@ -128,7 +128,7 @@ export default function HomePage(props) {
                 <th>Прибыль</th>
                 <th>M-60%</th>
                 <th>C-40%</th>
-                <th>Личные</th>
+
                 <th>Закрыт</th>
                 <th>В архиве</th>
               </tr>
@@ -174,7 +174,7 @@ export default function HomePage(props) {
 
                     <td>{evt.attributes.status?evt.attributes.salary:""}</td>
 
-                    <td>{evt.attributes.expensesPersonal}</td>
+                    
 
                     <td key={180 + index}>
                       {evt.attributes.status ? (
@@ -224,9 +224,7 @@ export default function HomePage(props) {
                 <td>
                   <strong>{summ.summSalary.toFixed(1)}</strong>
                 </td>
-                <td>
-                  <strong>{summ.summPersonalExpenses.toFixed(1)}</strong>
-                </td>
+
 
                 <td colSpan={2}>
                   {" "}
@@ -245,28 +243,20 @@ export default function HomePage(props) {
           <Table borderless>
             <tbody>
             <tr>
-              <td><Alert className={"mb-0 p-0"} variant="success"><h4 className={"mb-0"}>Макс 60%:</h4></Alert></td>
-              <td><Alert className={"mb-0 p-0"} variant="success"><h4 className={"mb-0"}>{summ.summSalaryMax.toFixed(1)}</h4></Alert></td>
+              <td><Alert className={"mb-0 p-0"} variant="warning"><h4 className={"mb-0"}>Макс 60%:</h4></Alert></td>
+              <td><Alert className={"mb-0 p-0"} variant="warning"><h4 className={"mb-0"}>{summ.summSalaryMax.toFixed(1)}</h4></Alert></td>
             </tr>
               <tr>
               <td><Alert className={"mb-0 p-0"} variant="primary"><h4 className={"mb-0"}>Cергей 40%:</h4></Alert></td>
               <td><Alert className={"mb-0 p-0"} variant="primary"><h4 className={"mb-0"}>{summ.summSalary.toFixed(1)}</h4></Alert></td>
             </tr>
             <tr>
-              <td><Alert className={"mb-0 p-0"} variant="danger"><h4 className={"mb-0"}>Личные:</h4></Alert></td>
-              <td><Alert className={"mb-0 p-0"} variant="danger"><h4 className={"mb-0"}>{summ.summPersonalExpenses.toFixed(1)}</h4></Alert></td>
-            </tr>
-            <tr>
-              <td><Alert className={"mb-0 p-0"} variant="warning"><h4 className={"mb-0"}>Расходы:</h4></Alert></td>
-              <td><Alert className={"mb-0 p-0"} variant="warning"><h4 className={"mb-0"}>{summ.summExpenses.toFixed(1)}</h4></Alert></td>
-            </tr>
-            <tr>
-              <td><Alert className={"mb-0 p-0"} variant="info"><h4 className={"mb-0"}>Авансы:</h4></Alert></td>
+              <td><Alert className={"mb-0 p-0"} variant="info"><h4 className={"mb-0"}>Сергей Авансы:</h4></Alert></td>
               <td><Alert className={"mb-0 p-0"} variant="info"><h4 className={"mb-0"}>{`-${summ.summFlow.toFixed(1)}`}</h4></Alert></td>
             </tr>
             <tr>
-              <th><Alert className={"mb-0 p-0 lg"} variant="dark"><h4 className={"mb-0"}>Баланс:</h4></Alert></th>
-              <th><Alert className={"mb-0 p-0 lg"} variant="dark"><h4 className={"mb-0"}>{(summ.summSalary+ summ.summPersonalExpenses-summ.summFlow+summ.summExpenses).toFixed(1)}</h4></Alert></th>
+              <th><Alert className={"mb-0 p-0 lg"} variant="dark"><h4 className={"mb-0"}>Сергей Остаток:</h4></Alert></th>
+              <th><Alert className={"mb-0 p-0 lg"} variant="dark"><h4 className={"mb-0"}>{(summ.summSalary-summ.summFlow).toFixed(1)}</h4></Alert></th>
             </tr>
 
             
@@ -290,6 +280,16 @@ export default function HomePage(props) {
     revalidate: 1,
   };
 }
+
+            <tr>
+             <td><Alert className={"mb-0 p-0"} variant="warning"><h4 className={"mb-0"}>Расходы:</h4></Alert></td>
+              <td><Alert className={"mb-0 p-0"} variant="warning"><h4 className={"mb-0"}>{summ.summExpenses.toFixed(1)}</h4></Alert></td>
+            </tr>
+
+                        <tr>
+              <td><Alert className={"mb-0 p-0"} variant="danger"><h4 className={"mb-0"}>Личные:</h4></Alert></td>
+              <td><Alert className={"mb-0 p-0"} variant="danger"><h4 className={"mb-0"}>{summ.summPersonalExpenses.toFixed(1)}</h4></Alert></td>
+            </tr>
 */
 
 export async function getServerSideProps() {
