@@ -117,6 +117,9 @@ export default function HomePage(props) {
           <Button variant="warning" onClick={() => router.push(`/expenses`)}>
             Расходы
           </Button>{" "}
+          <Button variant="danger" onClick={() => router.push(`/shared-expenses`)}>
+            Общие Расходы
+          </Button>{" "}
           <Table striped hover responsive="md" className={styles.tableCenter}>
             <thead>
               <tr>
@@ -295,21 +298,23 @@ export default function HomePage(props) {
 export async function getServerSideProps() {
 
 
-  const [res, resFlow, resExpenses, resBackups] = await Promise.all([
+  const [res, resFlow, resExpenses, resSharedExpenses, resBackups] = await Promise.all([
     fetch(`${API_URL}/api/events`), 
     fetch(`${API_URL}/api/flows`),
     fetch(`${API_URL}/api/expenses`),
+    fetch(`${API_URL}/api/shared-expenses`),
     fetch(`${API_URL}/api/backups`)
   ]);
-  const [events, flow, expenses, backups] = await Promise.all([
+  const [events, flow, expenses, sharedExpenses, backups] = await Promise.all([
     res.json(), 
     resFlow.json(),
     resExpenses.json(),
+    resSharedExpenses.json(),
     resBackups.json()
   ]);
 
   return {
-    props: { events, flow, expenses, backups},
+    props: { events, flow, expenses, sharedExpenses, backups},
   };
 }
 
