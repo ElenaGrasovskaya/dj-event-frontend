@@ -189,7 +189,7 @@ export default function Expenses({ rawSharedExpenses }) {
 
   return (
     <Layout>
-        <h1>Общие Расходы</h1>
+        <h1>Расходы 1/2</h1>
         <Link href='/events'><a className={styles.backBtn}><BiLeftArrowAlt/></a></Link> {"   "}
          <Button onClick={() => setShowAll(!showAll)}>Показать все</Button>{" "}
       <Form>

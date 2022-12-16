@@ -118,7 +118,7 @@ export default function HomePage(props) {
             Расходы
           </Button>{" "}
           <Button variant="danger" onClick={() => router.push(`/shared-expenses`)}>
-            Общие Расходы
+            Расходы 1/2
           </Button>{" "}
           <Table striped hover responsive="md" className={styles.tableCenter}>
             <thead>
