@@ -16,13 +16,20 @@ import styles from "@/styles/Home.module.css";
 import { BiArchiveIn } from "react-icons/bi";
 import { BiArchiveOut } from "react-icons/bi";
 import { FaWrench } from "react-icons/fa";
+import moment from "moment";
 
-import Alert from 'react-bootstrap/Alert';
+import Alert from "react-bootstrap/Alert";
 
 export default function HomePage(props) {
+  const { events, flow, expenses, backups } = props;
 
-  const {events, flow, expenses, backups} = props;
-
+  const sortedEvents = events.data
+    .sort((a, b) => {
+      return (
+        new Date(a.attributes.createdAt).getTime() -
+        new Date(b.attributes.createdAt).getTime()
+      );
+    });
 
   const [summ, setSumm] = useState({
     summClientPrice: 0,
@@ -43,10 +50,7 @@ export default function HomePage(props) {
     router.replace(router.asPath);
   };
 
-
-
   useEffect(() => {
-    
     setSumm({
       summClientPrice: events.data.reduce(
         (acc, el) =>
@@ -69,12 +73,16 @@ export default function HomePage(props) {
 
       summSalary: events.data.reduce(
         (acc, el) =>
-        !el.attributes.hidden && el.attributes.status ? acc + el.attributes.salary : acc,
+          !el.attributes.hidden && el.attributes.status
+            ? acc + el.attributes.salary
+            : acc,
         0
       ),
       summSalaryMax: events.data.reduce(
         (acc, el) =>
-        !el.attributes.hidden && el.attributes.status ? acc + el.attributes.salaryMax : acc,
+          !el.attributes.hidden && el.attributes.status
+            ? acc + el.attributes.salaryMax
+            : acc,
         0
       ),
 
@@ -87,18 +95,12 @@ export default function HomePage(props) {
       ),
 
       summFlow: flow.data.reduce(
-        (acc, el) =>
-          !el.attributes.hidden
-            ? acc + el.attributes.value
-            : acc,
+        (acc, el) => (!el.attributes.hidden ? acc + el.attributes.value : acc),
         0
       ),
 
       summExpenses: expenses.data.reduce(
-        (acc, el) =>
-          !el.attributes.hidden
-            ? acc + el.attributes.value
-            : acc,
+        (acc, el) => (!el.attributes.hidden ? acc + el.attributes.value : acc),
         0
       ),
     });
@@ -117,12 +119,16 @@ export default function HomePage(props) {
           <Button variant="warning" onClick={() => router.push(`/expenses`)}>
             Расходы
           </Button>{" "}
-          <Button variant="danger" onClick={() => router.push(`/shared-expenses`)}>
+          <Button
+            variant="danger"
+            onClick={() => router.push(`/shared-expenses`)}
+          >
             Расходы 1/2
           </Button>{" "}
           <Table striped hover responsive="md" className={styles.tableCenter}>
             <thead>
               <tr>
+                <th>#</th>
                 <th></th>
                 <th>Заказ</th>
                 <th>Стоимость</th>
@@ -131,6 +137,7 @@ export default function HomePage(props) {
                 <th>Прибыль</th>
                 <th>M-60%</th>
                 <th>C-40%</th>
+                <th>Дата</th>
 
                 <th>Закрыт</th>
                 <th>В архиве</th>
@@ -140,6 +147,7 @@ export default function HomePage(props) {
               {events.data.map((evt, index) =>
                 !evt.attributes.hidden || show ? (
                   <tr key={100 + index}>
+                    <td>{index + 1}</td>
                     <Link
                       href={`/events/edit/${evt.attributes.slug}`}
                       key={110 + index}
@@ -162,7 +170,7 @@ export default function HomePage(props) {
                         href={`/events/edit/${evt.attributes.slug}`}
                         key={120 + index}
                       >
-                        <strong className={styles.clickableLink} >
+                        <strong className={styles.clickableLink}>
                           {evt.attributes.title}
                         </strong>
                       </Link>
@@ -172,12 +180,19 @@ export default function HomePage(props) {
                     <td>{evt.attributes.clientPrepay}</td>
 
                     <td>{evt.attributes.clientDept}</td>
-                    <td>{evt.attributes.status?evt.attributes.interest:""}</td>
-                    <td>{evt.attributes.status?evt.attributes.salaryMax:""}</td>
+                    <td>
+                      {evt.attributes.status ? evt.attributes.interest : ""}
+                    </td>
+                    <td>
+                      {evt.attributes.status ? evt.attributes.salaryMax : ""}
+                    </td>
 
-                    <td>{evt.attributes.status?evt.attributes.salary:""}</td>
-
-                    
+                    <td>
+                      {evt.attributes.status ? evt.attributes.salary : ""}
+                    </td>
+                    <td>
+                      {moment(evt.attributes.createdAt).format("DD.MM.YY")}
+                    </td>
 
                     <td key={180 + index}>
                       {evt.attributes.status ? (
@@ -186,7 +201,7 @@ export default function HomePage(props) {
                         </div>
                       ) : (
                         <div className={styles.checkboxRed}>
-                          <FaWrench/>
+                          <FaWrench />
                         </div>
                       )}
                     </td>
@@ -211,23 +226,16 @@ export default function HomePage(props) {
               <tr>
                 <td></td>
                 <td></td>
-                <td>
-                
-                </td>
-                <td>
-                  
-                </td>
-                <td>
-                  
-                </td>
+                <td></td>
+                <td></td>
+                <td></td>
                 <td></td>
                 <td>
-                <strong>{summ.summSalaryMax.toFixed(1)}</strong>
+                  <strong>{summ.summSalaryMax.toFixed(1)}</strong>
                 </td>
                 <td>
                   <strong>{summ.summSalary.toFixed(1)}</strong>
                 </td>
-
 
                 <td colSpan={2}>
                   {" "}
@@ -242,29 +250,59 @@ export default function HomePage(props) {
               </tr>
             </thead>
           </Table>
-
           <Table borderless>
             <tbody>
-            <tr>
-              <td><Alert className={"mb-0 p-0"} variant="warning"><h4 className={"mb-0"}>Макс 60%:</h4></Alert></td>
-              <td><Alert className={"mb-0 p-0"} variant="warning"><h4 className={"mb-0"}>{summ.summSalaryMax.toFixed(1)}</h4></Alert></td>
-            </tr>
               <tr>
-              <td><Alert className={"mb-0 p-0"} variant="primary"><h4 className={"mb-0"}>Cергей 40%:</h4></Alert></td>
-              <td><Alert className={"mb-0 p-0"} variant="primary"><h4 className={"mb-0"}>{summ.summSalary.toFixed(1)}</h4></Alert></td>
-            </tr>
-            <tr>
-              <td><Alert className={"mb-0 p-0"} variant="info"><h4 className={"mb-0"}>Сергей Авансы:</h4></Alert></td>
-              <td><Alert className={"mb-0 p-0"} variant="info"><h4 className={"mb-0"}>{`-${summ.summFlow.toFixed(1)}`}</h4></Alert></td>
-            </tr>
-            <tr>
-              <th><Alert className={"mb-0 p-0 lg"} variant="dark"><h4 className={"mb-0"}>Сергей Остаток:</h4></Alert></th>
-              <th><Alert className={"mb-0 p-0 lg"} variant="dark"><h4 className={"mb-0"}>{(summ.summSalary-summ.summFlow).toFixed(1)}</h4></Alert></th>
-            </tr>
-
-            
+                <td>
+                  <Alert className={"mb-0 p-0"} variant="warning">
+                    <h4 className={"mb-0"}>Макс 60%:</h4>
+                  </Alert>
+                </td>
+                <td>
+                  <Alert className={"mb-0 p-0"} variant="warning">
+                    <h4 className={"mb-0"}>{summ.summSalaryMax.toFixed(1)}</h4>
+                  </Alert>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <Alert className={"mb-0 p-0"} variant="primary">
+                    <h4 className={"mb-0"}>Cергей 40%:</h4>
+                  </Alert>
+                </td>
+                <td>
+                  <Alert className={"mb-0 p-0"} variant="primary">
+                    <h4 className={"mb-0"}>{summ.summSalary.toFixed(1)}</h4>
+                  </Alert>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <Alert className={"mb-0 p-0"} variant="info">
+                    <h4 className={"mb-0"}>Сергей Авансы:</h4>
+                  </Alert>
+                </td>
+                <td>
+                  <Alert className={"mb-0 p-0"} variant="info">
+                    <h4 className={"mb-0"}>{`-${summ.summFlow.toFixed(1)}`}</h4>
+                  </Alert>
+                </td>
+              </tr>
+              <tr>
+                <th>
+                  <Alert className={"mb-0 p-0 lg"} variant="dark">
+                    <h4 className={"mb-0"}>Сергей Остаток:</h4>
+                  </Alert>
+                </th>
+                <th>
+                  <Alert className={"mb-0 p-0 lg"} variant="dark">
+                    <h4 className={"mb-0"}>
+                      {(summ.summSalary - summ.summFlow).toFixed(1)}
+                    </h4>
+                  </Alert>
+                </th>
+              </tr>
             </tbody>
-
           </Table>
         </Layout>
       ) : (
@@ -296,28 +334,26 @@ export default function HomePage(props) {
 */
 
 export async function getServerSideProps() {
-
-
-  const [res, resFlow, resExpenses, resSharedExpenses, resBackups] = await Promise.all([
-    fetch(`${API_URL}/api/events`), 
-    fetch(`${API_URL}/api/flows`),
-    fetch(`${API_URL}/api/expenses`),
-    fetch(`${API_URL}/api/shared-expenses`),
-    fetch(`${API_URL}/api/backups`)
-  ]);
+  const [res, resFlow, resExpenses, resSharedExpenses, resBackups] =
+    await Promise.all([
+      fetch(`${API_URL}/api/events`),
+      fetch(`${API_URL}/api/flows`),
+      fetch(`${API_URL}/api/expenses`),
+      fetch(`${API_URL}/api/shared-expenses`),
+      fetch(`${API_URL}/api/backups`),
+    ]);
   const [events, flow, expenses, sharedExpenses, backups] = await Promise.all([
-    res.json(), 
+    res.json(),
     resFlow.json(),
     resExpenses.json(),
     resSharedExpenses.json(),
-    resBackups.json()
+    resBackups.json(),
   ]);
 
   return {
-    props: { events, flow, expenses, sharedExpenses, backups},
+    props: { events, flow, expenses, sharedExpenses, backups },
   };
 }
-
 
 /*{evt.attributes.status?(evt.attributes.clientPrice?(`${(
                       (evt.attributes.interest / evt.attributes.clientPrice) *

@@ -499,7 +499,7 @@ export default function EditEventsPage({ evt }) {
               type="date"
               name="date"
               id="date"
-              value={moment(values.date).format("yyyy-MM-DD")}
+              value={moment(values.date).format("DD.MM.YY")}
               onKeyPress={handleKeyPress}
               onChange={handleInputChange}
             />
