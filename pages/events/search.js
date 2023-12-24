@@ -1,4 +1,3 @@
-import qs from 'qs'
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '@/styles/Home.module.css'
@@ -23,16 +22,7 @@ export default function SearchPage({events}) {
 }
 
 export async function getServerSideProps ({query:term}) {
-    const query = qs.stringify({
-        _where: {
-          _or: [
-            { title_contains: term },
-            { description_contains: term },
-            { address_contains: term },
-          ],
-        },
-      })
-  const res = await fetch(`${API_URL}/api/events?filters[title][$containsi]=${query}`)
+      const res = await fetch(`${API_URL}/api/events?filters[title][$containsi]=${term}`)
   const events = await res.json()
 
   return {

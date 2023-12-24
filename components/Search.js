@@ -7,8 +7,7 @@ export default function Search() {
     const router = useRouter();
     const handleSubmit = (e) => {
         e.preventDefault();
-        router.push(`search?query=${term}`);
-        setTerm('');
+        router.push(`events/search?query=${term}`);
     }
   return (
     <div className={styles.search}>
