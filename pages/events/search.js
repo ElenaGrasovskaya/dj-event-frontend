@@ -9,7 +9,8 @@ import Link from 'next/link';
 
 export default function SearchPage({ events }) {
   const router = useRouter();
-
+  console.log(router.query);
+  console.log("data", events.data);
   return (
     <Layout title='Search Results'>
       <Link href='/events'>Назад</Link>
@@ -23,12 +24,10 @@ export default function SearchPage({ events }) {
   );
 }
 
-export async function getServerSideProps() {
-  const router = useRouter();
-  console.log(router.query);
-
+export async function getServerSideProps({ query: term }) {
+  
   const res = await fetch(
-    `${API_URL}/api/events?filters[title][$containsi]=${router.query.term}`
+    `${API_URL}/api/events?filters[title][$containsi]=${query.term}`
   );
   const events = await res.json();
 
