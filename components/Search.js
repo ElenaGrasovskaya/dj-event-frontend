@@ -7,7 +7,7 @@ export default function Search() {
     const router = useRouter();
     const handleSubmit = (e) => {
         e.preventDefault();
-        router.push(`events/search?term=${term}`);
+        router.push(`events/search?filters[title][$containsi]=${term}`);
         setTerm('');
     }
   return (

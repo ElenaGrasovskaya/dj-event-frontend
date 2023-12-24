@@ -16,9 +16,9 @@ export async function getServerSideProps() {
 
 
   const [res, resFlow, resExpenses] = await Promise.all([
-    fetch(`${API_URL}/api/events`), 
-    fetch(`${API_URL}/api/flows`),
-    fetch(`${API_URL}/api/expenses`)
+    fetch(`${API_URL}/api/events?filters[hidden][$eq]=false`), 
+    fetch(`${API_URL}/api/flows?filters[hidden][$eq]=false`),
+    fetch(`${API_URL}/api/expenses?filters[hidden][$eq]=false`)
   ]);
   const [events, flow, expenses] = await Promise.all([
     res.json(), 
