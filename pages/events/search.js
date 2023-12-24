@@ -9,7 +9,7 @@ import EventItem from '@/components/EventItem'
 import Link from 'next/link'
 
 export default function SearchPage({events}) {
-    const router =useRouter()
+    const router = useRouter()
   return (
     <Layout title='Search Results'>
         <Link href='/events'>Назад</Link>
