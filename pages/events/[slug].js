@@ -23,7 +23,7 @@ export default function EventPage({ evt }) {
       if(!res.ok) {
         toast.error(data.massage)
       }else {
-        router.push('/events')
+        router.push('/')
       }
     }
   }
@@ -55,7 +55,7 @@ export default function EventPage({ evt }) {
       <p>{evt.attributes.description}</p>
       <h3>Venue: {evt.attributes.address}</h3>
 
-      <Link href='/events'>
+      <Link href='/'>
         <a className={styles.back}>
           {'<'} Go Back
         </a>
