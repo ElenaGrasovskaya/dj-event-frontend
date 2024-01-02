@@ -21,7 +21,10 @@ import moment from 'moment';
 import Alert from 'react-bootstrap/Alert';
 
 export default function HomePage(props) {
-  const { events, flow, expenses, sharedExpenses } = props;
+  const { events, flow, expenses, sharedExpenses, backups } = props;
+  console.log("events", events);
+  console.log("flow", flow);
+  console.log("sharedExpenses", sharedExpenses);
 
   const sortedEvents = events.data.sort((a, b) => {
     return (
