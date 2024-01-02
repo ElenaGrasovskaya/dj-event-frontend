@@ -20,18 +20,15 @@ import moment from 'moment';
 
 import Alert from 'react-bootstrap/Alert';
 
-export default function HomePage(
-  events = { data: [] },
-  flow = { data: [] },
-  expenses = { data: [] },
-  sharedExpenses = { data: [] }
-) {
-  /* const sortedEvents = events.data.sort((a, b) => {
+export default function HomePage(props) {
+  const { events, flow, expenses, sharedExpenses } = props;
+
+  const sortedEvents = events.data.sort((a, b) => {
     return (
       new Date(a.attributes.createdAt).getTime() -
       new Date(b.attributes.createdAt).getTime()
     );
-  }); */
+  });
 
   const [summ, setSumm] = useState({
     summClientPrice: 0,
