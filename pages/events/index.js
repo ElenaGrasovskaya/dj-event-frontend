@@ -1,34 +1,40 @@
-
 import { API_URL } from "@/config/index";
 import HomePage from "pages";
 
 
 export default function EventsPage(props) 
 {
-
-  const { events, flow, expenses } = props;
-  return <HomePage events={events} flow ={flow} expenses={expenses}/>
+  return <HomePage props ={props}/>
   
 
 }
 
+
 export async function getServerSideProps() {
-
-
-  const [res, resFlow, resExpenses] = await Promise.all([
-    fetch(`${API_URL}/api/events?filters[hidden][$eq]=false`), 
-    fetch(`${API_URL}/api/flows?filters[hidden][$eq]=false`),
-    fetch(`${API_URL}/api/expenses?filters[hidden][$eq]=false`)
-  ]);
-  const [events, flow, expenses] = await Promise.all([
-    res.json(), 
-    resFlow.json(),
-    resExpenses.json()
-  ]);
-
-  return {
-    props: { events, flow, expenses },
-  };
+  try {
+    const [res, resFlow, resExpenses, resSharedExpenses, resBackups] =
+      await Promise.all([
+        fetch(`${API_URL}/api/events`),
+        fetch(`${API_URL}/api/flows`),
+        fetch(`${API_URL}/api/expenses`),
+        fetch(`${API_URL}/api/shared-expenses`),
+        fetch(`${API_URL}/api/backups`),
+      ]);
+    const [events, flow, expenses, sharedExpenses, backups] = await Promise.all(
+      [
+        res.json(),
+        resFlow.json(),
+        resExpenses.json(),
+        resSharedExpenses.json(),
+        resBackups.json(),
+      ]
+    );
+    return {
+      props: { events, flow, expenses, sharedExpenses, backups },
+    };
+  } catch (e) {
+    console.error("Failed to load data from server", e)
+  }
 }
 
 

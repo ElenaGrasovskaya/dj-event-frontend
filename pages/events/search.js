@@ -24,7 +24,8 @@ export default function SearchPage({ events }) {
   );
 }
 
-export async function getServerSideProps({ query: term }) {
+export async function getServerSideProps(context) {
+  const {query} = context;
   
   const res = await fetch(
     `${API_URL}/api/events?filters[title][$containsi]=${query.term}`
