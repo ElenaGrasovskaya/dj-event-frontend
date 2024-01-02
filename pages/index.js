@@ -26,12 +26,12 @@ export default function HomePage(
   expenses = { data: [] },
   sharedExpenses = { data: [] }
 ) {
-  const sortedEvents = events.data.sort((a, b) => {
+  /* const sortedEvents = events.data.sort((a, b) => {
     return (
       new Date(a.attributes.createdAt).getTime() -
       new Date(b.attributes.createdAt).getTime()
     );
-  });
+  }); */
 
   const [summ, setSumm] = useState({
     summClientPrice: 0,
