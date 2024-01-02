@@ -30,7 +30,7 @@ export async function getServerSideProps(context) {
   console.log("context", query)
   
   const res = await fetch(
-    `${API_URL}/api/events?filters[title][$containsi]=${query.term}`
+    `${API_URL}/api/events?filters[title][$containsi]=${query}`
   );
   const events = await res.json();
 
