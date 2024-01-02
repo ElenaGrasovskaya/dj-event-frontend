@@ -1,35 +1,37 @@
-import Layout from "@/components/Layout";
-import { API_URL } from "@/config/index";
-import Link from "next/link";
-import Image from "next/image";
-import { useContext } from "react";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import AuthContext from "@/context/AuthContext";
-import LoginPage from "./account/login";
-import Table from "react-bootstrap/Table";
-import Button from "react-bootstrap/Button";
-import "bootstrap/dist/css/bootstrap.min.css";
-import { BsFillQuestionSquareFill } from "react-icons/bs";
-import { BsFillCheckSquareFill } from "react-icons/bs";
-import styles from "@/styles/Home.module.css";
-import { BiArchiveIn } from "react-icons/bi";
-import { BiArchiveOut } from "react-icons/bi";
-import { FaWrench } from "react-icons/fa";
-import moment from "moment";
+import Layout from '@/components/Layout';
+import { API_URL } from '@/config/index';
+import Link from 'next/link';
+import Image from 'next/image';
+import { useContext } from 'react';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+import AuthContext from '@/context/AuthContext';
+import LoginPage from './account/login';
+import Table from 'react-bootstrap/Table';
+import Button from 'react-bootstrap/Button';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { BsFillQuestionSquareFill } from 'react-icons/bs';
+import { BsFillCheckSquareFill } from 'react-icons/bs';
+import styles from '@/styles/Home.module.css';
+import { BiArchiveIn } from 'react-icons/bi';
+import { BiArchiveOut } from 'react-icons/bi';
+import { FaWrench } from 'react-icons/fa';
+import moment from 'moment';
 
-import Alert from "react-bootstrap/Alert";
+import Alert from 'react-bootstrap/Alert';
 
-export default function HomePage( events = [], flow = [], expenses = [], sharedExpenses = []) {
- 
-
-  const sortedEvents = events.data
-    .sort((a, b) => {
-      return (
-        new Date(a.attributes.createdAt).getTime() -
-        new Date(b.attributes.createdAt).getTime()
-      );
-    });
+export default function HomePage(
+  events = { data: [] },
+  flow = { data: [] },
+  expenses = { data: [] },
+  sharedExpenses = { data: [] }
+) {
+  const sortedEvents = events.data.sort((a, b) => {
+    return (
+      new Date(a.attributes.createdAt).getTime() -
+      new Date(b.attributes.createdAt).getTime()
+    );
+  });
 
   const [summ, setSumm] = useState({
     summClientPrice: 0,
@@ -118,20 +120,20 @@ export default function HomePage( events = [], flow = [], expenses = [], sharedE
         <Layout backup={events.data}>
           <h1>Заказы</h1>
           {events.data.length === 0 && <h3>Нет подходящих заказов</h3>}
-          <Button onClick={() => setShow(!show)}>Показать все</Button>{" "}
-          <Button variant="info" onClick={() => router.push(`/flow`)}>
+          <Button onClick={() => setShow(!show)}>Показать все</Button>{' '}
+          <Button variant='info' onClick={() => router.push(`/flow`)}>
             Авансы
-          </Button>{" "}
-          <Button variant="warning" onClick={() => router.push(`/expenses`)}>
+          </Button>{' '}
+          <Button variant='warning' onClick={() => router.push(`/expenses`)}>
             Расходы
-          </Button>{" "}
+          </Button>{' '}
           <Button
-            variant="danger"
+            variant='danger'
             onClick={() => router.push(`/shared-expenses`)}
           >
             Расходы 1/2
-          </Button>{" "}
-          <Table striped hover responsive="md" className={styles.tableCenter}>
+          </Button>{' '}
+          <Table striped hover responsive='md' className={styles.tableCenter}>
             <thead>
               <tr>
                 <th>#</th>
@@ -163,7 +165,7 @@ export default function HomePage( events = [], flow = [], expenses = [], sharedE
                           key={120 + index}
                           src={
                             evt.attributes.image_url ||
-                            "/images/sample/furniture.png"
+                            '/images/sample/furniture.png'
                           }
                           width={30}
                           height={30}
@@ -187,17 +189,17 @@ export default function HomePage( events = [], flow = [], expenses = [], sharedE
 
                     <td>{evt.attributes.clientDept}</td>
                     <td>
-                      {evt.attributes.status ? evt.attributes.interest : ""}
+                      {evt.attributes.status ? evt.attributes.interest : ''}
                     </td>
                     <td>
-                      {evt.attributes.status ? evt.attributes.salaryMax : ""}
+                      {evt.attributes.status ? evt.attributes.salaryMax : ''}
                     </td>
 
                     <td>
-                      {evt.attributes.status ? evt.attributes.salary : ""}
+                      {evt.attributes.status ? evt.attributes.salary : ''}
                     </td>
                     <td>
-                      {moment(evt.attributes.createdAt).format("DD.MM.YY")}
+                      {moment(evt.attributes.createdAt).format('DD.MM.YY')}
                     </td>
 
                     <td key={180 + index}>
@@ -244,10 +246,10 @@ export default function HomePage( events = [], flow = [], expenses = [], sharedE
                 </td>
 
                 <td colSpan={2}>
-                  {" "}
-                  <Link href="/events/add">
-                    <div className="d-grid gap-2">
-                      <Button variant="primary" size="md">
+                  {' '}
+                  <Link href='/events/add'>
+                    <div className='d-grid gap-2'>
+                      <Button variant='primary' size='md'>
                         Новый заказ
                       </Button>
                     </div>
@@ -260,73 +262,79 @@ export default function HomePage( events = [], flow = [], expenses = [], sharedE
             <tbody>
               <tr>
                 <td>
-                  <Alert className={"mb-0 p-0"} variant="warning">
-                    <h4 className={"mb-0"}>Макс 60%:</h4>
+                  <Alert className={'mb-0 p-0'} variant='warning'>
+                    <h4 className={'mb-0'}>Макс 60%:</h4>
                   </Alert>
                 </td>
                 <td>
-                  <Alert className={"mb-0 p-0"} variant="warning">
-                    <h4 className={"mb-0"}>{summ.summSalaryMax.toFixed(1)}</h4>
-                  </Alert>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <Alert className={"mb-0 p-0"} variant="primary">
-                    <h4 className={"mb-0"}>Cергей 40%:</h4>
-                  </Alert>
-                </td>
-                <td>
-                  <Alert className={"mb-0 p-0"} variant="primary">
-                    <h4 className={"mb-0"}>{summ.summSalary.toFixed(1)}</h4>
+                  <Alert className={'mb-0 p-0'} variant='warning'>
+                    <h4 className={'mb-0'}>{summ.summSalaryMax.toFixed(1)}</h4>
                   </Alert>
                 </td>
               </tr>
               <tr>
                 <td>
-                  <Alert className={"mb-0 p-0"} variant="info">
-                    <h4 className={"mb-0"}>Сергей Авансы:</h4>
+                  <Alert className={'mb-0 p-0'} variant='primary'>
+                    <h4 className={'mb-0'}>Cергей 40%:</h4>
                   </Alert>
                 </td>
                 <td>
-                  <Alert className={"mb-0 p-0"} variant="info">
-                    <h4 className={"mb-0"}>{`-${summ.summFlow.toFixed(1)}`}</h4>
-                  </Alert>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <Alert className={"mb-0 p-0"} variant="info">
-                    <h4 className={"mb-0"}>Сергей Расходы:</h4>
-                  </Alert>
-                </td>
-                <td>
-                  <Alert className={"mb-0 p-0"} variant="info">
-                    <h4 className={"mb-0"}>{`${summ.summExpenses.toFixed(1)}`}</h4>
+                  <Alert className={'mb-0 p-0'} variant='primary'>
+                    <h4 className={'mb-0'}>{summ.summSalary.toFixed(1)}</h4>
                   </Alert>
                 </td>
               </tr>
               <tr>
                 <td>
-                  <Alert className={"mb-0 p-0"} variant="info">
-                    <h4 className={"mb-0"}>Сергей Расходы 1/2:</h4>
+                  <Alert className={'mb-0 p-0'} variant='info'>
+                    <h4 className={'mb-0'}>Сергей Авансы:</h4>
                   </Alert>
                 </td>
                 <td>
-                  <Alert className={"mb-0 p-0"} variant="info">
-                    <h4 className={"mb-0"}>{`${summ.summSharedExpenses.toFixed(1)}`}</h4>
+                  <Alert className={'mb-0 p-0'} variant='info'>
+                    <h4 className={'mb-0'}>{`-${summ.summFlow.toFixed(1)}`}</h4>
+                  </Alert>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <Alert className={'mb-0 p-0'} variant='info'>
+                    <h4 className={'mb-0'}>Сергей Расходы:</h4>
+                  </Alert>
+                </td>
+                <td>
+                  <Alert className={'mb-0 p-0'} variant='info'>
+                    <h4 className={'mb-0'}>{`${summ.summExpenses.toFixed(
+                      1
+                    )}`}</h4>
+                  </Alert>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <Alert className={'mb-0 p-0'} variant='info'>
+                    <h4 className={'mb-0'}>Сергей Расходы 1/2:</h4>
+                  </Alert>
+                </td>
+                <td>
+                  <Alert className={'mb-0 p-0'} variant='info'>
+                    <h4 className={'mb-0'}>{`${summ.summSharedExpenses.toFixed(
+                      1
+                    )}`}</h4>
                   </Alert>
                 </td>
               </tr>
               <tr>
                 <th>
-                  <Alert className={"mb-0 p-0 lg"} variant="dark">
-                    <h4 className={"mb-0"}>Сергей <strong>ЗП</strong> (40% - Авансы):</h4>
+                  <Alert className={'mb-0 p-0 lg'} variant='dark'>
+                    <h4 className={'mb-0'}>
+                      Сергей <strong>ЗП</strong> (40% - Авансы):
+                    </h4>
                   </Alert>
                 </th>
                 <th>
-                  <Alert className={"mb-0 p-0 lg"} variant="dark">
-                    <h4 className={"mb-0"}>
+                  <Alert className={'mb-0 p-0 lg'} variant='dark'>
+                    <h4 className={'mb-0'}>
                       {(summ.summSalary - summ.summFlow).toFixed(1)}
                     </h4>
                   </Alert>
@@ -335,14 +343,22 @@ export default function HomePage( events = [], flow = [], expenses = [], sharedE
 
               <tr>
                 <th>
-                  <Alert className={"mb-0 p-0 lg"} variant="dark">
-                    <h4 className={"mb-0"}>Сергей <strong>Остаток</strong> (ЗП + Расходы + Расходы 1/2):</h4>
+                  <Alert className={'mb-0 p-0 lg'} variant='dark'>
+                    <h4 className={'mb-0'}>
+                      Сергей <strong>Остаток</strong> (ЗП + Расходы + Расходы
+                      1/2):
+                    </h4>
                   </Alert>
                 </th>
                 <th>
-                  <Alert className={"mb-0 p-0 lg"} variant="dark">
-                    <h4 className={"mb-0"}>
-                      {(summ.summSalary - summ.summFlow + summ.summExpenses + summ.summSharedExpenses).toFixed(1)}
+                  <Alert className={'mb-0 p-0 lg'} variant='dark'>
+                    <h4 className={'mb-0'}>
+                      {(
+                        summ.summSalary -
+                        summ.summFlow +
+                        summ.summExpenses +
+                        summ.summSharedExpenses
+                      ).toFixed(1)}
                     </h4>
                   </Alert>
                 </th>
