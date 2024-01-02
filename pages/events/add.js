@@ -71,7 +71,7 @@ export default function AddEventPage() {
       toast.error("Something went wrong");
     } else {
       const data = await res.json();
-      if (e.target.value === "Сохранить и выйти") router.push(`/events`);
+      if (e.target.value === "Сохранить и выйти") router.push(`/`);
       else {
         router.push(`/events/edit/${values.slug}`);
       }
@@ -182,7 +182,7 @@ export default function AddEventPage() {
   };
   const handleGoBack = () => {
     const result = window.confirm("Выйти без сохранения?");
-    result ? router.push(`/events`) : null;
+    result ? router.push(`/`) : null;
   };
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
