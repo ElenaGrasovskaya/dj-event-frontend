@@ -10,7 +10,6 @@ import LoginPage from './account/login';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { BsFillQuestionSquareFill } from 'react-icons/bs';
 import { BsFillCheckSquareFill } from 'react-icons/bs';
 import styles from '@/styles/Home.module.css';
 import { BiArchiveIn } from 'react-icons/bi';
@@ -318,7 +317,9 @@ export default function HomePage(props) {
                 </td>
                 <td>
                   <Alert className={'mb-0 p-0'} variant='info'>
-                    <h4 className={'mb-0'}>{`${summ.summSharedExpenses.toFixed(1)}`}</h4>
+                    <h4 className={'mb-0'}>{`${summ.summSharedExpenses.toFixed(
+                      1
+                    )}`}</h4>
                   </Alert>
                 </td>
               </tr>
@@ -393,25 +394,30 @@ export default function HomePage(props) {
 */
 
 export async function getServerSideProps() {
-  const [res, resFlow, resExpenses, resSharedExpenses, resBackups] =
-    await Promise.all([
-      fetch(`${API_URL}/api/events`),
-      fetch(`${API_URL}/api/flows`),
-      fetch(`${API_URL}/api/expenses`),
-      fetch(`${API_URL}/api/shared-expenses`),
-      fetch(`${API_URL}/api/backups`),
-    ]);
-  const [events, flow, expenses, sharedExpenses, backups] = await Promise.all([
-    res.json(),
-    resFlow.json(),
-    resExpenses.json(),
-    resSharedExpenses.json(),
-    resBackups.json(),
-  ]);
-
-  return {
-    props: { events, flow, expenses, sharedExpenses, backups },
-  };
+  try {
+    const [res, resFlow, resExpenses, resSharedExpenses, resBackups] =
+      await Promise.all([
+        fetch(`${API_URL}/api/events`),
+        fetch(`${API_URL}/api/flows`),
+        fetch(`${API_URL}/api/expenses`),
+        fetch(`${API_URL}/api/shared-expenses`),
+        fetch(`${API_URL}/api/backups`),
+      ]);
+    const [events, flow, expenses, sharedExpenses, backups] = await Promise.all(
+      [
+        res.json(),
+        resFlow.json(),
+        resExpenses.json(),
+        resSharedExpenses.json(),
+        resBackups.json(),
+      ]
+    );
+    return {
+      props: { events, flow, expenses, sharedExpenses, backups },
+    };
+  } catch (e) {
+    console.error("Failed to load data from server", e)
+  }
 }
 
 /*{evt.attributes.status?(evt.attributes.clientPrice?(`${(
