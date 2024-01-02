@@ -13,7 +13,7 @@ export default function SearchPage({ events }) {
   console.log("data", events.data);
   return (
     <Layout title='Search Results'>
-      <Link href='/events'>Назад</Link>
+      <Link href='/'>Назад</Link>
       <h1>Искали {router.query.term}</h1>
 
       {events.length === 0 && <h3>Не нашли</h3>}

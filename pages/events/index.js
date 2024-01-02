@@ -2,37 +2,9 @@ import { API_URL } from "@/config/index";
 import HomePage from "../../pages";
 
 
-export default function EventsPage(props) 
+export default function EventsPage()
 {
-  return <HomePage props = {props}/>
-}
-
-
-export async function getServerSideProps() {
-  try {
-    const [res, resFlow, resExpenses, resSharedExpenses, resBackups] =
-      await Promise.all([
-        fetch(`${API_URL}/api/events`),
-        fetch(`${API_URL}/api/flows`),
-        fetch(`${API_URL}/api/expenses`),
-        fetch(`${API_URL}/api/shared-expenses`),
-        fetch(`${API_URL}/api/backups`),
-      ]);
-    const [events, flow, expenses, sharedExpenses, backups] = await Promise.all(
-      [
-        res.json(),
-        resFlow.json(),
-        resExpenses.json(),
-        resSharedExpenses.json(),
-        resBackups.json(),
-      ]
-    );
-    return {
-      props: { events, flow, expenses, sharedExpenses, backups },
-    };
-  } catch (e) {
-    console.error("Failed to load data from server", e)
-  }
+  return <HomePage/>
 }
 
 
