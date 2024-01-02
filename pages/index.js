@@ -20,8 +20,8 @@ import moment from "moment";
 
 import Alert from "react-bootstrap/Alert";
 
-export default function HomePage(props) {
-  const { events, flow, expenses, backups } = props;
+export default function HomePage( events = [], flow = [], expenses = [], sharedExpenses = []) {
+ 
 
   const sortedEvents = events.data
     .sort((a, b) => {
@@ -40,6 +40,7 @@ export default function HomePage(props) {
     summPersonalExpenses: 0,
     summFlow: 0,
     summExpenses: 0,
+    summSharedExpenses: 0,
   });
 
   const [show, setShow] = useState(false);
@@ -100,6 +101,11 @@ export default function HomePage(props) {
       ),
 
       summExpenses: expenses.data.reduce(
+        (acc, el) => (!el.attributes.hidden ? acc + el.attributes.value : acc),
+        0
+      ),
+
+      summExpenses: sharedExpenses.data.reduce(
         (acc, el) => (!el.attributes.hidden ? acc + el.attributes.value : acc),
         0
       ),
@@ -301,6 +307,18 @@ export default function HomePage(props) {
                 </td>
               </tr>
               <tr>
+                <td>
+                  <Alert className={"mb-0 p-0"} variant="info">
+                    <h4 className={"mb-0"}>Сергей Расходы 1/2:</h4>
+                  </Alert>
+                </td>
+                <td>
+                  <Alert className={"mb-0 p-0"} variant="info">
+                    <h4 className={"mb-0"}>{`${summ.summSharedExpenses.toFixed(1)}`}</h4>
+                  </Alert>
+                </td>
+              </tr>
+              <tr>
                 <th>
                   <Alert className={"mb-0 p-0 lg"} variant="dark">
                     <h4 className={"mb-0"}>Сергей <strong>ЗП</strong> (40% - Авансы):</h4>
@@ -318,13 +336,13 @@ export default function HomePage(props) {
               <tr>
                 <th>
                   <Alert className={"mb-0 p-0 lg"} variant="dark">
-                    <h4 className={"mb-0"}>Сергей <strong>Остаток</strong> (ЗП + Расходы):</h4>
+                    <h4 className={"mb-0"}>Сергей <strong>Остаток</strong> (ЗП + Расходы + Расходы 1/2):</h4>
                   </Alert>
                 </th>
                 <th>
                   <Alert className={"mb-0 p-0 lg"} variant="dark">
                     <h4 className={"mb-0"}>
-                      {(summ.summSalary - summ.summFlow + summ.summExpenses).toFixed(1)}
+                      {(summ.summSalary - summ.summFlow + summ.summExpenses + summ.summSharedExpenses).toFixed(1)}
                     </h4>
                   </Alert>
                 </th>
