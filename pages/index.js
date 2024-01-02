@@ -22,9 +22,9 @@ import Alert from 'react-bootstrap/Alert';
 
 export default function HomePage(props) {
   const { events, flow, expenses, sharedExpenses, backups } = props;
-  console.log("events", events);
-  console.log("flow", flow);
-  console.log("sharedExpenses", sharedExpenses);
+  console.log('events', events);
+  console.log('flow', flow);
+  console.log('sharedExpenses', sharedExpenses);
 
   const sortedEvents = events.data.sort((a, b) => {
     return (
@@ -107,7 +107,7 @@ export default function HomePage(props) {
         0
       ),
 
-      summExpenses: sharedExpenses.data.reduce(
+      summSharedExpenses: sharedExpenses.data.reduce(
         (acc, el) => (!el.attributes.hidden ? acc + el.attributes.value : acc),
         0
       ),
@@ -318,9 +318,7 @@ export default function HomePage(props) {
                 </td>
                 <td>
                   <Alert className={'mb-0 p-0'} variant='info'>
-                    <h4 className={'mb-0'}>{`${summ.summSharedExpenses.toFixed(
-                      1
-                    )}`}</h4>
+                    <h4 className={'mb-0'}>{`${summ.summSharedExpenses.toFixed(1)}`}</h4>
                   </Alert>
                 </td>
               </tr>
