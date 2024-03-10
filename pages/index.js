@@ -310,7 +310,7 @@ export default function HomePage(props) {
                   </Alert>
                 </td>
               </tr>
-              <tr>
+{/*               <tr>
                 <td>
                   <Alert className={'mb-0 p-0'} variant='info'>
                     <h4 className={'mb-0'}>Сергей Расходы 1/2:</h4>
@@ -323,7 +323,7 @@ export default function HomePage(props) {
                     )}`}</h4>
                   </Alert>
                 </td>
-              </tr>
+              </tr> */}
               <tr>
                 <th>
                   <Alert className={'mb-0 p-0 lg'} variant='dark'>
@@ -345,8 +345,7 @@ export default function HomePage(props) {
                 <th>
                   <Alert className={'mb-0 p-0 lg'} variant='dark'>
                     <h4 className={'mb-0'}>
-                      Сергей <strong>Остаток</strong> (ЗП + Расходы + Расходы
-                      1/2):
+                      Сергей <strong>Остаток</strong> (ЗП + Расходы):
                     </h4>
                   </Alert>
                 </th>
@@ -356,8 +355,7 @@ export default function HomePage(props) {
                       {(
                         summ.summSalary -
                         summ.summFlow +
-                        summ.summExpenses +
-                        summ.summSharedExpenses
+                        summ.summExpenses
                       ).toFixed(1)}
                     </h4>
                   </Alert>
