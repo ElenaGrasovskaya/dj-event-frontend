@@ -126,12 +126,12 @@ export default function EventsPage(props) {
           <Button variant='warning' onClick={() => router.push(`/expenses`)}>
             Расходы
           </Button>{' '}
-          <Button
+          {/* <Button
             variant='danger'
             onClick={() => router.push(`/shared-expenses`)}
           >
             Расходы 1/2
-          </Button>{' '}
+          </Button>{' '} */}
           <Table striped hover responsive='md' className={styles.tableCenter}>
             <thead>
               <tr>
@@ -237,6 +237,7 @@ export default function EventsPage(props) {
                 <td></td>
                 <td></td>
                 <td></td>
+                <td></td>
                 <td>
                   <strong>{summ.summSalaryMax.toFixed(1)}</strong>
                 </td>
@@ -309,7 +310,7 @@ export default function EventsPage(props) {
                   </Alert>
                 </td>
               </tr>
-              <tr>
+{/*               <tr>
                 <td>
                   <Alert className={'mb-0 p-0'} variant='info'>
                     <h4 className={'mb-0'}>Сергей Расходы 1/2:</h4>
@@ -322,7 +323,7 @@ export default function EventsPage(props) {
                     )}`}</h4>
                   </Alert>
                 </td>
-              </tr>
+              </tr> */}
               <tr>
                 <th>
                   <Alert className={'mb-0 p-0 lg'} variant='dark'>
@@ -344,8 +345,7 @@ export default function EventsPage(props) {
                 <th>
                   <Alert className={'mb-0 p-0 lg'} variant='dark'>
                     <h4 className={'mb-0'}>
-                      Сергей <strong>Остаток</strong> (ЗП + Расходы + Расходы
-                      1/2):
+                      Сергей <strong>Остаток</strong> (ЗП + Расходы):
                     </h4>
                   </Alert>
                 </th>
@@ -355,8 +355,7 @@ export default function EventsPage(props) {
                       {(
                         summ.summSalary -
                         summ.summFlow +
-                        summ.summExpenses +
-                        summ.summSharedExpenses
+                        summ.summExpenses
                       ).toFixed(1)}
                     </h4>
                   </Alert>

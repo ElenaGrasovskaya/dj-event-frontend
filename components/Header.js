@@ -8,7 +8,6 @@ import Button from 'react-bootstrap/Button';
 import Backup from "./Backup";
 import Image from "next/image"
 
-
 export default function Header( backup ) {
   const { user, logout } = useContext(AuthContext);
 
@@ -17,7 +16,7 @@ export default function Header( backup ) {
     <header className={styles.header}>
       <div className={styles.logo}>
         <Link href="/events/">
-          <Image height="30px" width="30px" src="/images/sample/logo_transparent.png"/>
+          <img src="/images/sample/logo_transparent.png" className={styles.logoImage}/>
           </Link>{" "}
           <Link className={styles.logo} href="/events/" >Libra Portal</Link>
         

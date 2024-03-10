@@ -126,12 +126,12 @@ export default function HomePage(props) {
           <Button variant='warning' onClick={() => router.push(`/expenses`)}>
             Расходы
           </Button>{' '}
-          <Button
+{/*           <Button
             variant='danger'
             onClick={() => router.push(`/shared-expenses`)}
           >
             Расходы 1/2
-          </Button>{' '}
+          </Button>{' '} */}
           <Table striped hover responsive='md' className={styles.tableCenter}>
             <thead>
               <tr>
@@ -231,6 +231,7 @@ export default function HomePage(props) {
             </tbody>
             <thead>
               <tr>
+                <td></td>
                 <td></td>
                 <td></td>
                 <td></td>

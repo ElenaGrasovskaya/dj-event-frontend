@@ -2,7 +2,9 @@
     display: flex;
 
     justify-content: space-between;
-    align-items: baseline;
+    align-items: center;
+    gap: 1rem;
+
     background: #fff;
     color: #333;
    
@@ -12,7 +14,7 @@
   
   .header a {
     color: #333;
-    margin-right: 20px;
+    text-decoration: none;
   }
   
   .header a:hover {
@@ -33,14 +35,20 @@
   }
   
   .logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+
     color: #ABC038;
-    font-size: 20px;
+    font-size: 2rem;
     text-transform: uppercase;
+
     
   }
 
   .logoImage {
-    top: 1rem;
+    height: 2rem;
   }
   
   .logo a {
@@ -69,7 +77,7 @@
     }
 
     .header li {
-      margin-left: 0;
+      margin-left: 10px;
     }
   
     .header a {
