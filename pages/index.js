@@ -113,14 +113,6 @@ export default function HomePage(props) {
     });
   }, []);
 
-  if (error) {
-    return <div>Error loading data: {error}</div>;
-  }
-
-  if (!events || !flow || !expenses || !sharedExpenses || !backups) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <>
       {user && events.data ? (
