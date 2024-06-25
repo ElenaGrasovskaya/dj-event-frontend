@@ -25,14 +25,6 @@ export default function HomePage(props) {
   console.log('flow', flow);
   console.log('sharedExpenses', sharedExpenses);
 
-  if (error) {
-    return <div>Error loading data: {error}</div>;
-  }
-
-  if (!events || !flow || !expenses || !sharedExpenses || !backups) {
-    return <div>Loading...</div>;
-  }
-
   const sortedEvents = events.data.sort((a, b) => {
     return (
       new Date(a.attributes.createdAt).getTime() -
@@ -120,6 +112,14 @@ export default function HomePage(props) {
       ),
     });
   }, []);
+
+  if (error) {
+    return <div>Error loading data: {error}</div>;
+  }
+
+  if (!events || !flow || !expenses || !sharedExpenses || !backups) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>
