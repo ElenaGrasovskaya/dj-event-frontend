@@ -25,6 +25,14 @@ export default function HomePage(props) {
   console.log('flow', flow);
   console.log('sharedExpenses', sharedExpenses);
 
+  if (error) {
+    return <div>Error loading data: {error}</div>;
+  }
+
+  if (!events || !flow || !expenses || !sharedExpenses || !backups) {
+    return <div>Loading...</div>;
+  }
+
   const sortedEvents = events.data.sort((a, b) => {
     return (
       new Date(a.attributes.createdAt).getTime() -
@@ -191,11 +199,10 @@ export default function HomePage(props) {
                       {evt.attributes.status ? evt.attributes.interest : ''}
                     </td>
                     <td>
-                      {evt.attributes.status ? evt.attributes.salaryMax : ''}
+                       {evt.attributes.status ? Number(evt.attributes.salaryMax).toFixed(2) : ''}
                     </td>
-
                     <td>
-                      {evt.attributes.status ? evt.attributes.salary : ''}
+                      {evt.attributes.status ? Number(evt.attributes.salary).toFixed(2) : ''}
                     </td>
                     <td>
                       {moment(evt.attributes.createdAt).format('DD.MM.YY')}
@@ -402,20 +409,29 @@ export async function getServerSideProps() {
         fetch(`${API_URL}/api/shared-expenses`),
         fetch(`${API_URL}/api/backups`),
       ]);
-    const [events, flow, expenses, sharedExpenses, backups] = await Promise.all(
-      [
-        res.json(),
-        resFlow.json(),
-        resExpenses.json(),
-        resSharedExpenses.json(),
-        resBackups.json(),
-      ]
-    );
+
+    // Check if any of the requests failed
+    if (!res.ok || !resFlow.ok || !resExpenses.ok || !resSharedExpenses.ok || !resBackups.ok) {
+      throw new Error('One or more API requests failed');
+    }
+
+    const [events, flow, expenses, sharedExpenses, backups] = await Promise.all([
+      res.json(),
+      resFlow.json(),
+      resExpenses.json(),
+      resSharedExpenses.json(),
+      resBackups.json(),
+    ]);
+
     return {
       props: { events, flow, expenses, sharedExpenses, backups },
     };
   } catch (e) {
-    console.error("Failed to load data from server", e)
+    console.error("Failed to load data from server", e);
+    return {
+      props: { error: 'Failed to load data' },
+      redirect: { destination: '/error', permanent: false }
+    };
   }
 }
 
